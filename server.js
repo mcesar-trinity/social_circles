@@ -14,8 +14,7 @@ const characters = require('./routes/characters.js');
 const game = require('./routes/game.js');
 const leaderboard = require('./routes/leaderboard.js');
 
-//I'm not compeletely sure what this is called, but this is what we learned in class
-//dotenv.config();
+//view engine setup
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({extended:true}));

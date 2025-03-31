@@ -1,13 +1,14 @@
-<!DOCTYPE html>
-<html lang ="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title> 
-</head>
+<%- include('./partials/header') %> 
 
-<body>
-    <h1>Welcome to the Social Circles Game</h1>
-    <p>Get to know your characters!</p>
-</body>
+    <body class="home"> 
+        <div class="intro"> 
+            <h1>Come Join the Fun!</h1>
+        </div>
+
+        <div class="login-button"> 
+            <form action="/authorize">
+                <input type="submit" id="login/signup" value="Login/Signup"> 
+            </form>
+        </div>
+    </body>
 </html>
