@@ -1,0 +1,37 @@
+.heading { 
+    font: 25px; 
+    display: flex; 
+    flex-direction: column; 
+    text-align: center;
+    font-weight: bold;
+
+    background-color: black;
+    color:white;
+}
+
+.home { 
+    background-color: #004aad;
+    background-image: linear-gradient(to right, #004aad, #cb6ce6);
+}
+
+.intro { 
+    font: 15px; 
+    display: flex; 
+    flex-direction: column; 
+    text-align: center;
+    font-weight: bold;
+
+    margin-top: 50px;
+}
+
+.login-button{ 
+    text-align: center; 
+}
+
+.login-button input{ 
+    font-size: 25px; 
+    padding: 10px;
+    border-radius: 8px;
+
+    background-color: #24d152;
+}
