@@ -8,4 +8,4 @@ router.get("/", (req, res) => {
     res.render("characters");
 });
 
-module.exports = router;
+module.exports = router

@@ -1,0 +1,16 @@
+<%- include('./partials/header') %> 
+
+    <body>
+        <div class="dummy-login-button">
+            <% if(!isUser) { %> 
+                <form action="/" method="post">
+                    <button type="submit" name="authorize" id="logoff" value="logoff">Switched to Logged in</button>
+                </form>
+            <% } else { %> 
+                <form action="/" method="post"> 
+                    <button type="submit" name="authorize" id="login" value="login">Switched to Logged off</button>
+                </form> 
+            <% } %> 
+        </div>
+    </body>
+</html> 
