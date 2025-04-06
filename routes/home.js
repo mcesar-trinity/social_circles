@@ -5,7 +5,7 @@ const router = express.Router();
 var sess; 
 
 //This function takes the session and resender in order to check user's permissions
-//to create either the home page for users, or the home page for non-user
+//and create either the home page for users, or the home page for non-user
 function createHomePage(sess, res){
     if(sess.userid != 0 && sess.userid != undefined){
         console.log("Logged in");
