@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db'); // Ensure this path is correct
 
-// Your leaderboard routes here
+// Route for the home page
 router.get('/', (req, res) => {
-    // Your leaderboard fetching logic...
+    console.log("index");
+    res.render('index', { title: 'Welcome to Social Circles' });
 });
 
 module.exports = router; // Ensure you export the router

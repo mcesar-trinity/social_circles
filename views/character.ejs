@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= npc.name %></title>
+    <link rel="stylesheet" href="/styles.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <header>
+        <h1><%= npc.name %></h1>
+        <p>Happiness: <%= npc.happiness_score %></p>
+        <p>Durability: <%= npc.current_durability %>/<%= npc.base_durability %></p>
+    </header>
+    <h2>Preferences</h2>
+    <% ['loved', 'liked', 'disliked', 'hated'].forEach(feeling => { %>
+        <h3><%= feeling.charAt(0).toUpperCase() + feeling.slice(1) %> Tasks:</h3>
+        <ul>
+            <% preferences.forEach(p => { 
+                if (p.preference === feeling) { %>
+                    <li><%= p.task %> (Topic: <%= p.topic %>)</li>
+                <% } 
+            }); %>
+        </ul>
+    <% }); %>
+    <footer>
+        <p>&copy; 2025 Social Circles</p>
+    </footer>
+</body>
+</html>

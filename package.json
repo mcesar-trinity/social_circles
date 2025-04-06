@@ -1,8 +1,13 @@
 {
+  "name": "social_circles",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node app.js"
+  },
   "dependencies": {
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
-    "express": "^4.21.2",
-    "mysql2": "^3.13.0"
+    "express": "^4.21.2", 
+    "mysql2": "^3.14.0"
   }
 }
