@@ -1,0 +1,25 @@
+<%- include('./partials/header') %> 
+
+    <body class="home"> 
+       <div class="auth-container">
+            <h2><%= type === 'login' ? 'Login to your account' : 'Create an account' %></h2>
+            <form action="/authorize/<%= type %>" method="POST">
+                <% if (type === 'register') { %>
+                    <input type="text" name="username" placeholder="Username" required />
+                <% } %>
+                <input type="email" name="email" placeholder="Email" required />
+                <input type="password" name="password" placeholder="Password" required />
+                <button type="submit"><%= type === 'login' ? 'Login' : 'Register' %></button>
+            </form>
+            <p>
+                <% if (type === 'login') { %>
+                    Don't have an account?  <a href="/authorize/register">Register</a>
+                <% } else { %>
+                    Already have an account? <a href="/authorize/login">Login</a>
+                <% } %>
+            </p>
+       </div>
+
+
+    </body>
+</html>

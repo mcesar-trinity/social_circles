@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
+const session = require('express-session');
 const mysql = require('mysql2');
 const path = require('path');
 const PORT = process.env.PORT || 9000;
@@ -17,9 +18,20 @@ const leaderboard = require('./routes/leaderboard.js');
 //view engine setup
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
+app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use('/static', express.static(__dirname));
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'socialcircles-secret',
+    resave: false,
+    saveUnitialized: false
+}));
+
+//redirecting authorize to authorize login
+app.get('/authorize', (req, res) => {
+    res.redirect('/authorize/login');
+})
 
 //Use Routes
 app.use('/', home);
