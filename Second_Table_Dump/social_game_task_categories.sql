@@ -16,35 +16,27 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `user_tasks`
+-- Table structure for table `task_categories`
 --
 
-DROP TABLE IF EXISTS `user_tasks`;
+DROP TABLE IF EXISTS `task_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user_tasks` (
+CREATE TABLE `task_categories` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int DEFAULT NULL,
-  `task_id` int DEFAULT NULL,
-  `status` enum('pending','completed') DEFAULT NULL,
-  `completion_time` timestamp NULL DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  KEY `task_id` (`task_id`),
-  CONSTRAINT `user_tasks_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `user_tasks_ibfk_2` FOREIGN KEY (`task_id`) REFERENCES `tasks` (`id`)
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_tasks`
+-- Dumping data for table `task_categories`
 --
 
-LOCK TABLES `user_tasks` WRITE;
-/*!40000 ALTER TABLE `user_tasks` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_tasks` ENABLE KEYS */;
+LOCK TABLES `task_categories` WRITE;
+/*!40000 ALTER TABLE `task_categories` DISABLE KEYS */;
+/*!40000 ALTER TABLE `task_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-30 14:44:26
+-- Dump completed on 2025-04-06 18:30:14

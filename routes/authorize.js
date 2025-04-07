@@ -9,6 +9,7 @@ var sess;
 //Login page
 router.get('/login', (req, res) => {
     isUser = (req.session.user) ? true : false;
+    console.log('GET /authorize/login');
     res.render('authorize', { 
         type: 'login',
         webTitle: 'Login | Social Circles',
@@ -20,6 +21,9 @@ router.get('/login', (req, res) => {
 
 //Register page
 router.get('/register', (req, res) => {
+    if(!req.session.user) {
+        return res.redirect('/authorize/login');
+    }
     res.render('authorize', { 
         type: 'register',
         webTitle: 'Login | Social Circles',
@@ -49,17 +53,62 @@ router.post('/register', async (req, res) => {
 //POST login user
 router.post('/login', (req, res) => {
     const { email, password } = req.body;
-    db.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
-        if (err || results.length === 0) return res.send('User not found');
-        const match = await bcrypt.compare(password, results[0].password_hash);
-        if(match){
-            req.session.user = { id: results[0].id, username: results[0].username };
-            res.redirect('/');
-        } else{
-            res.send('Incorrect password');
+    console.log('Attempting login for email:', email);
+
+    // Check if user exists
+    db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+        if (err) {
+            console.log('Error querying database:', err);
+            return res.redirect('/authorize/login');
         }
+        
+        if (results.length === 0) {
+            console.log('User not found');
+            return res.redirect('/authorize/login');
+        }
+
+        const user = results[0];
+
+        // Check if password matches
+        bcrypt.compare(password, user.password_hash, (err, isMatch) => {
+            if (err) {
+                console.log('Error comparing passwords:', err);
+                return res.redirect('/authorize/login');
+            }
+
+            if (isMatch) {
+                console.log('Password match:', isMatch);
+
+                // Set session data
+                req.session.user = {
+                    id: user.id,
+                    username: user.username,
+                    email: user.email,
+                    role: user.role,
+                    name: user.username, // Assuming `username` is the name you want to show
+                };
+
+                console.log('Session set for user:', req.session.user);
+
+                // Redirect to dashboard
+                return res.redirect('/');
+            } else {
+                console.log('Incorrect password');
+                return res.redirect('/authorize/login');
+            }
+        });
     });
 });
 
+
+//log out router
+
+router.get('/logout', (req, res) => {
+    console.log('Logging out user:', req.session.user);
+    req.session.destroy((err) => {
+        if(err) console.error('Error destroying session:', err);
+        res.redirect('/authorize/login');
+    });
+})
 
 module.exports = router;

@@ -34,7 +34,8 @@ app.use('/static', express.static(__dirname));
 app.use(session({
     secret: process.env.SESSION_SECRET || 'socialcircles-secret',
     resave: false,
-    saveUnitialized: false
+    saveUninitialized: false,
+    cookie: { secure: false}
 }));
 
 //redirecting authorize to authorize login
@@ -49,5 +50,11 @@ app.use('/dashboard', dashboard);
 app.use('/characters', characters);
 app.use('/game', game);
 app.use('/leaderboard', leaderboard);
+
+app.use((req, res, next) => {
+    console.log('[$new Date().toISOString()}] ${req.method} ${req.url}');
+    console.log('Session contents:', req.session);
+    next();
+});
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
