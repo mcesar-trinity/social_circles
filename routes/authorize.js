@@ -101,14 +101,4 @@ router.post('/login', (req, res) => {
 });
 
 
-//log out router
-
-router.get('/logout', (req, res) => {
-    console.log('Logging out user:', req.session.user);
-    req.session.destroy((err) => {
-        if(err) console.error('Error destroying session:', err);
-        res.redirect('/authorize/login');
-    });
-})
-
 module.exports = router;
