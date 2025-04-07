@@ -6,6 +6,15 @@ const mysql = require('mysql2');
 const path = require('path');
 const PORT = process.env.PORT || 9000;
 const db = require('./db');
+const sessions = require('express-session');
+
+const oneDay = 1000 * 60 * 60 * 24;
+app.use(sessions( { 
+    secret: "D3velop1ngAnS0methingUnpr3dictable",
+    resave: true,
+    saveUninitialized: false,
+    cookie: {}
+}));
 
 //Import Routes
 const home = require('./routes/home.js');

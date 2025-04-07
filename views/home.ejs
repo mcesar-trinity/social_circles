@@ -1,14 +1,58 @@
 <%- include('./partials/header') %> 
 
     <body class="home"> 
-        <div class="intro"> 
-            <h1>Come Join the Fun!</h1>
-        </div>
 
-        <div class="login-button"> 
-            <form action="/authorize">
-                <input type="submit" id="login/signup" value="Login/Signup"> 
-            </form>
-        </div>
+        <% if(!isUser) { %>
+            <div class="intro"> 
+                <h1>Come Join the Fun!</h1>
+            </div>
+        <% }; %>
+        
+        <% if(!isUser) { %>
+            <div class="login-button"> 
+                <form action="/authorize">
+                    <input type="submit" id="login/signup" value="Login/Signup"> 
+                </form>
+            </div>
+        <% }else { %>
+            <div class="game-options"> 
+                <form action="/leaderboard"> 
+                    <button type="submit" id="leaderboard" name="option" value="Leaderboard">
+                        <div class="option-title">
+                            Leaderboard
+                        </div>
+
+                        <div class="leader-description">
+                            Compare your results with other players around the world!
+                        </div>
+                    </button> 
+                </form>
+
+                <form action="/game"> 
+                    <button type="submit" id="game" name="game" value="Game">
+                        <div class="option-title">
+                            Play the Game
+                        </div>
+
+                        <div class="game-description">
+                            Come play the social game and make as many people as happy 
+                            as possible!
+                        </div>
+                    </button> 
+                </form>
+
+                <form action="/characters"> 
+                    <button type="submit" id="character" value="Character">
+                        <div class="option-title">
+                            Character Page 
+                        </div>
+
+                        <div class="character-description">
+                            Check out all the characters and their likes and dislikes!
+                        </div>
+                    </button>
+                </form>
+            </div>
+        <% }; %> 
     </body>
 </html>

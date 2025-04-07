@@ -1,5 +1,6 @@
+/*Styles the heading and body background for each page */
 .heading { 
-    font: 25px; 
+    font: 10px; 
     display: flex; 
     flex-direction: column; 
     text-align: center;
@@ -9,11 +10,23 @@
     color:white;
 }
 
-.home { 
+body { 
     background-color: #004aad;
     background-image: linear-gradient(to right, #004aad, #cb6ce6);
 }
 
+.account-button{
+    height: 5em;
+    width: 5em;
+    border-radius: 50%;
+
+    position: absolute;
+    top:1em;
+    right:1em;
+}
+
+/*Style for the "Come Join the Fun!" intro on the home page
+when the user is not logged in*/
 .intro { 
     font: 15px; 
     display: flex; 
@@ -24,6 +37,8 @@
     margin-top: 50px;
 }
 
+/*NOTE: REMOVE WHEN WE GET RID OF DUMMY LOGIN PAGE
+Styles the login buttons on the dummy login page*/
 .login-button{ 
     text-align: center; 
 }
@@ -34,4 +49,83 @@
     border-radius: 8px;
 
     background-color: #24d152;
+}
+
+
+/*Styles the three options on the home page when logged in*/ 
+.game-options { 
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    margin-top: 7em;
+}
+
+/*Set size and position of the three options*/
+.game-options button{ 
+    text-align: top;
+    
+    max-height: 20em;
+    max-width: 15em;
+
+    margin: 1em;
+    padding-bottom: 20em;
+}
+
+/*Pushes all text to the top*/
+button div{ 
+    position: relative;
+}
+/*Pushes the description closer to the center*/
+.game-options div{
+    margin-bottom: 3em;
+}
+
+/*Styles the title of each option*/
+.game-options .option-title{ 
+    color: white;
+    font-weight: bold;
+    font-size: 1.5em;
+
+
+    background-color: black;
+}
+
+/* .game-options #... to set the colors for each option */
+.game-options #leaderboard{ 
+    background-color: red;
+    font-size: 1.5em;
+}
+
+.game-options #game{ 
+    background-color: green;
+    font-size: 1.5em;
+}
+
+.game-options #character{
+    background-color: yellow;
+    font-size: 1.5em;
+}
+
+
+
+
+
+/* Style for buttons in authorize */
+.dummy-login-button{ 
+    text-align: center;
+}
+
+.dummy-login-button button{ 
+    margin-top: 25%;
+
+    font-size: 30px;
+}
+
+.dummy-login-button #logoff{ 
+    background-color: red;
+}
+
+.dummy-login-button #login{ 
+    background-color: blue;
 }
