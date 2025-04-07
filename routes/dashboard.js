@@ -90,11 +90,11 @@ router.get('/', (req, res) => {
 
 //handle profile editing
 router.post('/edit', (req, res) => {
-    const { name, email, bio } = req.body;
+    const { name, email } = req.body;
     const userId = req.session.userId;
 
-    db.query('UPDATE users SET username = ?, email = ?, bio = ? WHERE id = ?',
-    [name, email, bio, userId], (err, results) => {
+    db.query('UPDATE users SET username = ?, email  = ? WHERE id = ?',
+    [name, email, userId], (err, results) => {
         if (err) throw err;
         res.redirect('/dashboard'); //go back to dashboard after update
     });
