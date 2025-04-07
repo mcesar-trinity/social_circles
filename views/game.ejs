@@ -1,0 +1,10 @@
+<%- include('./partials/header') %>
+
+    <body>
+        <select name="task-options" id="task-options">
+            <% tasks.forEach((task) => { %>
+                <option value=" <%=task.name%> "><%=task.name%></option>
+            <% }) %> 
+        </select>
+    </body>
+</html>
