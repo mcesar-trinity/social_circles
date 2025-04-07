@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.41, for macos15 (arm64)
+-- MySQL dump 10.13  Distrib 8.0.41, for macos15 (x86_64)
 --
 -- Host: 127.0.0.1    Database: social_game
 -- ------------------------------------------------------
@@ -16,34 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `character_likes_dislikes`
+-- Table structure for table `user_tasks`
 --
 
-DROP TABLE IF EXISTS `character_likes_dislikes`;
+DROP TABLE IF EXISTS `user_tasks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `character_likes_dislikes` (
+CREATE TABLE `user_tasks` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `character_id` int DEFAULT NULL,
-  `category_id` int DEFAULT NULL,
-  `opinions` enum('like','dislike','love','hate') DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
+  `task_id` int DEFAULT NULL,
+  `status` enum('pending','completed') DEFAULT NULL,
+  `completion_time` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `character_id` (`character_id`),
-  KEY `category_id` (`category_id`),
-  CONSTRAINT `character_likes_dislikes_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `game_characters` (`id`),
-  CONSTRAINT `character_likes_dislikes_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `task_categories` (`id`)
+  KEY `user_id` (`user_id`),
+  KEY `task_id` (`task_id`),
+  CONSTRAINT `user_tasks_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `user_tasks_ibfk_2` FOREIGN KEY (`task_id`) REFERENCES `tasks` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `character_likes_dislikes`
+-- Dumping data for table `user_tasks`
 --
 
-LOCK TABLES `character_likes_dislikes` WRITE;
-/*!40000 ALTER TABLE `character_likes_dislikes` DISABLE KEYS */;
-/*!40000 ALTER TABLE `character_likes_dislikes` ENABLE KEYS */;
+LOCK TABLES `user_tasks` WRITE;
+/*!40000 ALTER TABLE `user_tasks` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_tasks` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-06 18:30:14
+-- Dump completed on 2025-04-07 13:51:59
