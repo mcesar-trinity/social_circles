@@ -1,0 +1,104 @@
+<%- include('./partials/header') %> 
+
+    <body class="home"> 
+        <h1>Dashboard</h1>
+
+        <h2>Your Profile</h2>
+        <!-- Profile editing form -->
+        <form action="/dashboard/edit" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" name="name" value="<%= user.name %>" required><br>
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" value="<%= user.email %>" required><br>
+
+            <label for="bio">Bio:</label>
+            <textarea name="bio" maxlength="255"><%= user.bio %></textarea><br>
+
+            <button type="submit">Update Profile</button>
+        </form>
+
+        <form action="/dashboard/delete" method="POST">
+            <button type="submit">Delete Profile</button>
+        </form>
+
+        <% if (isAdmin) { %>
+            <h2>Admin Section: Manage Tasks</h2>
+            <!-- Form to add a task -->
+            <form action="/dashboard/admin/add-task" method="POST">
+                <label for="taskName">Task Name:</label>
+                <input type="text" name="name" required><br>
+
+                <label for="taskDescription">Task Description:</label>
+                <textarea name="description"></textarea><br>
+
+                <label for="taskCategory">Category:</label>
+                <select name="category_id" required>
+                    <% categories.forEach(category => { %>
+                        <option value="<%= category.id %>"><%= category.name %></option>
+                    <% }); %>
+                </select><br>
+
+                <label for="taskPoints">Points:</label>
+                <input type="number" name="points" min="0"><br>
+
+                <button type="submit">Add Task</button>
+            </form>
+
+            <!-- List of tasks with delete option -->
+            <h3>Existing Tasks</h3>
+            <% tasks.forEach(task => { %>
+                <div>
+                    <p><%= task.name %>: <%= task.description %> (Category: <%= task.category_name %>)</p>
+                    <form action="/dashboard/admin/delete-task" method="POST">
+                        <input type="hidden" name="taskId" value="<%= task.id %>">
+                        <button type="submit">Delete Task</button>
+                    </form>
+                </div>
+            <% }); %>
+
+            <h2>Admin Section: Manage Game Characters</h2>
+            <!-- Form to add a game character -->
+            <form action="/dashboard/admin/add-character" method="POST">
+                <label for="characterName">Character Name:</label>
+                <input type="text" name="name" required><br>
+
+                <label for="characterLoves">Loves:</label>
+                <input type="text" name="loves"><br>
+
+                <label for="characterLikes">Likes:</label>
+                <input type="text" name="likes"><br>
+
+                <label for="characterDislikes">Dislikes:</label>
+                <input type="text" name="dislikes"><br>
+
+                <label for="characterHates">Hates:</label>
+                <input type="text" name="hates"><br>
+
+                <label for="activityDurability">Activity Durability:</label>
+                <input type="number" name="activity_durability" min="0" step="1"><br>
+
+                <label for="happinessScore">Happiness Score:</label>
+                <input type="number" name="happiness_score" min="0" max="100" step="1"><br>
+
+                <button type="submit">Add Character</button>
+            </form>
+
+            <!-- List of game characters with delete option -->
+            <h3>Existing Game Characters</h3>
+            <% gameCharacters.forEach(character => { %>
+                <div>
+                    <p><%= character.name %></p>
+                    <p>Loves: <%= character.loves %>, Likes: <%= character.likes %>, Dislikes: <%= character.dislikes %>, Hates: <%= character.hates %></p>
+                    <p>Activity Durability: <%= character.activity_durability %>, Happiness Score: <%= character.happiness_score %></p>
+                    <form action="/dashboard/admin/delete-character" method="POST">
+                        <input type="hidden" name="characterId" value="<%= character.id %>">
+                        <button type="submit">Delete Character</button>
+                    </form>
+                </div>
+            <% }); %>
+        <% } %>
+
+
+    </body>
+</html>
