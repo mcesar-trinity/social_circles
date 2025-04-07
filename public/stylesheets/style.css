@@ -5,9 +5,9 @@
     flex-direction: column; 
     text-align: center;
     font-weight: bold;
-
     background-color: black;
     color:white;
+    padding: 16px;
 }
 
 body { 
@@ -128,4 +128,46 @@ button div{
 
 .dummy-login-button #login{ 
     background-color: blue;
+}
+
+/*Navigation bar styling*/
+.header-content{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-nav{
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.main-nav ul{
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.main-nav li{
+    padding: 0 24px;
+    text-align: center;
+}
+
+.main-nav a{
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.main-nav a:hover{
+    color: #cb6ce6;
 }
