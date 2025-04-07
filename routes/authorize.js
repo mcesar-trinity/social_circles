@@ -21,13 +21,14 @@ router.get('/login', (req, res) => {
 
 //Register page
 router.get('/register', (req, res) => {
-    if(!req.session.user) {
-        return res.redirect('/authorize/login');
-    }
+    isUser = (req.session.user) ? true : false;
+
     res.render('authorize', { 
         type: 'register',
         webTitle: 'Login | Social Circles',
-        title: 'Welcome to Social Cirlces',});
+        title: 'Welcome to Social Cirlces',
+        isUser: isUser
+    });
 })
 
 //POST register user
