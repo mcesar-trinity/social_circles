@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
         return res.redirect('/authorize/login'); 
     }
 
-    const pageTitle = 'Dashboard | Social Cirlces;'
+    const pageTitle = 'Dashboard | Social Cirlces'
 
 
     // if admin editing
@@ -93,7 +93,7 @@ router.post('/edit', (req, res) => {
     const { name, email, bio } = req.body;
     const userId = req.session.userId;
 
-    db.query('UPDATE users SET name = ?, email = ?, bio = ? WHERE id = ?',
+    db.query('UPDATE users SET username = ?, email = ?, bio = ? WHERE id = ?',
     [name, email, bio, userId], (err, results) => {
         if (err) throw err;
         res.redirect('/dashboard'); //go back to dashboard after update
@@ -129,10 +129,10 @@ router.post('/admin/add-task', (req, res) => {
     });
 });
 
-//admin management editing user
+//admin management editing 
 router.post('/admin/edit-user', (req, res) => {
     const { userId, newName, newEmail } = req.body 
-    db.query('UPDATE users SET name = ?, email = ? WHERE id = ?',
+    db.query('UPDATE users SET username = ?, email = ? WHERE id = ?',
     [newName, newEmail, userId], (err, results) => {
         if(err) throw err;
         res.redirect('/dashboard');
