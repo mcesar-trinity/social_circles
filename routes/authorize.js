@@ -8,10 +8,12 @@ var sess;
 
 //Login page
 router.get('/login', (req, res) => {
+    isUser = (req.session.user) ? true : false;
     res.render('authorize', { 
         type: 'login',
         webTitle: 'Login | Social Circles',
         title: 'Welcome to Social Cirlces',
+        isUser: isUser
     });
 });
 
@@ -52,7 +54,7 @@ router.post('/login', (req, res) => {
         const match = await bcrypt.compare(password, results[0].password_hash);
         if(match){
             req.session.user = { id: results[0].id, username: results[0].username };
-            res.redirect('/dashboard');
+            res.redirect('/');
         } else{
             res.send('Incorrect password');
         }
