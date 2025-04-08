@@ -5,9 +5,9 @@
     flex-direction: column; 
     text-align: center;
     font-weight: bold;
-
     background-color: black;
     color:white;
+    padding: 16px;
 }
 
 html {
@@ -226,4 +226,284 @@ div.leader-section{
     border-color: black;
     border-width: .2em;
     border-radius: .5em;
+
+/*Navigation bar styling*/
+.header-content{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-nav{
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.main-nav ul{
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.main-nav li{
+    padding: 0 24px;
+    text-align: center;
+}
+
+.main-nav a{
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.main-nav a:hover{
+    color: #cb6ce6;
+}
+
+/*Logging in page (authorize.ejs)*/
+
+.auth-container{
+    max-width: 400px;
+    margin: 100px auto;
+    background-color: rgba(255,255,255,0.9);
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.auth-container h2{
+    margin-bottom: 24px;
+    font-size: 28px;
+    color: #333;
+    font-weight: bold;
+}
+
+.auth-container form{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.auth-container input{
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 6x;
+    font-size: 16px;
+    background-color: #f8f8f8;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.auth-container input:focus{
+    border-color: #cb6ce6;
+    box-shadow: 0 0 8px rgba(203, 108, 230, 0.4);
+    outline: none;
+}
+
+.auth-container button{
+    padding: 14px;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #004aad, #cb6ce6);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.auth-container button:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.auth-container p{
+    font-size: 16px;
+    color: #555;
+    margin-top: 16px;
+}
+
+.auth-container a{
+    color: #004aad;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.auth-container a:hover{
+    color:#cb6ce6;
+    text-align: underline;
+}
+
+/*Error message handling*/
+
+.error-message{
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid #ef9a9a;
+}
+
+/*Dashbaord/Profile page styling*/
+
+.dashboard-container{
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: rgba(255,255,255,0.9);
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.dashboard-container h1{
+    text-align: center;
+    color: #333;
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+.dashboard-container h2{
+    color: #004aad;
+    font-size: 24px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #cb6ce6;
+    padding-bottom: 10px;
+}
+
+.dashboard-container h3{
+    color: #333;
+    font-size: 20px;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.profile-section{
+    margin-bottom: 40px;
+}
+
+.profile-view{
+    margin-bottom: 8px;
+}
+
+.form-actions{
+    margin-top: 16px;
+}
+
+.form-group{
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    background-color: #f8f8f8;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: #cb6ce6;
+    box-shadow: 0 0 8px rgba(203, 108, 230, 0.4);
+    outline: none;
+}
+
+.form-group textarea{
+    min-height: 100px;
+    resize: vertical;
+}
+
+/*button on dashboard page styling*/
+
+.btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #004aad, #cb6ce6);
+    color: white;
+}
+
+.btn-danger {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+.btn-secondary{
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/*form styling*/
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+/*task and character list styling --> for admin!*/
+.item-list {
+    margin-top: 20px;
+}
+  
+.item-card {
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+ 
+.item-card p {
+    margin: 8px 0;
+    color: #555;
+}
+  
+.item-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+/*admin section*/
+.admin-section{
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 1px dashed #ccc;
 }

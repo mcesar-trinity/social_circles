@@ -1,104 +1,195 @@
 <%- include('./partials/header') %> 
 
     <body class="home"> 
-        <h1>Dashboard</h1>
+        <div class="dashboard-container">
+            <h1>Dashboard</h1>
+            <section class="profile-section">
+                <h2>Your Profile</h2>
 
-        <h2>Your Profile</h2>
-        <!-- Profile editing form -->
-        <form action="/dashboard/edit" method="POST">
-            <label for="name">Name:</label>
-            <input type="text" name="name" value="<%= user.name %>" required><br>
+                <!-- Read only provile view -->
+                <div id="profile-view">
+                    <p><strong>Name: </strong><%= user.name %></p>
+                    <p><strong>Email: </strong><%= user.email %></p>
+                    <button id="edit-profile-btn" class="btn btn-secondary">Edit Profile</button>
+                </div>
 
-            <label for="email">Email:</label>
-            <input type="email" name="email" value="<%= user.email %>" required><br>
+                <!-- Profile editing form, hidden initially -->
+                <form id="edit-profile-form" action="/dashboard/edit" method="POST" style="display: none;">
+                    <div class="form-group">
+                        <label for="username">Name:</label>
+                        <input type="text" name="name" placeholder="<%= user.username %>" required><br>
 
-            <!-- <label for="profil-pic">Upload Profile Picture:</label>
-            <input type="file" id="profile-pic" name="profile-pic" accept="image/*"> -->
+                        <label for="email">Email:</label>
+                        <input type="email" name="email" placeholder="<%= user.email %>" required><br>
 
-            <button type="submit">Update Profile</button>
-        </form>
+                        <hr>
+                        <h4>Change Password</h4>
+                        <label for="currentPassword">Current Password:</label>
+                        <input type="password" name="currentPassword" placeholder="Enter current password"><br>
 
-        <form action="/dashboard/delete" method="POST">
-            <button type="submit">Delete Profile</button>
-        </form>
+                        <label for="newPassword">New Password:</label>
+                        <input type="password" name="newPassword" placeholder="Enter new password"><br>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                            <button type="button" id="cancel-edit-btn" class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </div>
+                    <!-- <label for="profil-pic">Upload Profile Picture:</label>
+                    <input type="file" id="profile-pic" name="profile-pic" accept="image/*"> -->
 
-        <% if (isAdmin) { %>
-            <h2>Admin Section: Manage Tasks</h2>
-            <!-- Form to add a task -->
-            <form action="/dashboard/admin/add-task" method="POST">
-                <label for="taskName">Task Name:</label>
-                <input type="text" name="name" required><br>
 
-                <label for="taskDescription">Task Description:</label>
-                <textarea name="description"></textarea><br>
+                </form>
 
-                <label for="taskCategory">Category:</label>
-                <select name="category_id" required>
-                    <% categories.forEach(category => { %>
-                        <option value="<%= category.id %>"><%= category.name %></option>
-                    <% }); %>
-                </select><br>
 
-                <label for="taskPoints">Points:</label>
-                <input type="number" name="points" min="0"><br>
+                <div class="form-actions">
+                    <!-- Trigger button -->
+                     <button type="button" class="btn btn-danger" id="deleteAccountBtn" style="margin-right: 10px">
+                        Delete Profile
+                     </button>
 
-                <button type="submit">Add Task</button>
-            </form>
-
-            <!-- List of tasks with delete option -->
-            <h3>Existing Tasks</h3>
-            <% tasks.forEach(task => { %>
-                <div>
-                    <p><%= task.name %>: <%= task.description %> (Category: <%= task.category_name %>)</p>
-                    <form action="/dashboard/admin/delete-task" method="POST">
-                        <input type="hidden" name="taskId" value="<%= task.id %>">
-                        <button type="submit">Delete Task</button>
+                     <!-- Logout button-->
+                    <form action="/dashboard/logout" method="POST">
+                        <button type="submit" class="btn btn-secondary">Logout</button>
                     </form>
                 </div>
-            <% }); %>
 
-            <h2>Admin Section: Manage Game Characters</h2>
-            <!-- Form to add a game character -->
-            <form action="/dashboard/admin/add-character" method="POST">
-                <label for="characterName">Character Name:</label>
-                <input type="text" name="name" required><br>
-
-                <label for="characterLoves">Loves:</label>
-                <input type="text" name="loves"><br>
-
-                <label for="characterLikes">Likes:</label>
-                <input type="text" name="likes"><br>
-
-                <label for="characterDislikes">Dislikes:</label>
-                <input type="text" name="dislikes"><br>
-
-                <label for="characterHates">Hates:</label>
-                <input type="text" name="hates"><br>
-
-                <label for="activityDurability">Activity Durability:</label>
-                <input type="number" name="activity_durability" min="0" step="1"><br>
-
-                <label for="happinessScore">Happiness Score:</label>
-                <input type="number" name="happiness_score" min="0" max="100" step="1"><br>
-
-                <button type="submit">Add Character</button>
-            </form>
-
-            <!-- List of game characters with delete option -->
-            <h3>Existing Game Characters</h3>
-            <% gameCharacters.forEach(character => { %>
-                <div>
-                    <p><%= character.name %></p>
-                    <p>Loves: <%= character.loves %>, Likes: <%= character.likes %>, Dislikes: <%= character.dislikes %>, Hates: <%= character.hates %></p>
-                    <p>Activity Durability: <%= character.activity_durability %>, Happiness Score: <%= character.happiness_score %></p>
-                    <form action="/dashboard/admin/delete-character" method="POST">
-                        <input type="hidden" name="characterId" value="<%= character.id %>">
-                        <button type="submit">Delete Character</button>
-                    </form>
+                <!--Confirmation Modal-->
+                <div id="deleteModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 999;">
+                    <div style="background: white; padding: 20px; border-radius: 10px; text-align: center;">
+                        <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+                        <form action="/dashboard/delete" method="POST"> <!--style="margin-right: 10px"-->
+                            <button type="submit" class="btn btn-danger">Yes, I'm sure.</button>
+                            <button type="button" class="btn btn-secondary" id="cancelDeleteBtn" style="margin-left: 10px;">Cancel</button>
+                        </form>
+                    </div>
                 </div>
-            <% }); %>
-        <% } %>
+            </section>
 
+            <% if (isAdmin) { %>
+                <section class="admin-section">
+                    <h2>Admin Section: Manage Tasks</h2>
 
+                    <!-- Form to add a task -->
+                    <form action="/dashboard/admin/add-task" method="POST">
+                        <div class="form-group">
+                            <label for="taskName">Task Name:</label>
+                            <input type="text" name="username" required><br>
+
+                            <label for="taskDescription">Task Description:</label>
+                            <textarea name="description"></textarea><br>
+
+                            <label for="taskCategory">Category:</label>
+                            <select name="category_id" required>
+                                <% categories.forEach(category => { %>
+                                    <option value="<%= category.id %>"><%= category.name %></option>
+                                <% }); %>
+                            </select><br>
+
+                            <label for="taskPoints">Points:</label>
+                            <input type="number" name="points" min="0"><br>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Add Task</button>
+                        </div>
+                    </form>
+
+                    <!-- List of tasks with delete option -->
+                    <h3>Existing Tasks</h3>
+                    <div class="item-list"></div>
+                        <% tasks.forEach(task => { %>
+                            <div class="itme-card">
+                                <p><strong><%= task.name %></strong>: <%= task.description %></p>
+                                <p>Category: <%= task.category_name %></p>
+                                <div class="item-card-actions">
+                                    <form action="/dashboard/admin/delete-task" method="POST">
+                                        <input type="hidden" name="taskId" value="<%= task.id %>">
+                                        <button type="submit" class="btn btn-danger">Delete Task</button>
+                                    </form>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+
+                    <h2>Admin Section: Manage Game Characters</h2>
+                        <!-- Form to add a game character -->
+                        <form action="/dashboard/admin/add-character" method="POST">
+                            <div class="form-group">
+                                <label for="characterName">Character Name:</label>
+                                <input type="text" name="name" required><br>
+
+                                <label for="characterLoves">Loves:</label>
+                                <input type="text" name="loves"><br>
+
+                                <label for="characterLikes">Likes:</label>
+                                <input type="text" name="likes"><br>
+
+                                <label for="characterDislikes">Dislikes:</label>
+                                <input type="text" name="dislikes"><br>
+
+                                <label for="characterHates">Hates:</label>
+                                <input type="text" name="hates"><br>
+
+                                <label for="activityDurability">Activity Durability:</label>
+                                <input type="number" name="activity_durability" min="0" step="1"><br>
+
+                                <label for="happinessScore">Happiness Score:</label>
+                                <input type="number" name="happiness_score" min="0" max="100" step="1"><br>
+                            </div>
+                            <div clas="form-actions">
+                                <button type="submit" class="btn btn-primary">Add Character</button>
+                            </div>
+                        </form>
+
+                    <!-- List of game characters with delete option -->
+                    <h3>Existing Game Characters</h3>
+                    <div class="item-list">
+                        <% gameCharacters.forEach(character => { %>
+                            <div class="item-card">
+                                <p><%= character.name %></p>
+                                <p>Loves: <%= character.loves %>, Likes: <%= character.likes %></p> 
+                                <p>Dislikes: <%= character.dislikes %>, Hates: <%= character.hates %></p>
+                                <p>Activity Durability: <%= character.activity_durability %>, Happiness Score: <%= character.happiness_score %></p>
+                                <div class="item-card-actions">
+                                    <form action="/dashboard/admin/delete-character" method="POST">
+                                        <input type="hidden" name="characterId" value="<%= character.id %>">
+                                        <button type="submit" class="btn btn-danger">Delete Character</button>
+                                    </form>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                <% } %>
+            </section>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const editBtn = document.getElementById('edit-profile-btn');
+                const cancelBtn = document.getElementById('cancel-edit-btn');
+                const profileView = document.getElementById('profile-view');
+                const editForm = document.getElementById('edit-profile-form');
+        
+                editBtn.addEventListener('click', () => {
+                    profileView.style.display = 'none';
+                    editForm.style.display = 'block';
+                });
+        
+                cancelBtn.addEventListener('click', () => {
+                    editForm.style.display = 'none';
+                    profileView.style.display = 'block';
+                });
+            });
+        </script>
+        <script>
+            const deleteBtn = document.getElementById('deleteAccountBtn');
+            const modal = document.getElementById('deleteModal');
+            const cancelBtn = document.getElementById('cancelDeleteBtn');
+        
+            deleteBtn.addEventListener('click', () => {
+                modal.style.display = 'flex';
+            });
+            cancelBtn.addEventListener('click', () =>{
+                modal.style.display = 'none';
+            });
+        </script>
     </body>
 </html>

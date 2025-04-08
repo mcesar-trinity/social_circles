@@ -2,9 +2,19 @@
 <html> 
     <header class="heading"> 
         <h1><%= title %></h1>
+        <div class="header-content">
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/leaderboard">Leaderboard</a></li>
+                    <li><a href="/game">Play the Game</a></li>
+                    <li><a href="/characters">Character Page</a></li>
+                </ul>
+            </nav>
+        </div>
         <% if(isUser) {%>
             <form action="/dashboard">
-                <button type="submit" class="account-button">PH</button>
+                <button type="submit" class="account-button">Profile</button>
             </form>
         <% } %> 
     </header>
