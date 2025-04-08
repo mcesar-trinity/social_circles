@@ -10,7 +10,12 @@
     padding: 16px;
 }
 
+html {
+    height:100%;
+}
+
 body { 
+    height: 100%;
     background-color: #004aad;
     background-image: linear-gradient(to right, #004aad, #cb6ce6);
 }
@@ -89,46 +94,138 @@ button div{
 
 
     background-color: black;
+    border-radius: 1.5em;
 }
 
 /* .game-options #... to set the colors for each option */
 .game-options #leaderboard{ 
     background-color: red;
     font-size: 1.5em;
+    border-radius: 1.5em;
 }
 
 .game-options #game{ 
     background-color: green;
     font-size: 1.5em;
+    border-radius: 1.5em;
 }
 
 .game-options #character{
     background-color: yellow;
     font-size: 1.5em;
+    border-radius: 1.5em;
 }
 
-
-
-
-
-/* Style for buttons in authorize */
-.dummy-login-button{ 
+.tasks{
     text-align: center;
 }
 
-.dummy-login-button button{ 
-    margin-top: 25%;
+#task-options{
+    width: 80%;
+    font-size: 2em;
 
-    font-size: 30px;
+    text-align: center;
+
+    margin-top: 0.5em;
+    background-color: grey;
 }
 
-.dummy-login-button #logoff{ 
+.info-section{
+    height: 50%;
+    width: 100%;
+    display: flex;
+}
+
+div.character-groups{
+    width: 70%;
+    height: 100%;
+}
+
+h3.score{
+    left:2em;
+}
+
+div.character{
+    display: flex;
+}
+
+div.leader-section{
+    width:30%;
+
+}
+
+.group{ 
+    width: 50%;
+    height: 20%;
+    text-align: left;
+
+    background-color: #38b6ff;
+    border-color: black;
+    border-width: .3em;
+    border-radius: .5em;
+    display:block;
+    position: relative;
+
+    margin: 1.5em;
+}
+
+.group h2{
+   display: block;
+   position:absolute;
+   top:0em;
+}
+
+.group h3{
+    display: block;
+    position:relative;
+    top:1em;
+}
+
+.leaderboard-section{
     background-color: red;
+
+    width: 50%;
+    height: 50%;
+
+    padding: .5em;
+    margin: 1.5em;
+    border-color: black;
+    border-width: .3em;
+    border-radius: .5em;
 }
 
-.dummy-login-button #login{ 
-    background-color: blue;
+.game-to-leaderboard{
+    margin-top: 2em;
+    text-align: center;
 }
+
+#leaderboard{
+    background-color: grey;
+    font-size: 1em;
+
+    border-color: black;
+    border-width: .2em;
+    border-radius: .5em;
+}
+
+.info h2{
+    display: block;
+    position: relative;
+    text-align: center;
+}
+
+.assign-task{
+    position: relative;
+    text-align: center;
+}
+
+#assign-task-button{
+    background-color: grey;
+    font-size: 1.5em;
+
+    border-color: black;
+    border-width: .2em;
+    border-radius: .5em;
 
 /*Navigation bar styling*/
 .header-content{
