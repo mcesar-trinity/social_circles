@@ -151,7 +151,7 @@ router.post('/edit', (req, res) => {
 router.post('/delete', (req, res) => {
     const loggedInUser = req.session.user;
 
-    if(!loggedinUser) return res.redirect('/leaderboard');
+    if(!loggedInUser) return res.redirect('/leaderboard');
 
     const userId = loggedInUser.id;
     

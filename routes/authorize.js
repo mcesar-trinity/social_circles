@@ -59,12 +59,19 @@ router.post('/login', (req, res) => {
     db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
         if (err) {
             console.log('Error querying database:', err);
-            return res.redirect('/authorize/login');
+            return res.redirect('/authorize/login', {
+                error: 'An error occurred. Please try again later.',
+                email: email
+            });
         }
         
+        //no user found for the email
         if (results.length === 0) {
             console.log('User not found');
-            return res.redirect('/authorize/login');
+            return res.redirect('/authorize/login', {
+                error: 'Email not found',
+                email: email // preserve email in the form
+            });
         }
 
         const user = results[0];
@@ -73,7 +80,10 @@ router.post('/login', (req, res) => {
         bcrypt.compare(password, user.password_hash, (err, isMatch) => {
             if (err) {
                 console.log('Error comparing passwords:', err);
-                return res.redirect('/authorize/login');
+                return res.redirect('/authorize/login', {
+                    error: 'An error occurred. Please try again later.',
+                    email: email
+                });
             }
 
             if (isMatch) {
