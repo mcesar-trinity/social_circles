@@ -169,7 +169,18 @@ router.get('/logout', (req, res) => {
         if(err) console.error('Error destroying session:', err);
         return res.status(500).send('Server error during logout');
     });
-    res.redirect('/authorize/login');
+    res.redirect('/');
+});
+
+router.post('/logout', (req, res) => {
+    console.log('Logging out user:', req.session.user);
+    req.session.destroy((err) => {
+        if(err) {
+            console.error('Error destroying session:', err);
+            return res.status(500).send('Server error during logout');
+        }
+        res.redirect('/');
+    });
 });
 
 //ADMIN BELOW

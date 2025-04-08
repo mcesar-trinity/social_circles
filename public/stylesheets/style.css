@@ -248,6 +248,19 @@ button div{
     text-align: underline;
 }
 
+/*Error message handling*/
+
+.error-message{
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid #ef9a9a;
+}
+
 /*Dashbaord/Profile page styling*/
 
 .dashboard-container{
