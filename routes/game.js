@@ -27,7 +27,9 @@ function getRandomTask(limit){
     var counter = 0; 
 
     while(counter != 5){
+        console.log(counter);
         var idNum = Math.floor((Math.random() * parseInt(limit) + 1)); 
+        console.log("Number: " + idNum);
         if(tasks.includes(idNum)){
         }else{
             tasks[counter] = idNum;

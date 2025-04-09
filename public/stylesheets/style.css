@@ -219,7 +219,7 @@ div.leader-section{
     text-align: center;
 }
 
-#assign-task-button{
+.assign-task-button{
     background-color: grey;
     font-size: 1.5em;
 
@@ -227,6 +227,7 @@ div.leader-section{
     border-width: .2em;
     border-radius: .5em;
 
+}
 /*Navigation bar styling*/
 .header-content{
     width: 100%;
