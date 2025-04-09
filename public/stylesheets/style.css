@@ -116,6 +116,10 @@ button div{
     border-radius: 1.5em;
 }
 
+form{
+    height: 50%;
+}
+
 .tasks{
     text-align: center;
 }
@@ -131,7 +135,7 @@ button div{
 }
 
 .info-section{
-    height: 50%;
+    height: 100%;
     width: 100%;
     display: flex;
 }
@@ -167,6 +171,10 @@ div.leader-section{
     position: relative;
 
     margin: 1.5em;
+}
+
+.group:hover{
+    background-color: greenyellow;
 }
 
 .group h2{

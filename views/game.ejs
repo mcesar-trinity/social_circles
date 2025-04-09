@@ -1,51 +1,86 @@
 <%- include('./partials/header') %>
 
-    <body>
-        <div class="tasks"> 
-            <select name="task-options" id="task-options">
-                <% tasks.forEach((task) => { %>
-                    <option value=" <%=task%> "><%=task%></option>
-                <% }) %> 
-            </select>
-        </div>
+    <script>
+        function submit(){
+            console.log("Submmited")
+            document.getElementById("gameForm").submit;
+        }
 
-        <div class="info-section">
-            <div class="character-groups">
-                <% for(var x = 1; x < 4; x++) { %>
-                    <button class="group">
-                        <h2>Group #<%=x%>:</h2>
-
-                        <% for(var y = 0; y < characterGroups[0].length; y++) { %>
-                            <div class="character">
-                                <h3 class="name"><%=characterGroups[x-1][y].name%></h3>
-                                <h3 class="score"><%=characterGroups[x-1][y].happiness_score%></h3>
-                            </div>
-                        <% } %>
-                    </button>
-                <% } %>
-            </div>
+        function selectedButton(id){
+            const element = id;
+            const buttonGroup = document.getElementsByClassName("group");
             
-            <div class="leaderboard-section">
-                <div class="info"> 
-                    <h2>Top 5 Player</h2>
-                    <h3>Placeholder</h3>
+            console.log(element);
+
+            for(let i = 0; i < buttonGroup.length; i++ ) {
+                console.log(buttonGroup[i].id);
+                if(buttonGroup[i].id == element){
+                    buttonGroup[i].style.backgroundColor = "gold";
+                }else{
+                    buttonGroup[i].style.backgroundColor = "#38b6ff";
+                }
+            }
+        }
+
+        function hover(id){
+            const button = document.getElementById(id);
+            button.style.backgroundColor = "greenyellow";
+        }
+
+        function noHover(id){
+            const button = document.getElementById(id);
+            button.style.backgroupColor = "red";
+            console.log("Out");
+        }
+    </script>
+
+    <body>
+        <form name="gameForm" action="/game" method="post" id="gameForm">
+            <div class="tasks">
+                <select name="task" id="task-options">
+                    <% tasks.forEach((task) => { %>
+                        <option value=" <%=task%> "><%=task%></option>
+                    <% }) %> 
+                </select>
+            </div>
+
+            <div class="info-section"> 
+                <div class="character-groups">
+                    <% for(var x = 1; x < 4; x++) { %>
+                        <button type="button" id="<%=x%> name="group-<%=x%>" value="false" class="group"  onmouseout="noHover(this.id)"
+                            onmouseover="hover(this.id)" onclick="selectedButton(this.id)">
+                            <h2>Group #<%=x%>:</h2>
+
+                            <% for(var y = 0; y < characterGroups[0].length; y++) { %>
+                                <div class="character">
+                                    <h3 class="name"><%=characterGroups[x-1][y].name%></h3>
+                                    <h3 class="score"><%=characterGroups[x-1][y].happiness_score%></h3>
+                                </div>
+                            <% } %>
+                        </button>
+                    <% } %> 
+
+                    <input type="hidden" value="" onsubmit="getSelectedButton()">
                 </div>
 
-                <div class="game-to-leaderboard">
-                    <form action="/leaderboard">
-                        <button type="submit" id="leaderboard" name="option" value="Leaderboard">Leaderboard</button>
-                    </form>
+                <div class="leaderboard-section">
+                    <div class="info"> 
+                        <h2>Top 5 Player</h2>
+                        <h3>Placeholder</h3>
+                    </div>
+
+                    <div class="game-to-leaderboard">
+                            <button type="submit" id="leaderboard" name="option" value="Leaderboard" onclick="window.location=`/leaderboard`; return false;">Leaderboard</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        
 
+            <div class="assign-task">
+                <button class="submit" type="submit" id="assign-task-button" value="Assign Tasks">Assign Task</button>
+            </div>
 
-        <div class="assign-task">
-            <form action="/game">
-                <button type="submit" id="assign-task-button" value="assign-task">Assign Task</button>
-            </form>
-        </div>
-
+        </form>
     </body>
 
 </html>
