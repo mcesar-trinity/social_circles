@@ -25,6 +25,7 @@
                 console.log(buttonGroup[i].id);
                 if(buttonGroup[i].id == element){
                     buttonGroup[i].style.backgroundColor = "gold";
+                    document.getElementsByName("selected-group").value(getCharacter(buttonGroup[i]));
                 }else{
                     buttonGroup[i].style.backgroundColor = "#38b6ff";
                 }
@@ -49,6 +50,19 @@
                     }
                 }
             }
+
+            function noHover(id){
+                const element = id;
+                const buttonGroup = document.getElementsByClassName("group");
+                
+                for(let i = 0; i < buttonGroup.length; i++) {
+                    if(buttonGroup[i].id == element){
+                        if(buttonGroup[i].style.backgroundColor != "gold"){
+                        buttonGroup[i].style.backgroundColor = "#38b6ff";
+                        }
+                    }
+                }
+            }
         }
 
     </script>
@@ -66,7 +80,7 @@
             <div class="info-section"> 
                 <div class="character-groups">
                     <% for(var x = 1; x < 4; x++) { %>
-                        <button type="button" id="<%=x%> name="group-<%=x%>" value="getName(<%=x%>);" class="group" 
+                        <button type="button" id="<%=x%> name="group-<%=x%>" value="getName(<%=x%>);" class="group" onmouseout="noHover(this.id)";
                             onmouseover="hover(this.id)" onclick="selectedButton(this.id)">
                             <h2>Group #<%=x%>:</h2>
 
@@ -79,7 +93,7 @@
                         </button>
                     <% } %> 
 
-                    <input type="hidden" value="" onsubmit="getSelectedButton()">
+                    <input type="hidden" name="selected-group" value="">
                 </div>
 
                 <div class="leaderboard-section">
