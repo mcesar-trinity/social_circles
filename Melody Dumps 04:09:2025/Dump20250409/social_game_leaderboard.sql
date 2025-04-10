@@ -16,36 +16,32 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `users`
+-- Table structure for table `leaderboard`
 --
 
-DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `leaderboard`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `users` (
+CREATE TABLE `leaderboard` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password_hash` varchar(255) NOT NULL,
-  `profile_picture` varchar(255) DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
+  `high_score` int DEFAULT '0',
+  `user_rank` int DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `role` enum('user','admin') DEFAULT 'user',
-  `bio` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `leaderboard_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `users`
+-- Dumping data for table `leaderboard`
 --
 
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'malea_bea','mlc.enge@gmail.com','$2b$10$2J7ysDWC1Ctf79X1fGSM2uhfJd3BzQYODcP0CO9gkOwwttpe3O6RC',NULL,'2025-04-06 21:42:47','2025-04-06 21:42:47','user',NULL),(4,'malea!','malea.cesar26@gmail.com','$2b$10$9dJLCVxwtxwzcDotj5.MqeIEzkbvzzFCo.Oq2vMq1.iAwRnXn9aTq',NULL,'2025-04-06 22:50:31','2025-04-06 22:50:31','user',NULL),(5,'shadow','pikmin@gmail.com','$2b$10$J1pLcz7yocjUvnAgJSmJFOJDWTbbp1RTe22NfiZIizb3lbmdxGFoO',NULL,'2025-04-07 18:42:04','2025-04-07 18:42:04','user',NULL);
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+LOCK TABLES `leaderboard` WRITE;
+/*!40000 ALTER TABLE `leaderboard` DISABLE KEYS */;
+/*!40000 ALTER TABLE `leaderboard` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -57,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-07 13:51:59
+-- Dump completed on 2025-04-09 19:50:05
