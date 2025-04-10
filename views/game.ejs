@@ -25,11 +25,41 @@
                 console.log(buttonGroup[i].id);
                 if(buttonGroup[i].id == element){
                     buttonGroup[i].style.backgroundColor = "gold";
-                    document.getElementsByName("selected-group").value(getCharacter(buttonGroup[i]));
+                    document.getElementsByName('selected-group').value=getCharacter(buttonGroup[i]);
+                    console.log(document.getElementsByName('selected-group').value);
                 }else{
                     buttonGroup[i].style.backgroundColor = "#38b6ff";
                 }
             }
+        }
+
+        function getSelectedButton(){
+            const buttonGroup = document.getElementsByClassName("group");
+            var submit = false;
+
+            for(let i = 0; i < buttonGroup.length; i++) {
+                if(buttonGroup[i].style.backgroundColor === "gold"){
+                    document.gameForm.selectedGroup.value = getCharacter(buttonGroup[i]);
+                    sumbit = true;
+                    break;
+                }
+            }
+
+            return submit;
+        }
+
+
+        function getCharacter(button){
+            const element = button.getElementsByClassName("name");
+            var text = "";
+
+            for(let i = 0; i < element.length; i++){
+                text += element[i].innerText;
+            }
+
+            console.log(text);
+
+            return text;
         }
 
         function hover(id){
@@ -50,25 +80,12 @@
                     }
                 }
             }
-
-            function noHover(id){
-                const element = id;
-                const buttonGroup = document.getElementsByClassName("group");
-                
-                for(let i = 0; i < buttonGroup.length; i++) {
-                    if(buttonGroup[i].id == element){
-                        if(buttonGroup[i].style.backgroundColor != "gold"){
-                        buttonGroup[i].style.backgroundColor = "#38b6ff";
-                        }
-                    }
-                }
-            }
         }
 
     </script>
 
     <body>
-        <form name="gameForm" action="/game" method="post" id="gameForm">
+        <form name="gameForm" action="/game" method="post" id="gameForm" onsubmit="getSelectedButton()">
             <div class="tasks">
                 <select name="task" id="task-options">
                     <% tasks.forEach((task) => { %>
@@ -80,30 +97,35 @@
             <div class="info-section"> 
                 <div class="character-groups">
                     <% for(var x = 1; x < 4; x++) { %>
-                        <button type="button" id="<%=x%> name="group-<%=x%>" value="getName(<%=x%>);" class="group" onmouseout="noHover(this.id)";
-                            onmouseover="hover(this.id)" onclick="selectedButton(this.id)">
+                        <button type="button" id="<%=x%> name="group-<%=x%>" value="getName(<%=x%>);" class="group" onmouseover="hover(this.id);" onclick="selectedButton(this.id)">
                             <h2>Group #<%=x%>:</h2>
 
                             <% for(var y = 0; y < characterGroups[0].length; y++) { %>
                                 <div class="character">
                                     <h3 class="name"><%=characterGroups[x-1][y].name%></h3>
-                                    <h3 class="score"><%=characterGroups[x-1][y].happiness_score%></h3>
+                                    <h3 class="score">H: <%=characterGroups[x-1][y].happiness_score%></h3>
+                                    <h3 class="score">D: <%=characterGroups[x-1][y].durability_score%></h3>
                                 </div>
                             <% } %>
                         </button>
                     <% } %> 
 
-                    <input type="hidden" name="selected-group" value="">
+                    <input type="hidden" name="selectedGroup" id="selected-group">
                 </div>
-
-                <div class="leaderboard-section">
-                    <div class="info"> 
-                        <h2>Top 5 Player</h2>
-                        <h3>Placeholder</h3>
+                <div class="leaderboard-player">
+                    <div class="player-happiness">
+                        <h2>Player Happiness: <%=userData[0].happiness_score%></h2>
                     </div>
 
-                    <div class="game-to-leaderboard">
-                            <button type="submit" id="leaderboard" name="option" value="Leaderboard" onclick="window.location=`/leaderboard`; return false;">Leaderboard</button>
+                    <div class="leaderboard-section">
+                        <div class="info"> 
+                            <h2>Top 5 Player</h2>
+                            <h3>Placeholder</h3>
+                        </div>
+
+                        <div class="game-to-leaderboard">
+                                <button type="submit" id="leaderboard" name="option" value="Leaderboard" onclick="window.location=`/leaderboard`; return false;">Leaderboard</button>
+                        </div>
                     </div>
                 </div>
             </div>
