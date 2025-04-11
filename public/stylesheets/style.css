@@ -253,7 +253,7 @@ div.leader-section{
     text-align: center;
 }
 
-.assign-task-button{
+#assign-task-button{
     background-color: grey;
     font-size: 1.5em;
 
