@@ -824,13 +824,8 @@ body {
 }
 body {
     margin: 0;
-    overflow: hidden;
+    overflow: auto;
     background: black;
-}
-body {
-    margin: 0;
-    background: black;
-    overflow: hidden;
 }
 
 /* Container for stars */
