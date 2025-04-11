@@ -685,7 +685,7 @@ body {
     height: 5px;
     background: white;
     border-radius: 50%;
-    animation: twinkle 3s infinite ease-in-out;
+    animation: twinkle 1ms infinite ease-in-out;
     opacity: 0.8;
     box-shadow: 0 0 6px;
 }
