@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
 
     // if admin editing
     if (user.role === 'admin') {
-        db.query('SELECT tasks.*, task_categories.name AS category_name FROM tasks JOIN task_categories ON tasks_category_id = task_categories.id', (err, tasks) => {
+        db.query('SELECT tasks.*, task_categories.name AS category_name FROM tasks JOIN task_categories ON tasks.category_id = task_categories.id', (err, tasks) => {
             if (err) throw err;
 
             db.query('SELECT * FROM game_characters', (err, gameCharacters) => {
@@ -169,7 +169,18 @@ router.get('/logout', (req, res) => {
         if(err) console.error('Error destroying session:', err);
         return res.status(500).send('Server error during logout');
     });
-    res.redirect('/authorize/login');
+    res.redirect('/');
+});
+
+router.post('/logout', (req, res) => {
+    console.log('Logging out user:', req.session.user);
+    req.session.destroy((err) => {
+        if(err) {
+            console.error('Error destroying session:', err);
+            return res.status(500).send('Server error during logout');
+        }
+        res.redirect('/');
+    });
 });
 
 //ADMIN BELOW

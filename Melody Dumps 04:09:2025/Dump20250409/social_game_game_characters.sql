@@ -16,34 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `character_likes_dislikes`
+-- Table structure for table `game_characters`
 --
 
-DROP TABLE IF EXISTS `character_likes_dislikes`;
+DROP TABLE IF EXISTS `game_characters`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `character_likes_dislikes` (
+CREATE TABLE `game_characters` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `character_id` int DEFAULT NULL,
-  `category_id` int DEFAULT NULL,
-  `opinions` enum('like','dislike','love','hate') DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `loves` varchar(255) NOT NULL,
+  `likes` varchar(255) NOT NULL,
+  `dislikes` varchar(255) NOT NULL,
+  `hates` varchar(255) NOT NULL,
+  `activity_durability` int NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `character_id` (`character_id`),
-  KEY `category_id` (`category_id`),
-  CONSTRAINT `character_likes_dislikes_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `game_characters` (`id`),
-  CONSTRAINT `character_likes_dislikes_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `task_categories` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `npc_picture` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `character_likes_dislikes`
+-- Dumping data for table `game_characters`
 --
 
-LOCK TABLES `character_likes_dislikes` WRITE;
-/*!40000 ALTER TABLE `character_likes_dislikes` DISABLE KEYS */;
-/*!40000 ALTER TABLE `character_likes_dislikes` ENABLE KEYS */;
+LOCK TABLES `game_characters` WRITE;
+/*!40000 ALTER TABLE `game_characters` DISABLE KEYS */;
+INSERT INTO `game_characters` VALUES (1,'Krypton','playing video games','playing sports','cooking/baking','reading',5,'2025-04-08 22:39:23','2025-04-08 22:39:23','Krypton.png'),(2,'Thalion','reading','celebrating holidays','watching sports','learning something new',6,'2025-04-08 22:39:23','2025-04-08 22:39:23','Thalion.png'),(3,'Elliot','listening to music','learning something new','reading','playing video games',4,'2025-04-08 22:39:23','2025-04-08 22:39:23','Elliot.png');
+/*!40000 ALTER TABLE `game_characters` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-07 13:51:59
+-- Dump completed on 2025-04-09 19:50:06

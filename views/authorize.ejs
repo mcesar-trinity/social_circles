@@ -3,11 +3,22 @@
     <body class="home"> 
        <div class="auth-container">
             <h2><%= type === 'login' ? 'Login to your account' : 'Create an account' %></h2>
+
+            <!-- error message display -->
+             <% if(locals.error) { %> 
+                <div class ="error-message">
+                    <%= error %>
+                </div>
+            <% } %>
+
+
             <form action="/authorize/<%= type %>" method="POST">
                 <% if (type === 'register') { %>
                     <input type="text" name="username" placeholder="Username" required />
                 <% } %>
-                <input type="email" name="email" placeholder="Email" required />
+
+                <!-- preserve email if provided -->
+                <input type="email" name="email" placeholder="Email" value="<%= locals.email || ''%>" required />
                 <input type="password" name="password" placeholder="Password" required />
                 <button type="submit">
                     <%= type === 'login' ? 'Login' : 'Register' %>
