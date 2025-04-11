@@ -1,6 +1,6 @@
 /*Styles the heading and body background for each page */
 .heading { 
-    font: 10px; 
+    font: 10px Arial, sans-serif; 
     display: flex; 
     flex-direction: column; 
     text-align: center;
@@ -10,9 +10,11 @@
     padding: 16px;
 }
 
-body { 
-    background-color: #004aad;
-    background-image: linear-gradient(to right, #004aad, #cb6ce6);
+body.home { 
+    height: 100%;
+    border-width: 0px;
+    background-color: #242124;
+    background-image: linear-gradient(to right, #242124, #003366);
 }
 
 .account-button{
@@ -57,8 +59,8 @@ Styles the login buttons on the dummy login page*/
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-
     margin-top: 7em;
+    
 }
 
 /*Set size and position of the three options*/
@@ -93,17 +95,17 @@ button div{
 
 /* .game-options #... to set the colors for each option */
 .game-options #leaderboard{ 
-    background-color: red;
+    background-color: #8B0000;
     font-size: 1.5em;
 }
 
 .game-options #game{ 
-    background-color: green;
+    background-color: #1B3A1A;
     font-size: 1.5em;
 }
 
 .game-options #character{
-    background-color: yellow;
+    background-color: #FBC02D;
     font-size: 1.5em;
 }
 
@@ -397,3 +399,299 @@ button div{
     padding-top: 40px;
     border-top: 1px dashed #ccc;
 }
+/* Character Page */
+body.character-page {
+    color: white; /* Default text color */
+    font-family: Arial, sans-serif; /* Font for the page */
+    line-height: 1.6; /* Improve readability */
+    margin: 0; /* Remove default margins */
+    padding: 20px; /* Add some padding */
+    background-color: black; /* Black background color for the page */
+    border: 5px solid; /* Border will be set dynamically */
+}
+
+.character-descriptions{
+    width: 100%;
+}
+
+
+/* Header Styling */
+.character-header {
+    padding: 20px;
+    text-align: center;
+    color: white; /*  text font */
+}
+
+/* Character Container */
+.character-container {
+    display: flex; /* Flex layout for alignment */
+    align-items: flex-start; /* Align items at the top */
+    margin: 20px;
+}
+
+/* Character Icon */
+.view-character-icon img {
+    width: 80px;
+    height: auto;
+    border-radius: 0;
+    background-color: transparent;
+    padding: 0;
+    box-shadow: none;
+
+    position: absolute;
+    top: 2em;
+    left: 2em;
+  }
+
+/*Character Info*/
+.character-info{
+    text-align: left;
+}
+
+/* Scores Box */
+.scores-box {
+    width:70%;
+    color: black; /* Text color for scores */
+    padding: 15px;
+    border-radius: 10px;
+    margin-left: 1em; /* Align to the left */
+    position: relative; /* Allow absolute positioning */
+}
+
+/* Description Box */
+.description-box {
+    background-color: grey; /* Default description box color */
+    color: black; /* Text color for description */
+    margin: 20px auto; /* Center the box with auto margin */
+    padding: 15px;
+    border: none; /* No edges */
+    width: 80%; /* Set width for centering */
+}
+
+/* Tasks Container */
+.tasks-container {
+    margin-top: 20px; /* Space above tasks */
+    border: 2px solid grey; /* Border color for tasks box */
+    display: flex; /* Flex layout for alignment */
+    align-items: flex-start; /* Align items at the top */
+    padding: 10px;
+    background-color: transparent; /* Keep background transparent */
+}
+
+/* Tasks Columns */
+.tasks-columns {
+    display: flex; /* Flex layout for columns */
+    justify-content: space-between; /* Evenly space columns */
+}
+
+/* Task List Styles */
+.tasks-columns div {
+    flex: 1; /* Allow equal width for each column */
+    margin: 0 10px; /* Space between columns */
+}
+
+.tasks-container ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+}
+
+.tasks-container li {
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Heading Styles */
+h3, h4 {
+    color: #FFD700; /* Gold color for headings */
+    margin-top: 20px; /* Space above headings */
+}
+
+/* Close Button */
+.close-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: grey; /* Close button background */
+    color: white; /* Close button text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Change cursor on hover */
+}
+
+/* dropdown character information 
+   /* Form */
+   #characterForm{
+    text-align: center;
+   }
+
+   .selectCharacter{
+    text-align: center;
+   }
+
+  /* Dropdown Container */
+  .dropdown-container {
+    display: inline-block;
+    position: relative;
+    margin-bottom: 30px;
+  }
+  
+  select {
+    background-color: #5E17EB; /* Violet */
+    color: white;
+    font-weight: bold;
+    padding: 12px 18px;
+    border: 3px solid #5271FF; /* Royal Blue border */
+    border-radius: 0; /* Square corners like mockup */
+    font-size: 1rem;
+    appearance: none;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .dropdown-container::after {
+    content: '▾';
+    color: white;
+    background-color: #5271FF; /* Royal Blue */
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 5px 10px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    border-left: 3px solid #5E17EB;
+  }
+  
+  /* View Button */
+  .view-btn {
+    background-color: #5E17EB; /* Violet */
+    color: white;
+    font-weight: bold;
+    padding: 15px 25px;
+    margin-left: 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    box-shadow: 4px 4px 0 #5271FF; /* Royal Blue drop shadow */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .view-btn:focus,
+  select:focus {
+    outline: 3px solid #5E17EB;
+    outline-offset: 2px;
+  }
+  
+  .view-btn:hover {
+    transform: scale(1.05);
+  }
+  
+  select:hover {
+    background-color: #6c2be6;
+  }
+  
+  /* Grid Box */
+  .character-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    background-color: #5E17EB; /* Violet */
+    border: 4px solid #5271FF; /* Royal Blue border */
+    padding: 30px;
+    width: fit-content;
+    margin: 0 auto;
+    border-radius: 0; /* Match mockup's sharp corners */
+  }
+  
+  /* Character Icons */
+  .character-icon img {
+    max-width: 100%;
+    border-radius: 10px;
+    width: 80px;
+    height: auto;
+    border-radius: 0;
+    background-color: transparent;
+    padding: 0;
+    box-shadow: none;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .character-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .character-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .close-button {
+    display: block;
+    margin: 2em auto 1em auto;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #004aad, #cb6ce6); /* Matches your color scheme */
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.close-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+body {
+    background-color: black;
+    background-image: 
+        radial-gradient(white 1px, transparent 1px),
+        radial-gradient(white 1px, transparent 1px);
+    background-size: 100px 100px;
+    background-position: 0 0, 50px 50px;
+    color: white; /* Optional: make text white if it’s black */
+}
+body {
+    margin: 0;
+    overflow: hidden;
+    background: black;
+}
+body {
+    margin: 0;
+    background: black;
+    overflow: hidden;
+}
+
+/* Container for stars */
+.star-field {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Single star style */
+.star {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite ease-in-out;
+    opacity: 0.8;
+    box-shadow: 0 0 6px;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 0.2; }
+}
+

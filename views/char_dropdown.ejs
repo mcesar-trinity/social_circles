@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Select a Character</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <style>
+        .character-icon {
+            text-align: center; /* Center the text below the icon */
+            margin: 10px; /* Add some space around each icon */
+        }
+
+        .character-name {
+            color: white; /* Set the font color to white */
+            margin-top: 5px; /* Space between the icon and the name */
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="selectCharacter">Select a Character</h1>
+
+    <div>
+        <form name="characterForm" action="/character/viewCharacter" method="post" id="characterForm"> 
+            <div class="dropdown-container">
+                <select name="characters" id="characters">
+                    <option value="Molly">Molly</option>
+                    <option value="Jeepers Creepers">Jeepers Creepers</option>
+                    <option value="Krypton">Krypton</option>
+                    <option value="Dumbo">Dumbo</option>
+                    <option value="Virgil">Virgil</option>
+                    <option value="Zombozo">Zombozo</option>
+                    <option value="Elliot">Elliot</option>
+                    <option value="Kingston">Kingston</option>
+                    <option value="Thalion">Thalion</option>
+                    <!-- Add more character options here -->
+                </select>
+            </div>
+            <button class="view-btn" type="submit" value="View Character">View Character</button>
+        </form>
+    </div>
+
+    <div class="character-grid">
+        <div class="character-icon">
+            <img src="/images/Molly.png" alt="Molly" />
+            <div class="character-name">Molly</div>
+        </div>
+        <div class="character-icon">
+            <img src="/images/Jeepers Creepers.png" alt="Jeepers Creepers" />
+            <div class="character-name">Jeepers Creepers</div>
+        </div>
+        <div class="character-icon">
+            <img src="/images/Krypton.png" alt="Krypton" />
+            <div class="character-name">Krypton</div>
+        </div>
+        <div class="character-icon">
+            <img src="/images/Dumbo.png" alt="Dumbo" />
+            <div class="character-name">Dumbo</div>
+        </div>
+        <div class="character-icon">
+            <img src="/images/Virgil.png" alt="Virgil" />
+            <div class="character-name">Virgil</div>
+        </div>
+        <div class="character-icon">
+            <img src="/images/Zombozo.png" alt="Zombozo" />
+            <div class="character-name">Zombozo</div>
+        </div>
+        <div class="character-icon">
+            <img src="/images/Elliot.png" alt="Elliot" />
+            <div class="character-name">Elliot</div>
+        </div>
+        <div class="character-icon">
+            <img src="/images/Kingston.png" alt="Kingston" />
+            <div class="character-name">Kingston</div>
+        </div>
+        <div class="character-icon">
+            <img src="/images/Thalion.png" alt="Thalion" />
+            <div class="character-name">Thalion</div>
+        </div>
+    </div>
+
+    <script>
+        function viewCharacter() {
+            const selected = document.getElementById('characters').value;
+
+            // Send a POST request to the viewCharacter route
+            fetch('/character/viewCharacter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ character: selected }) // Use 'selected' here
+            }).then(response => {
+                if (response.ok) {
+                    // Redirect to the character detail page
+                    window.location.href = response.url; // Redirect based on response
+                } else {
+                    console.error('Error:', response.statusText);
+                }
+            }).catch(err => console.error('Fetch error:', err));
+        }
+    </script>
+    <form action="/">
+    <button type="submit" class="close-button">Back to Home</button>
+    </form>
+   
+    <div class="star-field" id="stars"></div>
+    <script>
+        const starField = document.getElementById('stars');
+        const numStars = 50; // Adjust for more/less stars
+
+        for (let i = 0; i < numStars; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.animationDuration = `${1.5 + Math.random() * 3}s`;
+            starField.appendChild(star);
+        }
+    </script>
+</body>
+</html>
