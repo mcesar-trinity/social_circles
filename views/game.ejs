@@ -84,9 +84,9 @@
 
     </script>
 
-    <body>
+    <body class="home">
         <form name="gameForm" action="/game" method="post" id="gameForm" onsubmit="getSelectedButton()">
-            <div class="tasks">
+            <div class="tasks-game">
                 <select name="task" id="task-options">
                     <% tasks.forEach((task) => { %>
                         <option value=" <%=task%> "><%=task%></option>
