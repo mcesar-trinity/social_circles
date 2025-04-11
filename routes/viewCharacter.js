@@ -7,7 +7,7 @@ const db = require('../db'); // import database connection if needed (currently 
 // Helper function to fetch tasks based on category ID
 function fetchTasksByCategory(categoryId) {
     return new Promise((resolve, reject) => {
-        db.query(`SELECT * FROM task_categories WHERE category_id = ?`, [categoryId], (err, taskList) => {
+        db.query(`SELECT * FROM tasks WHERE category_id = ?`, [categoryId], (err, taskList) => {
             if (err) {
                 return reject(err);
             }
