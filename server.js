@@ -20,9 +20,10 @@ app.use(sessions( {
 const home = require('./routes/home.js');
 const authorize = require('./routes/authorize.js');
 const dashboard = require('./routes/dashboard.js');
-const characters = require('./routes/characters.js');
+const char_dropdown = require('./routes/char_dropdown.js')
 const game = require('./routes/game.js');
 const leaderboard = require('./routes/leaderboard.js');
+const viewCharacter = require('./routes/viewCharacter.js');
 
 //view engine setup
 app.set('view engine', 'ejs');
@@ -43,13 +44,16 @@ app.get('/authorize', (req, res) => {
     res.redirect('/authorize/login');
 })
 
+
+
 //Use Routes
 app.use('/', home);
 app.use('/authorize', authorize);
 app.use('/dashboard', dashboard);
-app.use('/characters', characters);
+app.use('/char_dropdown', char_dropdown); // Ensure this route is properly used
 app.use('/game', game);
 app.use('/leaderboard', leaderboard);
+app.use('/character/viewCharacter', viewCharacter);
 
 app.use((req, res, next) => {
     console.log('[$new Date().toISOString()}] ${req.method} ${req.url}');
