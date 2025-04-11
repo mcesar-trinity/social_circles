@@ -183,7 +183,6 @@ router.post("/", (req, res) => {
 
             let updateUserHap = `update users set happiness_score = ` + db.escape(Math.round(totalHappiness / userCount)) 
             + ` where id = ` + db.escape(req.session.user.id);
-
             
             db.query(updateUserHap, (userHapErr, userHapResult) => {
                 if(userHapErr) throw userHapErr;
