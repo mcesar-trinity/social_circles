@@ -16,14 +16,6 @@ app.use(sessions( {
     cookie: {}
 }));
 
-//Import Routes
-const home = require('./routes/home.js');
-const authorize = require('./routes/authorize.js');
-const dashboard = require('./routes/dashboard.js');
-const char_dropdown = require('./routes/char_dropdown.js')
-const game = require('./routes/game.js');
-const leaderboard = require('./routes/leaderboard.js');
-const viewCharacter = require('./routes/viewCharacter.js');
 
 //view engine setup
 app.set('view engine', 'ejs');
@@ -38,6 +30,24 @@ app.use(session({
     saveUninitialized: false,
     cookie: { secure: false}
 }));
+
+// After setting up sessions
+app.use((req, res, next) => {
+    res.locals.user = req.session.user || null;
+    res.locals.isUser = !!req.session.user;
+    next();
+});
+
+
+//Import Routes
+const home = require('./routes/home.js');
+const authorize = require('./routes/authorize.js');
+const dashboard = require('./routes/dashboard.js');
+const char_dropdown = require('./routes/char_dropdown.js')
+const game = require('./routes/game.js');
+const leaderboard = require('./routes/leaderboard.js');
+const viewCharacter = require('./routes/viewCharacter.js');
+
 
 //redirecting authorize to authorize login
 app.get('/authorize', (req, res) => {
