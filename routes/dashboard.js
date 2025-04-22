@@ -20,14 +20,16 @@ router.get('/', (req, res) => {
 
     const userId = user.id;
     const pageTitle = 'Dashboard | Social Cirlces'
-    const getUserHappiness = 'SELECT SUM(happiness_score) AS total_score FROM user_character_score WHERE user_id=?';
+    const getUserScore = 'SELECT max_happiness_score FROM users WHERE id = ?';
 
-    db.query(getUserHappiness, [userId], (err, result) => {
-        if(err) {
-            console.error('Error fetching happiness score:', err);
+    db.query(getUserScore, [userId], (err, result) => {
+        if (err) {
+            console.error('Error fetching user score:', err);
             return res.status(500).send('Server error');
         }
-        const happinessScore = result[0].total_score || 0;
+
+        const happinessScore = result[0]?.max_happiness_score || 0;
+
 
         // if admin editing
         if (user.role === 'admin') {
