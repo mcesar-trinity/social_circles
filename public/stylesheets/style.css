@@ -452,10 +452,12 @@ div.leader-section{
 
 .profile-section{
     margin-bottom: 40px;
+    color: #333;
 }
 
 .profile-view{
     margin-bottom: 8px;
+    color: #333;
 }
 
 .form-actions{

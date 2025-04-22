@@ -12,7 +12,7 @@ router.get('/login', (req, res) => {
     console.log('GET /authorize/login');
     res.render('authorize', { 
         type: 'login',
-        webTitle: 'Login | Social Circles',
+        webTitle: 'Login | Social Circles', 
         title: 'Welcome to Social Cirlces',
         isUser: isUser
     });
@@ -36,6 +36,121 @@ router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
 
     try {
+        // Check if the username or email is already in use
+        const checkQuery = 'SELECT * FROM users WHERE username = ? OR email = ?';
+        db.query(checkQuery, [username, email], async (err, results) => {
+            if (err) {
+                console.error('Error checking existing user:', err);
+                return res.render('authorize', {
+                    type: 'register',
+                    error: 'An error occurred while checking your information. Please try again later.',
+                    isUser: false,
+                    webTitle: 'Register | Social Circles',
+                    title: 'Welcome to Social Circles',
+                    username,
+                    email
+                });
+            }
+
+            if (results.length > 0) {
+                const existingUser = results[0];
+                let errorMsg = 'An account already exists.';
+
+                if (existingUser.email === email) {
+                    errorMsg = 'An account already exists with this email.';
+                } else if (existingUser.username === username) {
+                    errorMsg = 'This username is already in use.';
+                }
+
+                return res.render('authorize', {
+                    type: 'register',
+                    error: errorMsg,
+                    isUser: false,
+                    webTitle: 'Register | Social Circles',
+                    title: 'Welcome to Social Circles',
+                    username,
+                    email
+                });
+            }
+
+            // No conflicts, go ahead and create the user
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            db.query(
+                'INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)',
+                [username, email, hashedPassword],
+                (err, results) => {
+                    if (err) {
+                        console.error('Error inserting user:', err);
+                        return res.render('authorize', {
+                            type: 'register',
+                            error: 'Failed to create account. Please try again.',
+                            isUser: false,
+                            webTitle: 'Register | Social Circles',
+                            title: 'Welcome to Social Circles',
+                            username,
+                            email
+                        });
+                    }
+
+                    const userId = results.insertId;
+
+                    db.query('SELECT id FROM game_characters', (err, characters) => {
+                        if (err) {
+                            console.error('Error fetching characters:', err);
+                            return res.render('authorize', {
+                                type: 'register',
+                                error: 'Failed to initialize user scores.',
+                                isUser: false,
+                                webTitle: 'Register | Social Circles',
+                                title: 'Welcome to Social Circles',
+                                username,
+                                email
+                            });
+                        }
+
+                        const inserts = characters.map(character => [userId, character.id, 0]);
+
+                        db.query(
+                            'INSERT INTO user_character_score (user_id, character_id, happiness_score) VALUES ?',
+                            [inserts],
+                            (err2, results2) => {
+                                if (err2) {
+                                    console.error('Error inserting user scores:', err2);
+                                    return res.render('authorize', {
+                                        type: 'register',
+                                        error: 'Failed to initialize user scores.',
+                                        isUser: false,
+                                        webTitle: 'Register | Social Circles',
+                                        title: 'Welcome to Social Circles',
+                                        username,
+                                        email
+                                    });
+                                }
+
+                                console.log('User and scores initialized successfully.');
+                                return res.redirect('/authorize/login');
+                            }
+                        );
+                    });
+                }
+            );
+        });
+    } catch (err) {
+        console.error('Registration failed:', err);
+        return res.render('authorize', {
+            type: 'register',
+            error: 'An unexpected error occurred. Please try again later.',
+            isUser: false,
+            webTitle: 'Register | Social Circles',
+            title: 'Welcome to Social Circles',
+            username,
+            email
+        });
+    }
+
+
+    /*try {
         const checkQuery = 'SELECT * FROM users WHERE username = ? OR email = ?';
         db.query(checkQuery, [username, email], async (err, results) => {
             if(err) {
@@ -104,7 +219,7 @@ router.post('/register', async (req, res) => {
             username: username,
             email: email
         });
-    }
+    }*/
 });
 
 //POST login user

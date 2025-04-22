@@ -18,25 +18,34 @@ router.get('/', (req, res) => {
         return res.redirect('/authorize/login'); 
     }
 
+    const userId = user.id;
     const pageTitle = 'Dashboard | Social Cirlces'
+    const getUserHappiness = 'SELECT SUM(happiness_score) AS total_score FROM user_character_score WHERE user_id=?';
 
+    db.query(getUserHappiness, [userId], (err, result) => {
+        if(err) {
+            console.error('Error fetching happiness score:', err);
+            return res.status(500).send('Server error');
+        }
+        const happinessScore = result[0].total_score || 0;
 
-    // if admin editing
-    if (user.role === 'admin') {
-        db.query('SELECT tasks.*, task_categories.name AS category_name FROM tasks JOIN task_categories ON tasks.category_id = task_categories.id', (err, tasks) => {
-            if (err) throw err;
-
-            db.query('SELECT * FROM game_characters', (err, gameCharacters) => {
+        // if admin editing
+        if (user.role === 'admin') {
+            db.query('SELECT tasks.*, task_categories.name AS category_name FROM tasks JOIN task_categories ON tasks.category_id = task_categories.id', (err, tasks) => {
                 if (err) throw err;
-                db.query('SELECT * FROM task_categories', (err, categories) => {
+
+                db.query('SELECT * FROM game_characters', (err, gameCharacters) => {
                     if (err) throw err;
-                    res.render('dashboard', { user, isAdmin: true, tasks, gameCharacters, categories, title: pageTitle });
+                    db.query('SELECT * FROM task_categories', (err, categories) => {
+                        if (err) throw err;
+                        res.render('dashboard', { user, isAdmin: true, tasks, gameCharacters, categories, title: pageTitle , happinessScore});
+                    });
                 });
             });
-        });
-    } else {
-        res.render('dashboard', { user, isAdmin: false, title: pageTitle });
-    }
+        } else {
+            res.render('dashboard', { user, isAdmin: false, title: pageTitle , happinessScore});
+        }
+    });
 
 });
 
