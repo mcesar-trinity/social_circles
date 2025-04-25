@@ -5,6 +5,7 @@
             <h1>Dashboard</h1>
             <section class="profile-section">
                 <h2>Your Profile</h2>
+                <h2 style="color: black;">Your High Score: <%= happinessScore %></h2>
 
                 <!-- Read only provile view -->
                 <div id="profile-view">
@@ -42,20 +43,28 @@
 
 
                 <div class="form-actions">
-                    <form action="/dashboard/delete" method="POST" style="margin-right: 10px">
-                        <button type="submit" class="btn btn-danger">Delete Profile</button>
-                    </form>
-            
-                    <form action="/authorize/login" method="POST">
+                    <!-- Trigger button -->
+                     <button type="button" class="btn btn-danger" id="deleteAccountBtn" style="margin-right: 10px">
+                        Delete Profile
+                     </button>
+
+                     <!-- Logout button-->
+                    <form action="/dashboard/logout" method="POST">
                         <button type="submit" class="btn btn-secondary">Logout</button>
                     </form>
                 </div>
+
+                <!--Confirmation Modal-->
+                <div id="deleteModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 999;">
+                    <div style="background: white; padding: 20px; border-radius: 10px; text-align: center;">
+                        <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+                        <form action="/dashboard/delete" method="POST"> <!--style="margin-right: 10px"-->
+                            <button type="submit" class="btn btn-danger">Yes, I'm sure.</button>
+                            <button type="button" class="btn btn-secondary" id="cancelDeleteBtn" style="margin-left: 10px;">Cancel</button>
+                        </form>
+                    </div>
+                </div>
             </section>
-
-        
-        
-
-        
 
             <% if (isAdmin) { %>
                 <section class="admin-section">
@@ -169,6 +178,18 @@
                     editForm.style.display = 'none';
                     profileView.style.display = 'block';
                 });
+            });
+        </script>
+        <script>
+            const deleteBtn = document.getElementById('deleteAccountBtn');
+            const modal = document.getElementById('deleteModal');
+            const cancelBtn = document.getElementById('cancelDeleteBtn');
+        
+            deleteBtn.addEventListener('click', () => {
+                modal.style.display = 'flex';
+            });
+            cancelBtn.addEventListener('click', () =>{
+                modal.style.display = 'none';
             });
         </script>
     </body>

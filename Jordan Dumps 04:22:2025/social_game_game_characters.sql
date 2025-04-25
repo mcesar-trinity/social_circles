@@ -30,12 +30,13 @@ CREATE TABLE `game_characters` (
   `dislikes` varchar(255) NOT NULL,
   `hates` varchar(255) NOT NULL,
   `activity_durability` int NOT NULL,
-  `happiness_score` int DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `npc_picture` varchar(255) DEFAULT NULL,
+  `color` varchar(20) DEFAULT NULL,
+  `description` varchar(5000) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,6 +45,7 @@ CREATE TABLE `game_characters` (
 
 LOCK TABLES `game_characters` WRITE;
 /*!40000 ALTER TABLE `game_characters` DISABLE KEYS */;
+INSERT INTO `game_characters` VALUES (1,'Krypton','playing video games','playing sports','cooking/baking','reading',5,'2025-04-08 22:39:23','2025-04-11 03:09:03','Krypton.png','#6BE5D3','Krypton is an energetic and competitive soul who’s always on the move. They shine in activities that demand quick reflexes and focus. While they’re not one to linger in quiet spaces, their bold personality and sharp edge make them stand out in any crowd.'),(2,'Thalion','reading','celebrating holidays','watching sports','learning something new',6,'2025-04-08 22:39:23','2025-04-11 03:20:05','Thalion.png','#CAD838','Thalion is a thoughtful individual, completely immersed in the world of words. He\'s always in a festive spirit, lighting up any room with his love for celebrations. But don’t let his poetic soul fool you, he’s a VERY short tempered and when it comes to driving, well, let\'s just say he’d probably give his car the same rough treatment as a scribbled margin note! Loves to throw stones at pigeons. '),(3,'Elliot','listening to music','learning something new','reading','playing video games',4,'2025-04-08 22:39:23','2025-04-11 03:30:54','Elliot.png','#FB6274','Elliot loves peanut butter and would even bathe in it if given the opportunity. DO NOT  bring your cats around Elliot because it will end up missing. He is unpredictable and finds an escape from life through beats. He loves to go to Raves. He is not a Swiftie. ');
 /*!40000 ALTER TABLE `game_characters` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-07 13:51:59
+-- Dump completed on 2025-04-22 15:59:32

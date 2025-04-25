@@ -34,7 +34,7 @@ CREATE TABLE `character_likes_dislikes` (
   KEY `category_id` (`category_id`),
   CONSTRAINT `character_likes_dislikes_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `game_characters` (`id`),
   CONSTRAINT `character_likes_dislikes_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `task_categories` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,6 +43,7 @@ CREATE TABLE `character_likes_dislikes` (
 
 LOCK TABLES `character_likes_dislikes` WRITE;
 /*!40000 ALTER TABLE `character_likes_dislikes` DISABLE KEYS */;
+INSERT INTO `character_likes_dislikes` VALUES (1,1,3,'love','2025-04-08 22:52:09','2025-04-08 22:52:09'),(2,1,1,'like','2025-04-08 22:52:09','2025-04-08 22:52:09'),(3,1,6,'dislike','2025-04-08 22:52:09','2025-04-08 22:52:09'),(4,1,5,'hate','2025-04-08 22:52:09','2025-04-08 22:52:09'),(5,2,5,'love','2025-04-08 22:52:09','2025-04-08 22:52:09'),(6,2,9,'like','2025-04-08 22:52:09','2025-04-08 22:52:09'),(7,2,2,'dislike','2025-04-08 22:52:09','2025-04-08 22:52:09'),(8,2,7,'hate','2025-04-08 22:52:09','2025-04-08 22:52:09'),(9,3,4,'love','2025-04-08 22:52:09','2025-04-08 22:52:09'),(10,3,7,'like','2025-04-08 22:52:09','2025-04-08 22:52:09'),(11,3,5,'dislike','2025-04-08 22:52:09','2025-04-08 22:52:09'),(12,3,3,'hate','2025-04-08 22:52:09','2025-04-08 22:52:09'),(13,1,2,'like','2025-04-11 05:58:01','2025-04-11 05:58:01'),(14,1,4,'dislike','2025-04-11 05:58:01','2025-04-11 05:58:01'),(15,1,7,'love','2025-04-11 05:58:01','2025-04-11 05:58:01'),(16,1,8,'like','2025-04-11 05:58:01','2025-04-11 05:58:01'),(17,1,9,'hate','2025-04-11 05:58:01','2025-04-11 05:58:01'),(18,2,1,'like','2025-04-11 05:58:52','2025-04-11 05:58:52'),(19,2,3,'dislike','2025-04-11 05:58:52','2025-04-11 05:58:52'),(20,2,4,'love','2025-04-11 05:58:52','2025-04-11 05:58:52'),(21,2,6,'like','2025-04-11 05:58:52','2025-04-11 05:58:52'),(22,2,8,'hate','2025-04-11 05:58:52','2025-04-11 05:58:52'),(23,3,1,'like','2025-04-11 05:59:35','2025-04-11 05:59:35'),(24,3,2,'dislike','2025-04-11 05:59:35','2025-04-11 05:59:35'),(25,3,6,'love','2025-04-11 05:59:35','2025-04-11 05:59:35'),(26,3,8,'like','2025-04-11 05:59:35','2025-04-11 05:59:35'),(27,3,9,'hate','2025-04-11 05:59:35','2025-04-11 05:59:35');
 /*!40000 ALTER TABLE `character_likes_dislikes` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-07 13:51:59
+-- Dump completed on 2025-04-22 15:59:33

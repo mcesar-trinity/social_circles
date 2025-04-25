@@ -14,7 +14,7 @@
         </div>
         <% if(isUser) {%>
             <form action="/dashboard">
-                <button type="submit" class="account-button">Profile</button>
+                <button type="submit" class="account-button"><%= user?.username || 'Profile' %></button>
             </form>
         <% } %> 
     </header>

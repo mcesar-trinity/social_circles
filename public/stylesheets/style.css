@@ -91,45 +91,198 @@ button div{
 
 
     background-color: black;
+    border-radius: 1.5em;
 }
 
 /* .game-options #... to set the colors for each option */
 .game-options #leaderboard{ 
     background-color: #8B0000;
     font-size: 1.5em;
+    border-radius: 1.5em;
 }
 
 .game-options #game{ 
     background-color: #1B3A1A;
     font-size: 1.5em;
+    border-radius: 1.5em;
 }
 
 .game-options #character{
     background-color: #FBC02D;
     font-size: 1.5em;
+    border-radius: 1.5em;
+}
+
+form{
+    height: 70%;
+}
+
+.tasks-game{
+    text-align: center;
+    border-radius: .5em;
+}
+
+#task-options{
+    width: 80%;
+    font-size: 2em;
+
+    text-align: center;
+
+    margin-top: 0.5em;
+    background-color: grey;
+    color: black 
+}
+
+.info-section{
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+div.character-groups{
+    width: 70%;
+    height: 100%;
+    max-height: 100%;
+
+    text-align: right;
+    
+    margin: 1.5em;
+    margin-left: 8em;
+}
+
+.character h3{
+    color: black;
+}
+
+.info h3{
+    color: black;
 }
 
 
+h3.score{
+    left:2em;
+    padding-right: 1em;
+}
+
+div.character{
+    display: flex;
+}
+
+div.leader-section{
+    width:30%;
+
+}
+
+.group{ 
+    width: 35%;
+    height: 100%;
+    text-align: left;
+
+    background-color: #38b6ff;
+    border-color: black;
+    border-width: .3em;
+    border-radius: .5em;
+    display:block;
+    position: relative;
+
+    margin: 1.5em;
+}
+
+.group:hover{
+    background-color: greenyellow;
+}
+
+.group h2{
+   display: block;
+   position:absolute;
+   top:0em;
+
+}
+
+.group h3{
+    display: block;
+    position:relative;
+    top:1em;
+
+    padding-top: 1em;
+    padding-bottom:.5em;
+}
 
 
+.leaderboard-player{
+    width: 40%;
+    height: 100%;
 
-/* Style for buttons in authorize */
-.dummy-login-button{ 
+    margin: 1.5em;
+    border-color: black;
+    border-width: .3em;
+    border-radius: .5em;
+}
+
+.player-happiness{
+    background-color: #FBC02D;
+    text-align: center;
+
+    width: 75%;
+    height: 10%;
+
+    padding: .5em;
+    margin: 1.5em;
+    border-color: black;
+    border-width: .3em;
+    border-radius: .5em;
+}
+
+.player-happiness h2{
+    color: black;
+}
+
+.leaderboard-section{
+    background-color: #8B0000;
+
+    width: 75%;
+    height: 50%;
+
+    padding: .5em;
+    margin: 1.5em;
+    border-color: black;
+    border-width: .3em;
+    border-radius: .5em;
+}
+
+.game-to-leaderboard{
+    margin-top: 2em;
     text-align: center;
 }
 
-.dummy-login-button button{ 
-    margin-top: 25%;
+#leaderboard{
+    background-color: grey;
+    font-size: 1em;
 
-    font-size: 30px;
+    border-color: black;
+    border-width: .2em;
+    border-radius: .5em;
 }
 
-.dummy-login-button #logoff{ 
-    background-color: red;
+.info h2{
+    display: block;
+    position: relative;
+    text-align: center;
+    color: black;
 }
 
-.dummy-login-button #login{ 
-    background-color: blue;
+.assign-task{
+    position: relative;
+    text-align: center;
+}
+
+#assign-task-button{
+    background-color: grey;
+    font-size: 1.5em;
+
+    border-color: black;
+    border-width: .2em;
+    border-radius: .5em;
 }
 
 /*Navigation bar styling*/
@@ -250,6 +403,19 @@ button div{
     text-align: underline;
 }
 
+/*Error message handling*/
+
+.error-message{
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid #ef9a9a;
+}
+
 /*Dashbaord/Profile page styling*/
 
 .dashboard-container{
@@ -286,10 +452,12 @@ button div{
 
 .profile-section{
     margin-bottom: 40px;
+    color: #333;
 }
 
 .profile-view{
     margin-bottom: 8px;
+    color: #333;
 }
 
 .form-actions{
@@ -658,13 +826,8 @@ body {
 }
 body {
     margin: 0;
-    overflow: hidden;
+    overflow: auto;
     background: black;
-}
-body {
-    margin: 0;
-    background: black;
-    overflow: hidden;
 }
 
 /* Container for stars */

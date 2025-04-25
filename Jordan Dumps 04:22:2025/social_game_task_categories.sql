@@ -27,7 +27,7 @@ CREATE TABLE `task_categories` (
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,6 +36,7 @@ CREATE TABLE `task_categories` (
 
 LOCK TABLES `task_categories` WRITE;
 /*!40000 ALTER TABLE `task_categories` DISABLE KEYS */;
+INSERT INTO `task_categories` VALUES (9,'celebrating holidays'),(6,'cooking/baking'),(8,'going out'),(7,'learning something new'),(4,'listening to music'),(1,'playing sports'),(3,'playing video games'),(5,'reading'),(2,'watching sports');
 /*!40000 ALTER TABLE `task_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-07 13:51:59
+-- Dump completed on 2025-04-22 15:59:33

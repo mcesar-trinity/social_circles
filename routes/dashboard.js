@@ -18,25 +18,36 @@ router.get('/', (req, res) => {
         return res.redirect('/authorize/login'); 
     }
 
+    const userId = user.id;
     const pageTitle = 'Dashboard | Social Cirlces'
+    const getUserScore = 'SELECT max_happiness_score FROM users WHERE id = ?';
+
+    db.query(getUserScore, [userId], (err, result) => {
+        if (err) {
+            console.error('Error fetching user score:', err);
+            return res.status(500).send('Server error');
+        }
+
+        const happinessScore = result[0]?.max_happiness_score || 0;
 
 
-    // if admin editing
-    if (user.role === 'admin') {
-        db.query('SELECT tasks.*, task_categories.name AS category_name FROM tasks JOIN task_categories ON tasks_category_id = task_categories.id', (err, tasks) => {
-            if (err) throw err;
-
-            db.query('SELECT * FROM game_characters', (err, gameCharacters) => {
+        // if admin editing
+        if (user.role === 'admin') {
+            db.query('SELECT tasks.*, task_categories.name AS category_name FROM tasks JOIN task_categories ON tasks.category_id = task_categories.id', (err, tasks) => {
                 if (err) throw err;
-                db.query('SELECT * FROM task_categories', (err, categories) => {
+
+                db.query('SELECT * FROM game_characters', (err, gameCharacters) => {
                     if (err) throw err;
-                    res.render('dashboard', { user, isAdmin: true, tasks, gameCharacters, categories, title: pageTitle });
+                    db.query('SELECT * FROM task_categories', (err, categories) => {
+                        if (err) throw err;
+                        res.render('dashboard', { user, isAdmin: true, tasks, gameCharacters, categories, title: pageTitle , happinessScore});
+                    });
                 });
             });
-        });
-    } else {
-        res.render('dashboard', { user, isAdmin: false, title: pageTitle });
-    }
+        } else {
+            res.render('dashboard', { user, isAdmin: false, title: pageTitle , happinessScore});
+        }
+    });
 
 });
 
@@ -169,7 +180,18 @@ router.get('/logout', (req, res) => {
         if(err) console.error('Error destroying session:', err);
         return res.status(500).send('Server error during logout');
     });
-    res.redirect('/authorize/login');
+    res.redirect('/');
+});
+
+router.post('/logout', (req, res) => {
+    console.log('Logging out user:', req.session.user);
+    req.session.destroy((err) => {
+        if(err) {
+            console.error('Error destroying session:', err);
+            return res.status(500).send('Server error during logout');
+        }
+        res.redirect('/');
+    });
 });
 
 //ADMIN BELOW
