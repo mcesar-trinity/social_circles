@@ -1,4 +1,6 @@
 <%- include('./partials/header') %> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
     <body class="home"> 
         <div class="dashboard-container">
@@ -128,20 +130,33 @@
                         <!-- Form to add a game character -->
                         <form action="/dashboard/admin/add-character" method="POST">
                             <div class="form-group">
-                                <label for="characterName">Character Name:</label>
-                                <input type="text" name="name" required><br>
-
                                 <label for="characterLoves">Loves:</label>
-                                <input type="text" name="loves"><br>
+                                <select name="loves[]" id="characterLoves" multiple required class="choices-multiple">
+                                    <% categories.forEach(category => { %>
+                                        <option value="<%= category.name %>"><%= category.name %></option>
+                                    <% }) %>
+                                </select><br>
 
                                 <label for="characterLikes">Likes:</label>
-                                <input type="text" name="likes"><br>
+                                <select name="likes[]" id="characterLikes" multiple required class="choices-multiple">
+                                    <% categories.forEach(category => { %>
+                                        <option value="<%= category.name %>"><%= category.name %></option>
+                                    <% }) %>
+                                </select><br>
 
                                 <label for="characterDislikes">Dislikes:</label>
-                                <input type="text" name="dislikes"><br>
+                                <select name="dislikes[]" id="characterDislikes" multiple required class="choices-multiple">
+                                    <% categories.forEach(category => { %>
+                                        <option value="<%= category.name %>"><%= category.name %></option>
+                                    <% }) %>
+                                </select><br>
 
                                 <label for="characterHates">Hates:</label>
-                                <input type="text" name="hates"><br>
+                                <select name="hates[]" id="characterHates" multiple required class="choices-multiple">
+                                    <% categories.forEach(category => { %>
+                                        <option value="<%= category.name %>"><%= category.name %></option>
+                                    <% }) %>
+                                </select><br>
 
                                 <label for="activityDurability">Activity Durability:</label>
                                 <input type="number" name="activity_durability" min="0" step="1"><br>
@@ -149,7 +164,7 @@
                                 <label for="happinessScore">Happiness Score:</label>
                                 <input type="number" name="happiness_score" min="0" max="100" step="1"><br>
                             </div>
-                            <div clas="form-actions">
+                            <div class="form-actions">
                                 <button type="submit" class="btn btn-primary">Add Character</button>
                             </div>
                         </form>
@@ -326,5 +341,15 @@
 
             });
             </script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const elements = document.querySelectorAll('.choices-multiple');
+                    elements.forEach(element => {
+                        new Choices(element, {
+                            removeItemButton: true,  // Adds "X" button to remove selections
+                        });
+                    });
+                });
+                </script>                
     </body>
 </html>

@@ -257,11 +257,27 @@ router.get('/admin/add-character', isAdmin, (req, res) => {
 // admin management form submission for adding a character
 router.post('/admin/add-character', isAdmin, (req, res) => {
     const { name, loves, likes, dislikes, hates, activity_durability, happiness_score } = req.body;
-    db.query('INSERT INTO game_characters (name, loves, likes, dislikes, hates, activity_durability, happiness_score) VALUES (?, ?, ?, ?, ?, ?, ?)', 
-    [name, loves, likes, dislikes, hates, activity_durability, happiness_score], (err, result) => {
-        if (err) throw err;
-        res.redirect('/dashboard');  // Redirect after character is added
-    });
+    
+    const lovesJson = JSON.stringify(loves || []);
+    const likesJson = JSON.stringify(likes || []);
+    const dislikesJson = JSON.stringify(dislikes || []);
+    const hatesJson = JSON.stringify(hates || []);
+    
+    db.query(
+        'INSERT INTO game_characters (name, loves, likes, dislikes, hates, activity_durability, happiness_score) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [name, lovesJson, likesJson, dislikesJson, hatesJson, activity_durability, happiness_score],
+        function(error, results, fields) {
+          if (error) {
+            console.error(error);
+            res.status(500).send('Server Error');
+            return;
+          }
+      
+          res.redirect('/dashboard');
+        }
+      );
+      
+
 });
 
 // admin management deleting a game character

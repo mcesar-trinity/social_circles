@@ -497,6 +497,35 @@ div.leader-section{
     resize: vertical;
 }
 
+select[multiple] {
+  width: 100%;
+  height: 150px;
+  padding: 8px;
+  border-radius: 8px;
+  background-color: #f8f8f8;
+  color: #333;
+}
+.choices__inner {
+  min-height: 50px;
+  padding: 8px;
+  border-radius: 8px;
+  background-color: #f8f8f8;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+/* Also fix dropdown list text */
+.choices__list--dropdown .choices__item {
+  color: #333;
+}
+
+/* Optional: fix placeholder text color */
+.choices__placeholder {
+  color: #999; /* lighter gray for placeholder */
+}
+
+
+
 /*button on dashboard page styling*/
 
 .btn {
