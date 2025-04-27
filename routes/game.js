@@ -1,25 +1,31 @@
 // game / task selection page !!
-
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
+//Values that persist through refreshes 
+var maxScore = 0; 
+var refreshGame = false; 
+var taskList; 
+var characterGroups; 
+
+//Capitalizes the task results for presenting to client 
 function capitalize(taskResult){
     var tasks = new Array(taskResult.length);
 
     for(var x = 0; x < tasks.length; x++){
         var splitter = taskResult[x].name.split(' ');
-
         for(var y = 0; y < splitter.length; y++){
             splitter[y] = splitter[y].charAt(0).toUpperCase() + splitter[y].substring(1);
         }
-
         tasks[x] = splitter.join(' ');
     }
 
     return tasks;
 }
 
+//Given the size/limit of the tasks in the database 
+// it randomly selects 5 tasks based on id number
 function getRandomTask(limit){
     var tasks = new Array(limit);
     for(var x = 1; x <= limit; x++){
@@ -41,6 +47,8 @@ function getRandomTask(limit){
     return results;
 }
 
+//Randomly assigns all characters to 3 groups
+//assumes characters can be divided evenly to 3 
 function createCharacterGroups(characterResult){
     splitter = Math.round(characterResult.length / 3);
     
@@ -62,159 +70,172 @@ function createCharacterGroups(characterResult){
     return groups; 
 }
 
+//Using the opinions of the given character changes the happiness score
+//based on current character happiness score 
 function calculateHappiness(happiness_score, opinions){
+    console.log(opinions);
     var finalHappiness = happiness_score;
-        console.log("Before: " + finalHappiness);
         switch(opinions){
             case 'like': 
-                finalHappiness += 1;
-                break;
+                return finalHappiness += 1;
             case 'love':
-                finalHappiness += 2;
-                break;
+                return finalHappiness += 2;
             case 'dislike':
-                finalHappiness = (finalHappiness - 1 < 0) ? finalHappiness : (finalHappiness - 1);
+                if((finalHappiness - 1) >= 0) {return finalHappiness -= 1;}
                 break;
             case 'hate':
-                finalHappiness = (finalHappiness - 2 < 0) ? finalHappiness : (finalHappiness - 2);
+                if((finalHappiness - 2) >= 0) {return finalHappiness -= 2;}
                 break;
             default:
-                break; 
+                return finalHappiness;
         }
-        console.log("After: " + finalHappiness);
 
-    return finalHappiness;
+        return finalHappiness;
 }
 
+//Used to create a new game
+//Intells randomizing the set of tasks and character assignemnt 
+function createGame(req, res){
+    //Query the amount tasks in the database
+    let counterSQL = ` select count(*) as tasksCount from tasks`;
+    db.query(counterSQL, (counterErr, counterResult) => {
+        if(counterErr) throw counterErr; 
 
-router.get("/", (req, res) => {
-    isUser = req.session.user ? true : false;
-    if(isUser){
-        let counterSQL = `select count(*) as tasksCount from tasks`;
-        db.query(counterSQL, (counterErr, counterResult, fields) => {
-            if(counterErr) throw counterErr; 
+        //Query tasked based on the randomized id numbers selected from getRandomTask()
+        taskList = getRandomTask(counterResult[0].tasksCount);
+        let taskSQL = `select upper(name) as name, category_id from tasks t where t.id in (` + db.escape(taskList) + `)`;
 
-            var taskList = getRandomTask(counterResult[0].tasksCount);
-            let taskSQL = `select name from tasks t where t.id in (` + db.escape(taskList) + `)`;
+        //Query neccessary user and character data needed for account page
+        let userSQL = `select happiness_score, max_happiness_score from users where id  = ` + db.escape(req.session.user.id);
+        let infoSQL = `select c.name, c.id, uc.happiness_score, uc.durability_score from users u, game_characters c, ` +
+        `user_character_score uc where c.id = uc.character_id and uc.user_id = u.id and u.id = ` + db.escape(req.session.user.id);
 
-            db.query(taskSQL, (taskErr, taskResult) => {
-                if(taskErr) throw taskErr;
-                
-                let characterSQL = `select c.name, uc.happiness_score, uc.durability_score from game_characters c join user_character_score uc
-                 on c.id = uc.character_id where uc.user_id = ` + db.escape(req.session.user.id);
+        let opinionSQL = `select cld.character_id, cld.category_id, cld.opinions from character_likes_dislikes cld`;
+        
+        db.query(taskSQL + "; " + userSQL + "; " + infoSQL + "; " + opinionSQL + ";", (err, result) => {
+            if(err) throw err;
+            
+            //Set maxScore to database max score, and assigned characters to random group via createCharacterGroups()
+            maxScore = result[1][0].max_happiness_score
+            characterGroups = createCharacterGroups(result[2]);
+            //opinionGroups = createOpinionGroup(result[3]);
 
-                db.query(characterSQL, (characterErr, characterResult) => {
-                    if(characterErr) throw characterErr;
-
-                    characterGroups = createCharacterGroups(characterResult);
-                    let userSQL = `select happiness_score from users where id = `+ db.escape(req.session.user.id);
-
-                    db.query(userSQL, (userErr, userResult) => {
-                        res.render("game",{title: 'Social Circle Game', webTitle: 'Game Page', isUser:isUser, userData:userResult, characterGroups:characterGroups, tasks:capitalize(taskResult)});
-                    });
-                });
-            });
+            res.render("game",{title: 'Social Circle Game', webTitle: 'Game Page', isUser:isUser, userData:result[1], characterGroups:characterGroups, opinions:result[3], tasks:result[0], customStyle:'/stylesheets/game.css'});
         });
-       
-    }else{
-        console.log('GET /authorize/login');
-    res.render('authorize', { 
-        type: 'login',
-        webTitle: 'Login | Social Circles',
-        title: 'Welcome to Social Cirlces',
-        isUser: isUser
     });
+}
+
+//Used to redraw game when set of tasks and
+//character assignment should not be rerandomized
+function resetGame(req,res){
+    //Query the amount tasks in the database
+    let counterSQL = ` select count(*) as tasksCount from tasks`;
+    db.query(counterSQL, (counterErr, counterResult) => {
+        if(counterErr) throw counterErr; 
+
+        //Query tasked based on the randomized id numbers selected from getRandomTask()
+        taskList = taskList.length != 0 ? taskList : getRandomTask(counterResult[0].tasksCount);
+        let taskSQL = `select upper(name) as name, category_id from tasks t where t.id in (` + db.escape(taskList) + `)`;
+
+        //Query neccessary user and character data needed for account page
+        let userSQL = `select happiness_score, max_happiness_score from users where id  = ` + db.escape(req.session.user.id);
+        let infoSQL = `select c.name, c.id, uc.happiness_score, uc.durability_score from users u, game_characters c, ` +
+        `user_character_score uc where c.id = uc.character_id and uc.user_id = u.id and u.id = ` + db.escape(req.session.user.id);
+
+        let opinionSQL = `select cld.character_id, cld.category_id, cld.opinions from character_likes_dislikes cld`;
+        
+        db.query(taskSQL + "; " + userSQL + "; " + infoSQL + "; " + opinionSQL + ";", (err, result) => {
+            if(err) throw err;
+            
+            //Set maxScore to database max score, and assigned characters to random group via createCharacterGroups()
+            maxScore = result[1][0].max_happiness_score; 
+            characterGroups = characterGroups.length != 0 ? characterGroups : createCharacterGroups(result[2]);
+
+            newGame = true; 
+            console.log(result[0]);
+            res.render("game",{title: 'Social Circle Game', webTitle: 'Game Page', isUser:isUser, userData:result[1], characterGroups:characterGroups, opinions:result[3], tasks:result[0], customStyle:'/stylesheets/game.css'});
+        });
+    });
+}
+
+//Creates the account page
+router.get("/", (req,res) => {
+    isUser = req.session.user ? true : false;
+    //If the user has logged in it shall create the game page otherwise direct them to the account page
+    if(isUser){
+        if(!refreshGame){
+            refreshGame = true; 
+            createGame(req, res);
+        }else{
+            resetGame(req, res);
+        }
+    }else{
+        res.render('authorize', {type: 'login', webTitle: 'Login | Social Circles', title: 'Welcome to Social Cirlces', isUser: isUser});
     }
 });
 
-
+//Update character and user scores based on game logic before 
+//rendering a new game
 router.post("/", (req, res) => {
     const characters = req.body.selectedGroup;
     const task = req.body.task; 
 
-    let selectedChar = `select c.id, c.name, uc.happiness_score, cld.opinions, uc.durability_score, c.activity_durability ` 
+    //Gets the selected character ids and base involvment score, their happiness and involvment score with the user, and 
+    //there opinion on the selected task. 
+    let selectedCharSQL = `select c.id, uc.happiness_score, cld.opinions, uc.durability_score, c.activity_durability ` 
         + `from game_characters c join user_character_score uc on c.id = uc.character_id join character_likes_dislikes cld on cld.character_id = c.id ` 
         + `where uc.user_id = ` + db.escape(req.session.user.id) + ` and c.name in (` + db.escape(characters) + `) and `
         + `cld.category_id = (select category_id from tasks where name = ` + db.escape(task.toLowerCase().trim()) + `);`;
-    
-    db.query(selectedChar, (selectedErr, selectedResult) => {
-        if(selectedErr) throw selectedErr;
 
-        var totalHappiness = 0; 
-        var userCount = 0;
-
-        selectedResult.forEach((character) => {
-            var happiness_score = calculateHappiness(character.happiness_score, character.opinions);
-            totalHappiness += happiness_score;
-            userCount += 1; 
-
-            let updateCharSQL = `update user_character_score set happiness_score = ` + db.escape(happiness_score)
-            + `, durability_score = ` + db.escape(character.activity_durability) + ` where user_id = ` + db.escape(req.session.user.id) + 
-            ` and character_id = ` + db.escape(character.id);
-
-            db.query(updateCharSQL, (updateERR, updateResult) => {
-                if(updateERR) throw updateERR;
-            })
-        })
-
-        let unselectedCharSQL = `select c.id, c.name, uc.happiness_score, uc.durability_score ` 
+    let unselectedCharSQL = `select c.id, uc.happiness_score, uc.durability_score, c.activity_durability ` 
         + `from game_characters c join user_character_score uc on c.id = uc.character_id join character_likes_dislikes cld on cld.character_id = c.id ` 
         + `where uc.user_id = ` + db.escape(req.session.user.id) + ` and c.name not in (` + db.escape(characters) + `) and `
         + `cld.category_id = (select category_id from tasks where name = ` + db.escape(task.toLowerCase().trim()) + `);`;
+    
+    db.query(selectedCharSQL + unselectedCharSQL, (err, result) => {
+        if(err) throw err; 
 
-        db.query(unselectedCharSQL, (unselectedERR, unselectedResult) => {
-            if(unselectedERR) throw unselectedERR;
+        var totalHappiness = 0; 
+        var userCount = 0;
+        var updateCharSQL = ""; 
+
+        result[0].forEach((selected) => {
+            var character_happiness = calculateHappiness(selected.happiness_score, selected.opinions);
+            totalHappiness += character_happiness;
+            userCount += 1;
             
-            unselectedResult.forEach((character) => {
-                var durability_score = (character.durability_score - 1 < 0) ? 0 : (character.durability_score - 1);
-                var un_happiness_score = ((character.durability_score - 1 < 0) && (character.happiness_score - 1 >= 0)) ? (character.happiness_score - 1) : character.happiness_score;
-                
-                totalHappiness += un_happiness_score;
-                userCount += 1; 
-                
-                let updateCharSQL = `update user_character_score set happiness_score = ` + db.escape(un_happiness_score)
-                + `, durability_score = ` + db.escape(durability_score) + ` where user_id = ` + db.escape(req.session.user.id) + 
-                ` and character_id = ` + db.escape(character.id);
-                
-                db.query(updateCharSQL, (updateERR, updateResult) => {
-                    if(updateERR) throw updateERR;
-                });
-            });
+            updateCharSQL += `update user_character_score set happiness_score = ` + db.escape(character_happiness)
+            + `, durability_score = ` + db.escape(selected.activity_durability) + ` where user_id = ` + db.escape(req.session.user.id) + 
+            ` and character_id = ` + db.escape(selected.id) + `; `;
+        }); 
 
-            let updateUserHap = `update users set happiness_score = ` + db.escape(Math.round(totalHappiness / userCount)) 
-            + ` where id = ` + db.escape(req.session.user.id);
+        result[1].forEach((unSelected) => {
+            var durability_score = (unSelected.durability_score - 1 < 0) ? 0 : (unSelected.durability_score - 1);
+            var un_happiness_score = ((unSelected.durability_score - 1 < 0) && (unSelected.happiness_score - 1 >= 0)) ? (unSelected.happiness_score - 1) : unSelected.happiness_score;
             
-            db.query(updateUserHap, (userHapErr, userHapResult) => {
-                if(userHapErr) throw userHapErr;
-
-                let counterSQL = `select count(*) as tasksCount from tasks`;
-                db.query(counterSQL, (counterErr, counterResult, fields) => {
-                    if(counterErr) throw counterErr; 
-
-                    var taskList = getRandomTask(counterResult[0].tasksCount);
-                    let taskSQL = `select name from tasks t where t.id in (` + db.escape(taskList) + `)`;
-
-                    db.query(taskSQL, (taskErr, taskResult) => {
-                        if(taskErr) throw taskErr;
-                        
-                        let characterSQL = `select c.name, uc.happiness_score, uc.durability_score from game_characters c join user_character_score uc
-                        on c.id = uc.character_id where uc.user_id = ` + db.escape(req.session.user.id);
-        
-                        db.query(characterSQL, (characterErr, characterResult) => {
-                            if(characterErr) throw characterErr;
-
-                            characterGroups = createCharacterGroups(characterResult);
-                            let userSQL = `select happiness_score from users where id = `+ db.escape(req.session.user.id);
-                            db.query(userSQL, (userErr, userResult) => {
-                                res.render("game",{title: 'Social Circle Game', webTitle: 'Game Page', isUser:isUser, userData:userResult, characterGroups:characterGroups, tasks:capitalize(taskResult)});
-                            });
-                        });
-                    });
-                });
-            })
+            totalHappiness += un_happiness_score;
+            userCount += 1; 
+            
+            updateCharSQL += `update user_character_score set happiness_score = ` + db.escape(un_happiness_score)
+            + `, durability_score = ` + db.escape(durability_score) + ` where user_id = ` + db.escape(req.session.user.id) + 
+            ` and character_id = ` + db.escape(unSelected.id) + "; ";
         });
-    });
-});
 
+        user_happiness = Math.round(totalHappiness / userCount);
+        if(user_happiness > maxScore){
+            maxScore = user_happiness; 
+            updateCharSQL += `update users set happiness_score = ` + db.escape(maxScore) 
+            + `, max_happiness_score = ` + db.escape(maxScore) + ` where id = ` + db.escape(req.session.user.id);
+        }else{
+            updateCharSQL += `update users set happiness_score = ` + db.escape(user_happiness) 
+            + ` where id = ` + db.escape(req.session.user.id);
+        }
+
+        db.query(updateCharSQL, (err,result) => {
+            if(err) throw err;
+            createGame(req,res);
+        });
+    })
+});
 
 module.exports = router;
