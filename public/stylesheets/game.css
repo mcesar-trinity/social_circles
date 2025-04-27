@@ -1,0 +1,251 @@
+/*Styles the heading and body background for each page */
+.heading { 
+    font: 10px; 
+    display: flex; 
+    flex-direction: column; 
+    text-align: center;
+    font-weight: bold;
+    background-color: black;
+    color:white;
+    padding: 16px;
+}
+
+html {
+    height:100%;
+}
+
+body { 
+    height: 100%;
+    background-color: #242124;
+    background-image: linear-gradient(to right, #242124, #003366);
+}
+
+.account-button{
+    height: 5em;
+    width: 5em;
+    border-radius: 50%;
+
+    position: absolute;
+    top:1em;
+    right:1em;
+}
+
+/*Style for the "Come Join the Fun!" intro on the home page
+when the user is not logged in*/
+.intro { 
+    font: 15px; 
+    display: flex; 
+    flex-direction: column; 
+    text-align: center;
+    font-weight: bold;
+
+    margin-top: 50px;
+}
+
+/*Pushes all text to the top*/
+button div{ 
+    position: relative;
+}
+/*Pushes the description closer to the center*/
+
+form{
+    height: 50%;
+}
+
+.tasks-game{
+    text-align: center;
+}
+
+#task-options{
+    width: 80%;
+    font-size: 2em;
+
+    text-align: center;
+
+    margin-top: 0.5em;
+    background-color: grey;
+}
+
+.info-section{
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+div.character-groups{
+    width: 70%;
+    height: 100%;
+    margin-top: 1.5em;
+    margin-left: 1em;
+}
+
+.name{
+    bottom: 0.5em;     
+}        
+
+h3.score{
+    left: 0.5em;
+    padding:0em;
+    margin:0em;
+}
+
+div.group-number{
+    top:0em;
+    width: 100%;
+    height:40%;
+}
+
+div.character{
+    display: flex;
+    background-color: white;
+    height: 50%;
+    width: 50%;
+}
+
+div.leader-section{
+    width:30%;
+
+}
+
+.group{ 
+    width: 75%;
+    height: 25%;
+    text-align: left;
+
+    background-color: #38b6ff;
+    border-color: black;
+    border-width: .3em;
+    border-radius: .5em;
+    display:block;
+    position: relative;
+
+    margin: 1.5em;
+    margin-left: 6em;
+}
+
+
+.group h2{
+   display: block;
+   position:absolute;
+   top:0em;
+}
+
+.group h3{
+    display: block;
+    position:relative;
+    top:1em;
+}
+
+
+.leaderboard-player{
+    width: 50%;
+    height: 100%;
+
+    margin: 1.5em;
+    border-color: black;
+    border-width: .3em;
+    border-radius: .5em;
+}
+
+.player-happiness{
+    background-color: #FBC02D;
+    text-align: center;
+
+    width: 75%;
+    height: 20%;
+
+    padding: .5em;
+    margin: 1.5em;
+    border-color: black;
+    border-width: .3em;
+    border-radius: .5em;
+}
+
+.leaderboard-section{
+    background-color: #8B0000;
+
+    width: 75%;
+    height: 50%;
+
+    padding: .5em;
+    margin: 1.5em;
+    border-color: black;
+    border-width: .3em;
+    border-radius: .5em;
+}
+
+.game-to-leaderboard{
+    margin-top: 2em;
+    text-align: center;
+}
+
+#leaderboard{
+    background-color: grey;
+    font-size: 1em;
+
+    border-color: black;
+    border-width: .2em;
+    border-radius: .5em;
+}
+
+.info h2{
+    display: block;
+    position: relative;
+    text-align: center;
+}
+
+.assign-task{
+    position: relative;
+    text-align: center;
+}
+
+#assign-task-button{
+    background-color: grey;
+    font-size: 1.5em;
+
+    border-color: black;
+    border-width: .2em;
+    border-radius: .5em;
+}
+
+/*Navigation bar styling*/
+.header-content{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-nav{
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.main-nav ul{
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.main-nav li{
+    padding: 0 24px;
+    text-align: center;
+}
+
+.main-nav a{
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.main-nav a:hover{
+    color: #cb6ce6;
+}
