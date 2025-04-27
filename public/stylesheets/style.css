@@ -482,6 +482,7 @@ div.leader-section{
     border-radius: 6px;
     font-size: 16px;
     background-color: #f8f8f8;
+    color: black;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
@@ -561,6 +562,46 @@ div.leader-section{
     margin-top: 10px;
 }
 
+.admin-characters-box {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #333;
+    border-radius: 10px;
+}
+
+.admin-character-item {
+    color: #f0f0f0;
+    padding: 8px;
+    margin-bottom: 6px;
+    background-color: #555;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.admin-tasks-box {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #333;
+    border-radius: 10px;
+}
+
+.admin-task-item {
+    color: #f0f0f0;
+    padding: 8px;
+    margin-bottom: 6px;
+    background-color: #555;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+
+
 /*admin section*/
 .admin-section{
     margin-top: 40px;
@@ -580,6 +621,25 @@ body.character-page {
 
 .character-descriptions{
     width: 100%;
+}
+
+.admin-characters-box {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #333;
+    border-radius: 10px;
+}
+
+.admin-character-item {
+    color: #f0f0f0; /* better text color */
+    padding: 8px;
+    margin-bottom: 6px;
+    background-color: #555;
+    border-radius: 6px;
+    font-size: 16px;
 }
 
 

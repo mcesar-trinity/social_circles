@@ -109,9 +109,9 @@
 
                     <!-- List of tasks with delete option -->
                     <h3>Existing Tasks</h3>
-                    <div class="item-list"></div>
+                    <div class="admin-tasks-box">
                         <% tasks.forEach(task => { %>
-                            <div class="itme-card">
+                            <div class="admin-task-item">
                                 <p><strong><%= task.name %></strong>: <%= task.description %></p>
                                 <p>Category: <%= task.category_name %></p>
                                 <div class="item-card-actions">
@@ -156,9 +156,9 @@
 
                     <!-- List of game characters with delete option -->
                     <h3>Existing Game Characters</h3>
-                    <div class="item-list">
+                    <div class="admin-characters-box">
                         <% gameCharacters.forEach(character => { %>
-                            <div class="item-card">
+                            <div class="admin-character-item">
                                 <p><%= character.name %></p>
                                 <p>Loves: <%= character.loves %>, Likes: <%= character.likes %></p> 
                                 <p>Dislikes: <%= character.dislikes %>, Hates: <%= character.hates %></p>
