@@ -12,11 +12,21 @@
                 </ul>
             </nav>
         </div>
-        <% if(isUser) {%>
+        <% if (isUser) { %>
             <form action="/dashboard">
-                <button type="submit" class="account-button"><%= user?.username || 'Profile' %></button>
+                <button 
+                    id="profileCircle"
+                    type="submit" 
+                    class="account-button" 
+                    style="background-color: <%= user.profile_color || '#808080' %>; transition: background-color 0.5s, color 0.5s;">
+                    <span id="profileUsername" style="color:#ffffff ;transition: color 0.5s;">
+                        <%= user?.username || 'Profile' %>
+                    </span>
+                </button>
             </form>
-        <% } %> 
+        <% } %>
+        
+        
     </header>
 
     <head>

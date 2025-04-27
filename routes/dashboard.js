@@ -273,6 +273,28 @@ router.post('/admin/delete-character', isAdmin, (req, res) => {
     });
 });
 
+router.post('/saveColor', (req, res) => {
+    const userId = req.session.user.id;
+    const { profile_color } = req.body;
+
+    if (!profile_color || typeof profile_color !== 'string') {
+        return res.status(400).json({ error: 'Invalid color' });
+    }
+
+    const sql = 'UPDATE users SET profile_color = ? WHERE id = ?';
+    db.query(sql, [profile_color, userId], (err, result) => {
+        if (err) {
+            console.error('Error saving profile color:', err);
+            return res.status(500).json({ error: 'Database error' });
+        }
+
+        req.session.user.profile_color = profile_color;
+        
+        res.json({ message: 'Color saved' });
+    });
+});
+
+
 
 
 module.exports = router;

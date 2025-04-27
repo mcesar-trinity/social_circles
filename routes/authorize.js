@@ -289,8 +289,9 @@ router.post('/login', (req, res) => {
                     username: user.username,
                     email: user.email,
                     role: user.role,
-                    name: user.username, // Assuming `username` is the name you want to show
-                };
+                    name: user.username, 
+                    profile_color: user.profile_color,
+                }
 
                 console.log('Session set for user:', req.session.user);
 

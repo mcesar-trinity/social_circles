@@ -14,6 +14,19 @@
                     <button id="edit-profile-btn" class="btn btn-secondary">Edit Profile</button>
                 </div>
 
+                <div class="profile-color-settings">
+                    <label for="colorSlider">Choose Profile Color:</label><br>
+                    <input type="range" id="colorSlider" min="0" max="360" value="180" data-initialized="false"><br><br>
+                
+                    <button id="saveColorButton" type="button">Save Color</button>
+                    <button id="resetColorButton" type="button">Reset to Default</button>
+                
+                    <div id="saveMessage" style="display: none; color: green; margin-top: 10px; font-weight: bold;">
+                        Color Saved!
+                    </div>
+                </div>
+                            
+
                 <!-- Profile editing form, hidden initially -->
                 <form id="edit-profile-form" action="/dashboard/edit" method="POST" style="display: none;">
                     <div class="form-group">
@@ -192,5 +205,126 @@
                 modal.style.display = 'none';
             });
         </script>
+
+        <!-- FINAL color slider script -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            const colorSlider = document.getElementById('colorSlider');
+            const profileCircle = document.getElementById('profileCircle');
+            const profileUsername = document.getElementById('profileUsername');
+            const saveColorButton = document.getElementById('saveColorButton');
+            const resetColorButton = document.getElementById('resetColorButton');
+            const accountHeader = document.querySelector('.heading');
+            const saveMessage = document.getElementById('saveMessage');
+
+            // New: grab saved color from server
+            const savedColor = "<%= user.profile_color || '#808080' %>";
+
+            function hslToHex(h, s, l) {
+                l /= 100;
+                const a = s * Math.min(l, 1 - l) / 100;
+                const f = n => {
+                    const k = (n + h / 30) % 12;
+                    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+                    return Math.round(255 * color).toString(16).padStart(2, '0');
+                };
+                return `#${f(0)}${f(8)}${f(4)}`;
+            }
+
+            function updateLivePreview(hue) {
+                if (hue === undefined) return;
+                let selectedColor = hslToHex(hue, 100, 50);
+
+                profileCircle.style.backgroundColor = selectedColor;
+
+                const r = parseInt(selectedColor.substr(1, 2), 16);
+                const g = parseInt(selectedColor.substr(3, 2), 16);
+                const b = parseInt(selectedColor.substr(5, 2), 16);
+                const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+
+                if (brightness > 200) {
+                    profileUsername.style.color = '#000000';
+                } else {
+                    profileUsername.style.color = '#ffffff';
+                }
+
+                if (accountHeader) {
+                    accountHeader.style.backgroundColor = selectedColor;
+                }
+            }
+
+            // 🛠 New: On page load, set the real saved color
+            profileCircle.style.backgroundColor = savedColor;
+            accountHeader.style.backgroundColor = savedColor;
+
+            // Calculate brightness for username text color
+            const r = parseInt(savedColor.substr(1, 2), 16);
+            const g = parseInt(savedColor.substr(3, 2), 16);
+            const b = parseInt(savedColor.substr(5, 2), 16);
+            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+            if (brightness > 200) {
+                profileUsername.style.color = '#000000';
+            } else {
+                profileUsername.style.color = '#ffffff';
+            }
+
+            colorSlider.addEventListener('input', function() {
+                if (colorSlider.dataset.initialized === "false") {
+                    colorSlider.dataset.initialized = "true";
+                }
+                updateLivePreview(colorSlider.value);
+            });
+            
+                saveColorButton.addEventListener('click', function() {
+                    let colorToSave;
+
+                    if (colorSlider.dataset.initialized === "false") {
+                        // User never touched slider → default grey
+                        colorToSave = '#808080';
+                    } else {
+                        const hue = colorSlider.value;
+                        colorToSave = hslToHex(hue, 100, 50);
+                    }
+
+                    fetch('/dashboard/saveColor', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ profile_color: colorToSave }),
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            saveMessage.style.display = 'block';
+                            saveMessage.style.opacity = '1';
+                            setTimeout(() => {
+                                saveMessage.style.opacity = '0';
+                                setTimeout(() => {
+                                    saveMessage.style.display = 'none';
+                                }, 500);
+                            }, 2000);
+                        } else {
+                            alert('Failed to save color.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error saving color:', error);
+                    });
+                });
+
+                resetColorButton.addEventListener('click', function() {
+                    colorSlider.value = 180; // or any center you want
+                    colorSlider.dataset.initialized = "false";
+
+                    const neutralGrey = '#808080';
+
+                    profileCircle.style.backgroundColor = neutralGrey;
+                    profileUsername.style.color = '#ffffff';
+                    accountHeader.style.backgroundColor = neutralGrey;
+                });
+
+
+            });
+            </script>
     </body>
 </html>

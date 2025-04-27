@@ -858,3 +858,53 @@ body {
     50% { opacity: 0.2; }
 }
 
+/*profile color change*/
+.profile-color-settings {
+    margin-top: 20px;
+}
+
+.account-button {
+    transition: background-color 0.5s, color 0.5s;
+}
+
+.profile-circle span {
+    transition: color 0.5s;
+}
+
+#colorSlider {
+    -webkit-appearance: none;
+    width: 300px;
+    height: 15px;
+    border-radius: 10px;
+    background: linear-gradient(
+        to right,
+        red, orange, yellow, green, cyan, blue, violet, red
+    );
+    outline: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.5s;
+}
+
+#colorSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border: 2px solid #333;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s, border 0.3s;
+}
+
+#colorSlider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: white;
+    border: 2px solid #333;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s, border 0.3s;
+}
