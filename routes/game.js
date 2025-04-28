@@ -235,6 +235,6 @@ router.post("/", (req, res) => {
     })
 });
 
-// TESTING CODE: module.exports = {router, getRandomTask, createCharacterGroups, calculateHappiness};
+//module.exports = {router, getRandomTask, createCharacterGroups, calculateHappiness};
 
 module.exports = router;

@@ -422,7 +422,7 @@
         <!-- ==============================================
             Choices.js initalization for Multi-select dropdowns
         =============================================== -->
-        <script>
+        <!--<script>
             document.addEventListener('DOMContentLoaded', function () {
                 const elements = document.querySelectorAll('.choices-multiple');
                 elements.forEach(element => {
@@ -431,67 +431,78 @@
                     });
                 });
             });
-        </script>   
+        </script>  -->
 
         <!-- ==============================================
             Prevents duplicates across loves, likes, hates, dislikes 
-        =============================================== -->
+        =============================================== -->      
+
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-            const selectElements = {
-                loves: document.getElementById('loves'),
-                likes: document.getElementById('likes'),
-                dislikes: document.getElementById('dislikes'),
-                hates: document.getElementById('hates')
-            };
-        
-            // Save all original options
-            const allOptions = {};
-            for (let key in selectElements) {
-                const options = Array.from(selectElements[key].options);
-                allOptions[key] = options.map(opt => ({ value: opt.value, text: opt.text }));
-            }
+            document.addEventListener('DOMContentLoaded', function () {
+                const loves = document.getElementById('characterLoves');
+                const likes = document.getElementById('characterLikes');
+                const dislikes = document.getElementById('characterDislikes');
+                const hates = document.getElementById('characterHates');
             
-            //Updates available options dynamically across dropdowns
-            function updateDropdowns() {
-                // Find all selected values across ALL selects
-                const selectedValues = new Set();
-                for (let key in selectElements) {
-                    const selected = Array.from(selectElements[key].selectedOptions).map(opt => opt.value);
-                    selected.forEach(val => selectedValues.add(val));
-                }
-        
-                // Now reset and rebuild each select
-                for (let key in selectElements) {
-                    const select = selectElements[key];
-                    const currentSelections = Array.from(select.selectedOptions).map(opt => opt.value);
-        
-                    // Clear all options
-                    select.innerHTML = '';
-        
-                    // Re-add only unselected options OR the ones currently selected in THIS select
-                    allOptions[key].forEach(optData => {
-                        if (!selectedValues.has(optData.value) || currentSelections.includes(optData.value)) {
-                            const option = document.createElement('option');
-                            option.value = optData.value;
-                            option.text = optData.text;
-                            if (currentSelections.includes(optData.value)) {
-                                option.selected = true;
-                            }
-                            select.appendChild(option);
-                        }
+                const selects = [loves, likes, dislikes, hates];
+            
+                // Save all original options
+                const allOptions = {};
+                selects.forEach(select => {
+                    allOptions[select.id] = Array.from(select.options).map(opt => ({
+                        value: opt.value,
+                        label: opt.text,
+                    }));
+                });
+            
+                // Initialize Choices.js
+                const choicesInstances = selects.map(select => new Choices(select, {
+                    removeItemButton: true,
+                    shouldSort: false,
+                }));
+            
+                function updateChoices() {
+                    const selectedValues = new Set();
+            
+                    // Collect all selected values across selects
+                    choicesInstances.forEach(instance => {
+                        instance.getValue(true).forEach(val => {
+                            selectedValues.add(val);
+                        });
+                    });
+            
+                    // Update each select
+                    choicesInstances.forEach((instance, idx) => {
+                        const select = selects[idx];
+                        const currentSelections = instance.getValue(true);
+            
+                        // ✅ FULLY clear previous values and selections
+                        instance.removeActiveItems(); // <<<<<<<< this fixes duplication
+                        instance.clearChoices();
+            
+                        // Build the fresh set of choices
+                        const newChoices = allOptions[select.id].map(opt => ({
+                            value: opt.value,
+                            label: opt.label,
+                            selected: currentSelections.includes(opt.value),
+                            disabled: selectedValues.has(opt.value) && !currentSelections.includes(opt.value)
+                        }));
+            
+                        instance.setChoices(newChoices, 'value', 'label', false);
                     });
                 }
-            }
-        
-            // Add change listeners to all selects to udpate when selection changes
-            for (let key in selectElements) {
-                selectElements[key].addEventListener('change', updateDropdowns);
-            }
-        
-            updateDropdowns(); // Call once on load
+            
+                // Attach event listeners
+                choicesInstances.forEach(instance => {
+                    instance.passedElement.element.addEventListener('change', updateChoices);
+                });
+            
+                updateChoices(); // run once at page load
             });
         </script>
+            
+            
+                        
 
         <!-- ==============================================
             Pop up alers for when incorrect information is inserted for profile editing
@@ -536,6 +547,28 @@
                 }
             });
         </script>
-                                                    
+                       
+        <script type="module" src="/js/dashboard_client.js"></script>
+
+        <!-- ==============================================
+        TEMP TEST DROPDOWN
+        
+        <h2 style="margin-top: 50px;">Test Dropdown</h2>
+        <select id="testChoices" multiple>
+            <option value="pizza">Pizza</option>
+            <option value="burgers">Burgers</option>
+            <option value="icecream">Ice Cream</option>
+        </select>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            const test = new Choices('#testChoices', {
+                removeItemButton: true
+            });
+            });
+        </script>
+        ================================================ -->
+
+
     </body>
 </html>

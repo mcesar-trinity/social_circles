@@ -54,7 +54,15 @@ router.get('/', (req, res) => {
             });
         } else {
             //View for a regular user
-            res.render('dashboard', { user, isAdmin: false, title: pageTitle , happinessScore});
+            res.render('dashboard', { user, 
+                isAdmin: false, 
+                title: pageTitle, 
+                happinessScore,
+                categories:[],
+                tasks: [],
+                gameCharacters: [],
+                users: []
+            });
         }
     });
 
@@ -395,4 +403,7 @@ router.post('/saveColor', (req, res) => {
 // ==============================================
 // Exporting router
 
-module.exports = router;
+//Testing code
+module.exports = {router, isAdmin};
+
+//module.exports = router;

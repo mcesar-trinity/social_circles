@@ -5,7 +5,9 @@
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
-    "mysql2": "^3.13.0",
-    "type": "Commonjs"
+    "mysql2": "^3.13.0"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0"
   }
 }
