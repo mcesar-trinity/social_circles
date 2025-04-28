@@ -404,6 +404,6 @@ router.post('/saveColor', (req, res) => {
 // Exporting router
 
 //Testing code
-module.exports = {router, isAdmin};
+//module.exports = {router, isAdmin};
 
-//module.exports = router;
+module.exports = router;
