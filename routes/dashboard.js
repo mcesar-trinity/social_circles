@@ -337,7 +337,7 @@ router.post('/admin/add-character', isAdmin, (req, res) => {
     db.query(
         'INSERT INTO game_characters (name, loves, likes, dislikes, hates, activity_durability, description) VALUES (?, ?, ?, ?, ?, ?, ?)',
         [name, lovesString, likesString, dislikesString, hatesString, activity_durability, description],
-        function(err, results, fields) {
+        function(err) {
           if (err) {
             console.error('Error adding character', err);
             return res.status(500).send('Server Error while adding characer.');
@@ -354,10 +354,16 @@ router.post('/admin/add-character', isAdmin, (req, res) => {
 // admin management deleting a game character
 router.post('/admin/delete-character', isAdmin, (req, res) => {
     const { characterId } = req.body;
-    db.query('DELETE FROM game_characters WHERE id = ?', [characterId], (err, result) => {
+    // First delete scores that depend on the character
+    db.query('DELETE FROM user_character_score WHERE character_id = ?', [characterId], (err, result) => {
         if (err) throw err;
-        res.redirect('/dashboard');  // Redirect after deleting a character
+        // Then delete the character
+        db.query('DELETE FROM game_characters WHERE id = ?', [characterId], (err, result) => {
+            if (err) throw err;
+            res.redirect('/dashboard'); // or wherever you want
+        });
     });
+
 });
 
 
