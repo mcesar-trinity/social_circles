@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import {describe, it} from "node:test";
-import packageMain, { calculateHappiness, createCharacterGroups } from '../routes/game.js'; // Works
+import packageMain, { calculateHappiness, createCharacterGroups} from '../routes/game.js'; // Works
 
 describe("getRandomTask Test", () =>{
     it('Should contain 5 unique values between 1 and x number of tasks', () => {
@@ -97,5 +97,19 @@ describe("calculateHappiness Test", () =>{
         let new_score = calculateHappiness(happiness_score, "hate");
 
         assert.equal(new_score, (happiness_score - 2));
+    });
+
+    it('Given a invalid opinion do not change happiness_score', () => {
+        let happiness_score = 3; 
+        let new_score = calculateHappiness(happiness_score, "failure");
+
+        assert.equal(new_score, happiness_score);
+    });
+
+    it('Given a negative happiness_score new happiness_score is 0 in all cases', () => {
+        let happiness_score = -9; 
+        let new_score = calculateHappiness(happiness_score, "love");
+
+        assert.equal(new_score, 0);
     });
 });

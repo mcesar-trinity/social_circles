@@ -71,7 +71,9 @@ function createCharacterGroups(characterResult){
 //Using the opinions of the given character changes the happiness score
 //based on current character happiness score 
 function calculateHappiness(happiness_score, opinions){
+    console.log(opinions);
     var finalHappiness = happiness_score;
+    if(finalHappiness < 0) {return 0;}
         switch(opinions){
             case 'like': 
                 return finalHappiness += 1;
@@ -192,6 +194,9 @@ router.post("/", (req, res) => {
     db.query(selectedCharSQL + unselectedCharSQL, (err, result) => {
         if(err) throw err; 
 
+
+        console.log(result);
+
         var totalHappiness = 0; 
         var userCount = 0;
         var updateCharSQL = ""; 
@@ -222,10 +227,13 @@ router.post("/", (req, res) => {
         if(user_happiness > maxScore){
             maxScore = user_happiness; 
             updateCharSQL += `update users set happiness_score = ` + db.escape(maxScore) 
-            + `, max_happiness_score = ` + db.escape(maxScore) + ` where id = ` + db.escape(req.session.user.id);
+            + `, max_happiness_score = ` + db.escape(maxScore) + ` where id = ` + db.escape(req.session.user.id) + ";";
+
+            updateCharSQL += `update leaderboard set high_score = ` + db.escape(maxScore) + ' where user_id = ' + 
+            db.escape(req.session.user.id) + "; ";
         }else{
             updateCharSQL += `update users set happiness_score = ` + db.escape(user_happiness) 
-            + ` where id = ` + db.escape(req.session.user.id);
+            + ` where id = ` + db.escape(req.session.user.id) + "; ";
         }
 
         db.query(updateCharSQL, (err,result) => {
@@ -235,6 +243,10 @@ router.post("/", (req, res) => {
     })
 });
 
+<<<<<<< HEAD
 //module.exports = {router, getRandomTask, createCharacterGroups, calculateHappiness};
 
+=======
+// TESTING CODE: module.exports = {router, getRandomTask, createCharacterGroups, calculateHappiness};
+>>>>>>> dea8972f3eb9da8d3ab79ba29e5b56bda829a750
 module.exports = router;
