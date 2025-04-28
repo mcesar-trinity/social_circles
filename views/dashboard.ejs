@@ -441,6 +441,45 @@
                 updateDropdowns(); // Call once on load
             });
             </script>
+            <script>
+                const params = new URLSearchParams(window.location.search);
+                window.addEventListener('DOMContentLoaded', () => {
+                    const popup = document.createElement('div');
+                    popup.style.position = 'fixed';
+                    popup.style.top = '20px';
+                    popup.style.left = '50%';
+                    popup.style.transform = 'translateX(-50%)';
+                    popup.style.padding = '12px 24px';
+                    popup.style.borderRadius = '8px';
+                    popup.style.fontWeight = 'bold';
+                    popup.style.zIndex = '9999';
+                    popup.style.boxShadow = '0 0 10px rgba(0,0,0,0.2)';
+                    popup.style.display = 'none'; // hide until needed
+                    document.body.appendChild(popup);
+            
+                    if (params.get('error') === 'incorrectPassword') {
+                        popup.innerText = '⚠️ Incorrect current password. Please try again.';
+                        popup.style.backgroundColor = '#f8d7da'; // light red
+                        popup.style.color = '#721c24'; // dark red
+                        popup.style.display = 'block';
+                    }
+            
+                    if (params.get('success') === 'profileUpdated') {
+                        popup.innerText = '✅ Profile updated successfully!';
+                        popup.style.backgroundColor = '#d4edda'; // light green
+                        popup.style.color = '#155724'; // dark green
+                        popup.style.display = 'block';
+                    }
+            
+                    if (popup.style.display === 'block') {
+                        setTimeout(() => {
+                            popup.remove();
+                            window.history.replaceState(null, null, '/dashboard'); // clean URL
+                        }, 3000); // 3 seconds
+                    }
+                });
+            </script>
+            
             
                                                     
     </body>

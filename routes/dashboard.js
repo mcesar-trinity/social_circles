@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
     }
 
     const userId = user.id;
-    const pageTitle = 'Dashboard | Social Cirlces'
+    const pageTitle = 'Dashboard | Social Circles'
     const getUserScore = 'SELECT max_happiness_score FROM users WHERE id = ?';
 
     db.query(getUserScore, [userId], (err, result) => {
@@ -41,7 +41,7 @@ router.get('/', (req, res) => {
                     db.query('SELECT * FROM task_categories', (err, categories) => {
                         if (err) throw err;
                         db.query('SELECT id, username, email, role FROM users', (err, users) =>{
-                            if(err) throw errl
+                            if(err) throw err;
                             res.render('dashboard', { user, isAdmin: true, tasks, gameCharacters, categories, users, title: pageTitle , happinessScore});
                         });
                     });
@@ -92,7 +92,7 @@ router.post('/edit', (req, res) => {
                 }
 
                 if (!isMatch) {
-                    return res.send('Incorrect current password.');
+                    return res.redirect('/dashboard?error=incorrectPassword');
                 }
 
                 // Hash new password and update
@@ -104,8 +104,7 @@ router.post('/edit', (req, res) => {
 
                     db.query(
                         'UPDATE users SET username = ?, email = ?, password_hash = ? WHERE id = ?',
-                        [name, email, hashedPassword, userId],
-                        (err) => {
+                        [name, email, hashedPassword, userId],(err) => {
                             if (err) {
                                 console.error('Error updating user:', err);
                                 return res.status(500).send('Server error');
@@ -121,11 +120,8 @@ router.post('/edit', (req, res) => {
                                     return res.status(500).send('Session save error');
                                 }
                                 console.log('Session saved successfully');
-                                res.redirect('/dashboard');
+                                res.redirect('/dashboard?success=profileUpdated');
                             });
-
-                            /*console.log('User updated successfully');
-                            res.redirect('/dashboard');*/
                         }
                     );
                 });
@@ -149,7 +145,7 @@ router.post('/edit', (req, res) => {
                             return res.status(500).send('Session save error');
                         }
                         console.log('Session saved successfully');
-                        res.redirect('/dashboard');
+                        res.redirect('/dashboard?success=profileUpdated');
                     });
 
                     /*console.log('User updated successfully');
