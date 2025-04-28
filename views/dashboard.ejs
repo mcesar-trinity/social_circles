@@ -89,10 +89,7 @@
                     <form action="/dashboard/admin/add-task" method="POST">
                         <div class="form-group">
                             <label for="taskName">Task Name:</label>
-                            <input type="text" name="username" required><br>
-
-                            <label for="taskDescription">Task Description:</label>
-                            <textarea name="description"></textarea><br>
+                            <input type="text" name="taskName" required><br>
 
                             <label for="taskCategory">Category:</label>
                             <select name="category_id" required>
@@ -100,9 +97,6 @@
                                     <option value="<%= category.id %>"><%= category.name %></option>
                                 <% }); %>
                             </select><br>
-
-                            <label for="taskPoints">Points:</label>
-                            <input type="number" name="points" min="0"><br>
                         </div>
                         <div class="form-actions">
                             <button type="submit" class="btn btn-primary">Add Task</button>

@@ -198,7 +198,7 @@ router.post('/logout', (req, res) => {
 
 function isAdmin(req, res, next) {
     if(req.session.user && req.session.user.role === 'admin') {
-        return next;
+        return next();
     }
     res.status(403).send('Forbidden');
 }
@@ -213,13 +213,23 @@ router.get('/admin/add-task', isAdmin, (req, res) => {
 
 // admin management form submission for adding a task
 router.post('/admin/add-task', isAdmin, (req, res) => {
-    const { name, description, category_id, points } = req.body;
-    db.query('INSERT INTO tasks (name, description, category_id, points) VALUES (?, ?, ?, ?)',
-        [name, description, category_id, points], (err, result) => {
-            if(err) throw err;
+    console.log('Add task route hit', req.body);
+    const { taskName, category_id} = req.body;
+    
+    db.query(
+        'INSERT INTO tasks (name, category_id) VALUES (?, ?)',
+        [taskName, category_id],
+        (err, result) => {
+            if (err) {
+                console.error('Error adding task:', err);
+                return res.status(500).send('Server error while adding task');
+            }
+            console.log('Task added successfully.');
             res.redirect('/dashboard');
-    });
+        }
+    );
 });
+
 
 //admin management editing 
 router.post('/admin/edit-user', isAdmin, (req, res) => {
