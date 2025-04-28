@@ -6,7 +6,7 @@ const db = require('../db'); // Assuming 'db' is your database connection file
 router.get('/', function(req, res, next) {
   // Define the SQL query to fetch leaderboard data without limiting the number of entries
   let sql = `
-    SELECT u.username, u.profile_color, u.max_happiness_score, rank()
+    SELECT u.id, u.username, u.profile_color, u.max_happiness_score, rank()
 	  Over (order by l.high_score desc) as 'rank'
     FROM leaderboard l
     JOIN users u ON u.id = l.user_id;
@@ -40,8 +40,10 @@ router.get('/', function(req, res, next) {
         rank: icon, // User's rank on the leaderboard
         name: user.username, // User's username
         score: user.max_happiness_score,       // User's high score
-        color: user.profile_color // color associated with the user
-      })     
+        color: user.profile_color, // color associated with the user
+        id: user.id
+      });   
+      console.log(leaderboard); 
     });
 
     // Optionally: Get the current user's rank from the session (if logged in)

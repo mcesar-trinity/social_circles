@@ -47,7 +47,7 @@ router.get('/', (req, res) => {
                         if (err) throw err;
                         db.query('SELECT id, username, email, role FROM users', (err, users) =>{
                             if(err) throw err;
-                            res.render('dashboard', { user, isAdmin: true, tasks, gameCharacters, categories, users, title: pageTitle , happinessScore});
+                            res.render('dashboard', { user, isAdmin: true, tasks, gameCharacters, categories, users, title: pageTitle , happinessScore, viewedUser: undefined});
                         });
                     });
                 });
@@ -57,6 +57,7 @@ router.get('/', (req, res) => {
             res.render('dashboard', { user, 
                 isAdmin: false, 
                 title: pageTitle, 
+                viewedUser: undefined,
                 happinessScore,
                 categories:[],
                 tasks: [],
@@ -203,6 +204,42 @@ router.post('/logout', (req, res) => {
         res.redirect('/');
     });
 });
+
+// ==============================================
+// Route to view another user's profile
+
+router.get('/view/:userId', (req, res) => {
+    const sessionUser = req.session.user;
+    const userIdToView = req.params.userId;
+
+    const getUserInfoQuery = 'SELECT id, username AS name, email, profile_color, max_happiness_score FROM users WHERE id = ?';
+
+    db.query(getUserInfoQuery, [userIdToView], (err, result) => {
+        if (err) {
+            console.error('Error fetching user info:', err);
+            return res.status(500).send('Server error');
+        }
+
+        if (result.length === 0) {
+            return res.status(404).send('User not found');
+        }
+
+        const viewedUser = result[0];
+
+        res.render('dashboard', {
+            user: sessionUser,
+            viewedUser: viewedUser,
+            happinessScore: viewedUser.max_happiness_score,
+            title: viewedUser.name + "'s Profile | Social Circles",
+            isAdmin: sessionUser.role === 'admin',
+            categories: [],
+            tasks: [],
+            gameCharacters: [],
+            users: []
+        });
+    });
+});
+
 
 
 // ==============================================

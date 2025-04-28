@@ -20,7 +20,12 @@
             <div class="entry">
                 <div class="rank"><%=entry.rank%></div>
                 <div class="user-icon" style="background-color:<%=entry.color%>"></div>
-                <div class="name"><%= entry.name %> — <%= entry.score %> pts</div>
+                <div class="name">
+                    <a href="/dashboard/view/<%= entry.id %>" style="color: <%= entry.color %>;">
+                        <%= entry.name %>
+                    </a> — <%= entry.score %> pts
+                </div>
+                
             </div>
         <% }); %>
     </div>
