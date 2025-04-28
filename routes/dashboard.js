@@ -266,7 +266,7 @@ router.get('/admin/add-character', isAdmin, (req, res) => {
 
 // admin management form submission for adding a character
 router.post('/admin/add-character', isAdmin, (req, res) => {
-    const { name, loves, likes, dislikes, hates, activity_durability, happiness_score } = req.body;
+    const { name, loves, likes, dislikes, hates, activity_durability } = req.body;
     
     const lovesJson = JSON.stringify(loves || []);
     const likesJson = JSON.stringify(likes || []);
@@ -274,8 +274,8 @@ router.post('/admin/add-character', isAdmin, (req, res) => {
     const hatesJson = JSON.stringify(hates || []);
     
     db.query(
-        'INSERT INTO game_characters (name, loves, likes, dislikes, hates, activity_durability, happiness_score) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [name, lovesJson, likesJson, dislikesJson, hatesJson, activity_durability, happiness_score],
+        'INSERT INTO game_characters (name, loves, likes, dislikes, hates, activity_durability) VALUES (?, ?, ?, ?, ?, ?)',
+        [name, lovesJson, likesJson, dislikesJson, hatesJson, activity_durability],
         function(error, results, fields) {
           if (error) {
             console.error(error);
