@@ -33,8 +33,21 @@ router.get('/register', (req, res) => {
 //POST register user
 
 router.post('/register', async (req, res) => {
-    const { username, email, password } = req.body;
+    const { username, email, password, confirmPassword } = req.body;
 
+    //Checking if passwords match
+    if(password !== confirmPassword) {
+        return res.render('authorize', {
+            type: 'register',
+            error: 'Passwords do not match.',
+            isUser: false,
+            webTitle: 'Register | Social Circles',
+            title: 'Welcome to Social Circles',
+            username,
+            email
+        });
+    }
+    
     try {
         // Check if the username or email is already in use
         const checkQuery = 'SELECT * FROM users WHERE username = ? OR email = ?';
@@ -148,78 +161,6 @@ router.post('/register', async (req, res) => {
             email
         });
     }
-
-
-    /*try {
-        const checkQuery = 'SELECT * FROM users WHERE username = ? OR email = ?';
-        db.query(checkQuery, [username, email], async (err, results) => {
-            if(err) {
-                console.error('Error checking existing user:', err);
-                return res.render('authorize', {
-                    type: 'register',
-                    error: 'An error occurred. Please try again later.',
-                    isUser: false,
-                    webTitle: 'Login | Social Circles',
-                    title: 'Welcome to Social Circles',
-                    username: username,
-                    email: email
-                });
-            }
-            //if this user exists with the email
-            if(results.length > 0) {
-                console.log('User already exists with this email:', email);
-                const existingUser = results[0];
-                let errorMsg = 'An account already exists';
-
-                if (existingUser.email === email) {
-                    errorMsg = 'Account already exists with this email.';
-                } else if (existingUser.username === username) {
-                    errorMsg = 'Username already taken.';
-                }
-
-                return res.render('authorize', {
-                    type: 'register',
-                    error: errorMsg,
-                    webTitle: 'Login | Social Circles',
-                    title: 'Welcome to Social Cirlces',
-                    isUser: false,
-                    username: username,
-                    email: email
-                });
-            }
-
-            const hashedPassword = await bcrypt.hash(password, 10);
-            const query = 'INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)';
-            db.query(query, [username, email, hashedPassword], (err) => {
-                if (err) {
-                    console.error('Error during user creation:', err);
-                    return res.render('authorize', {
-                        type: 'register',
-                        error: 'An error occurred. Please try again later.',
-                        isUser: false,
-                        webTitle: 'Login | Social Circles',
-                        title: 'Welcome to Social Cirlces',
-                        username: username,
-                        email: email
-                    });
-                }
-
-                res.redirect('/authorize/login');
-            });
-    });
-        
-    } catch (error) {
-        console.error('Error during user creation:', err);
-        return res.render('authorize', {
-            type: 'register',
-            error: 'An error occurred. Please try again later.',
-            isUser: false,
-            webTitle: 'Login | Social Circles',
-            title: 'Welcome to Social Cirlces',
-            username: username,
-            email: email
-        });
-    }*/
 });
 
 //POST login user
