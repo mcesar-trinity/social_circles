@@ -40,7 +40,10 @@ router.get('/', (req, res) => {
                     if (err) throw err;
                     db.query('SELECT * FROM task_categories', (err, categories) => {
                         if (err) throw err;
-                        res.render('dashboard', { user, isAdmin: true, tasks, gameCharacters, categories, title: pageTitle , happinessScore});
+                        db.query('SELECT id, username, email, role FROM users', (err, users) =>{
+                            if(err) throw errl
+                            res.render('dashboard', { user, isAdmin: true, tasks, gameCharacters, categories, users, title: pageTitle , happinessScore});
+                        });
                     });
                 });
             });
@@ -231,15 +234,62 @@ router.post('/admin/add-task', isAdmin, (req, res) => {
 });
 
 
-//admin management editing 
+//admin management editing user
 router.post('/admin/edit-user', isAdmin, (req, res) => {
-    const { userId, newName, newEmail } = req.body 
-    db.query('UPDATE users SET username = ?, email = ? WHERE id = ?',
-    [newName, newEmail, userId], (err, results) => {
-        if(err) throw err;
-        res.redirect('/dashboard');
+    const { userId, newName, newEmail } = req.body;
+    const loggedInUserId = req.session.user.id; // current admin logged in
+
+    db.query('UPDATE users SET username = ?, email = ? WHERE id = ?', 
+        [newName, newEmail, userId], (err, results) => {
+            if (err) {
+                console.error('Error updating user:', err);
+                return res.status(500).send('Server error');
+            }
+
+            // Check if admin edited their own account
+            if (parseInt(userId) === parseInt(loggedInUserId)) {
+                // Update session
+                req.session.user.username = newName;
+                req.session.user.email = newEmail;
+                req.session.user.name = newName; // if you also use `name` in session
+            }
+
+            res.redirect('/dashboard');
+        });
+});
+
+
+//admin management deleting user
+router.post('/admin/delete-user', isAdmin, (req, res) => {
+    const { userId } = req.body;
+
+    // 1. Delete from user_character_score
+    db.query('DELETE FROM user_character_score WHERE user_id = ?', [userId], (err, result) => {
+        if (err) {
+            console.error('Error deleting from user_character_score:', err);
+            return res.status(500).send('Error deleting character scores');
+        }
+
+        // 2. Delete from leaderboard
+        db.query('DELETE FROM leaderboard WHERE user_id = ?', [userId], (err, result) => {
+            if (err) {
+                console.error('Error deleting from leaderboard:', err);
+                return res.status(500).send('Error deleting leaderboard entry');
+            }
+
+            // 3. Finally, delete from users
+            db.query('DELETE FROM users WHERE id = ?', [userId], (err, result) => {
+                if (err) {
+                    console.error('Error deleting user:', err);
+                    return res.status(500).send('Error deleting user');
+                }
+                res.redirect('/dashboard');
+            });
+        });
     });
 });
+
+
 
 //admin management editing task
 router.post('/admin/edit-task', isAdmin, (req, res) => {
