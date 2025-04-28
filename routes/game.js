@@ -9,25 +9,12 @@ var refreshGame = false;
 var taskList; 
 var characterGroups; 
 
-//Capitalizes the task results for presenting to client 
-function capitalize(taskResult){
-    var tasks = new Array(taskResult.length);
-
-    for(var x = 0; x < tasks.length; x++){
-        var splitter = taskResult[x].name.split(' ');
-        for(var y = 0; y < splitter.length; y++){
-            splitter[y] = splitter[y].charAt(0).toUpperCase() + splitter[y].substring(1);
-        }
-        tasks[x] = splitter.join(' ');
-    }
-
-    return tasks;
-}
-
 //Given the size/limit of the tasks in the database 
 // it randomly selects 5 tasks based on id number
 function getRandomTask(limit){
     var tasks = new Array(limit);
+    let size = tasks.length >= 5 ? 5 : tasks.length;
+
     for(var x = 1; x <= limit; x++){
         tasks[x-1] = x;
     }
@@ -39,8 +26,8 @@ function getRandomTask(limit){
         tasks[j] = temp; 
     }
 
-    var results = new Array(5);
-    for(var x = 0; x < 5; x++){
+    var results = new Array(size);
+    for(var x = 0; x < size; x++){
         results[x] = tasks[x];
     }
 
@@ -61,10 +48,21 @@ function createCharacterGroups(characterResult){
         characterResult[j] = temp; 
     }
 
+    let visited = characterResult;
+
     for(var x = 0; x < 3; x++){
         for(var y = 0; y < splitter; y++){
             groups[x][y] = characterResult[(splitter * x) + y];
+            delete visited[(splitter * x) + y];
         }
+    }
+
+    if(visited.length != 0){
+        let index = 0;
+        visited.forEach((remain) => {
+            groups[index].push(remain);
+            index++;
+        })
     }
     
     return groups; 
@@ -237,4 +235,4 @@ router.post("/", (req, res) => {
     })
 });
 
-module.exports = router;
+module.exports = {router, getRandomTask, createCharacterGroups, calculateHappiness};
