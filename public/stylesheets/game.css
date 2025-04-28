@@ -1,263 +1,188 @@
-/*Styles the heading and body background for each page */
-.heading { 
-    font: 10px; 
-    display: flex; 
-    flex-direction: column; 
-    text-align: center;
-    font-weight: bold;
-    background-color: black;
-    color:white;
-    padding: 16px;
-}
-
-html {
-    height:100%;
-}
-
-body { 
+/* General page setup */
+html, body {
     height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
     background-color: #242124;
     background-image: linear-gradient(to right, #242124, #003366);
 }
 
-.account-button{
+/* Header */
+.heading {
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-weight: bold;
+    background-color: black;
+    color: white;
+    padding: 16px;
+}
+
+/* Account button */
+.account-button {
     height: 5em;
     width: 5em;
     border-radius: 50%;
-
     position: absolute;
-    top:1em;
-    right:1em;
+    top: 1em;
+    right: 1em;
 }
 
-/*Style for the "Come Join the Fun!" intro on the home page
-when the user is not logged in*/
-.intro { 
-    font: 15px; 
-    display: flex; 
-    flex-direction: column; 
+/* Task bar */
+.tasks-game {
     text-align: center;
-    font-weight: bold;
-
-    margin-top: 50px;
+    margin-top: 1em;
 }
 
-/* Manages Game Page design */ 
-/*Pushes names up in order to align with corresponding happiness
-and inclusion scores*/
-button div{ 
-    position: relative;
-}
-
-/* Set game height */ 
-form{
-    height: 50%; 
-}
-
-/* task bar format start */ 
-.tasks-game{
-    text-align: center;
-}
-
-#task-options{
+#task-options {
     width: 80%;
-    font-size: 2em;
-
-    text-align: center;
-
-    margin-top: 0.5em;
-    background-color: grey;
-}
-/*task bar format end*/ 
-
-/* Sets the container holding the character groups, player's happiness
-and leaderboard */
-.info-section{
-    height: 100%;
-    width: 100%;
-    display: flex;
-}
-
-/* Character section format starts */
-div.character-groups{
-    width: 70%;
-    height: 100%;
-    margin-top: 1.5em;
-    margin-left: 1em;
-}
-
-.name{
-    bottom: 0.5em;     
-}        
-
-h3.score{
-    left: 0.5em;
-    padding:0em;
-    margin:0em;
-}
-
-div.group-number{
-    top:0em;
-    width: 100%;
-    height:40%;
-}
-
-div.character{
-    display: flex;
-    background-color: white;
-    height: 50%;
-    width: 50%;
-}
-
-.group{ 
-    width: 75%;
-    height: 25%;
-    text-align: left;
-
-    background-color: #38b6ff;
-    border-color: black;
-    border-width: .3em;
-    border-radius: .5em;
-    display:block;
-    position: relative;
-
-    margin: 1.5em;
-    margin-left: 6em;
-}
-
-
-.group h2{
-   display: block;
-   position:absolute;
-   top:0em;
-}
-
-.group h3{
-    display: block;
-    position:relative;
-    top:1em;
-}
-/* Character section format ends */ 
-
-/* Leaderboard section format starts */ 
-div.leader-section{
-    width:30%;
-
-}
-
-.leaderboard-player{
-    width: 50%;
-    height: 100%;
-
-    margin: 1.5em;
-    border-color: black;
-    border-width: .3em;
-    border-radius: .5em;
-}
-
-.player-happiness{
-    background-color: #FBC02D;
-    text-align: center;
-
-    width: 75%;
-    height: 20%;
-
-    padding: .5em;
-    margin: 1.5em;
-    border-color: black;
-    border-width: .3em;
-    border-radius: .5em;
-}
-
-.leaderboard-section{
-    background-color: #8B0000;
-
-    width: 75%;
-    height: 50%;
-
-    padding: .5em;
-    margin: 1.5em;
-    border-color: black;
-    border-width: .3em;
-    border-radius: .5em;
-}
-
-.game-to-leaderboard{
-    margin-top: 2em;
-    text-align: center;
-}
-
-#leaderboard{
-    background-color: grey;
-    font-size: 1em;
-
-    border-color: black;
-    border-width: .2em;
-    border-radius: .5em;
-}
-
-.info h2{
-    display: block;
-    position: relative;
-    text-align: center;
-}
-
-/* Leaderboard format section end */ 
-
-/* Format "Assign Task" button starts */ 
-.assign-task{
-    position: relative;
-    text-align: center;
-}
-
-#assign-task-button{
-    background-color: grey;
     font-size: 1.5em;
-
-    border-color: black;
-    border-width: .2em;
-    border-radius: .5em;
+    padding: 0.5em;
+    border-radius: 8px;
+    background-color: grey;
+    color: white;
 }
-/* Format "Assign Task" button ends */ 
 
-/*Navigation bar styling*/
-.header-content{
-    width: 100%;
+/* Main info layout */
+.info-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+    padding: 2em;
+}
+
+/* Left: character groups */
+.character-groups {
+    flex: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+    justify-content: center;
+}
+
+/* Right: leaderboard */
+.leaderboard-player {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    gap: 2em;
 }
 
-.main-nav{
-    width: 80%;
-    margin: 0 auto;
+/* Each group */
+.group {
+    background-color: #38b6ff;
+    border: 3px solid black;
+    border-radius: 8px;
+    padding: 1em;
+    width: 280px;
+    min-height: 300px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    transition: background-color 0.3s;
 }
 
-.main-nav ul{
-    display: flex;
-    justify-content: space-around;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    width: 100%;
+.group:hover {
+    background-color: greenyellow;
 }
 
-.main-nav li{
-    padding: 0 24px;
+.group-number h2 {
+    margin: 0 0 1em 0;
+}
+
+/* Characters inside a group */
+.character {
+    background-color: white;
+    border-radius: 6px;
+    width: 90%;
+    margin: 0.5em 0;
+    padding: 1em;
     text-align: center;
+    box-sizing: border-box;
 }
 
-.main-nav a{
+.name h3, .scores h3 {
+    margin: 0.2em 0;
+    font-size: 1em;
+    word-break: break-word;
+}
+
+/* Player happiness box */
+.player-happiness {
+    background-color: #FBC02D;
+    width: 90%;
+    text-align: center;
+    border: 3px solid black;
+    border-radius: 8px;
+    padding: 1em;
+}
+
+/* Leaderboard box */
+.leaderboard-section {
+    background-color: white;
+    width: 90%;
+    text-align: center;
+    border: 3px solid black;
+    border-radius: 8px;
+    padding: 1em;
+}
+
+.entry {
+    display: flex;
+    justify-content: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0.5em 0;
+}
+
+/* Leaderboard button */
+#leaderboard {
+    background-color: grey;
+    font-size: 1.2em;
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 0.5em 1em;
+}
+
+/* Assign task */
+.assign-task {
+    text-align: center;
+    margin: 0.75em 0;
+}
+
+#assign-task-button {
+    background-color: grey;
+    font-size: 1.5em;
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 0.5em 2em;
+    cursor: pointer;
+}
+
+/* Navigation */
+.header-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2em;
+    padding: 0;
+}
+
+.main-nav a {
     text-decoration: none;
-    color: #ffffff;
+    color: white;
     font-weight: 500;
     font-size: 16px;
-    transition: color 0.3s ease;
+    transition: color 0.3s;
 }
 
-.main-nav a:hover{
+.main-nav a:hover {
     color: #cb6ce6;
 }

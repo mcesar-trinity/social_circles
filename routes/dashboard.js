@@ -54,7 +54,15 @@ router.get('/', (req, res) => {
             });
         } else {
             //View for a regular user
-            res.render('dashboard', { user, isAdmin: false, title: pageTitle , happinessScore});
+            res.render('dashboard', { user, 
+                isAdmin: false, 
+                title: pageTitle, 
+                happinessScore,
+                categories:[],
+                tasks: [],
+                gameCharacters: [],
+                users: []
+            });
         }
     });
 
@@ -326,45 +334,150 @@ router.get('/admin/add-character', isAdmin, (req, res) => {
 // ==============================================
 // admin management form submission for adding a character
 router.post('/admin/add-character', isAdmin, (req, res) => {
-    const { name, loves, likes, dislikes, hates, activity_durability, description} = req.body;
+    const { name, loves, likes, dislikes, hates, activity_durability, description, npm_picture, color } = req.body;
     
-    const lovesString = Array.isArray(loves) ? loves.join(', ') : (loves || '');
-    const likesString = Array.isArray(likes) ? likes.join(', ') : (likes || '');
-    const dislikesString = Array.isArray(dislikes) ? dislikes.join(', ') : (dislikes || '');
-    const hatesString = Array.isArray(hates) ? hates.join(', ') : (hates || '');
+    const lovesArray = Array.isArray(loves) ? loves : [];
+    const likesArray = Array.isArray(likes) ? likes : [];
+    const dislikesArray = Array.isArray(dislikes) ? dislikes : [];
+    const hatesArray = Array.isArray(hates) ? hates : [];
 
-    
+    const lovesString = lovesArray.join(', ');
+    const likesString = likesArray.join(', ');
+    const dislikesString = dislikesArray.join(', ');
+    const hatesString = hatesArray.join(', ');
+
+    // Step 1: Insert into game_characters
     db.query(
-        'INSERT INTO game_characters (name, loves, likes, dislikes, hates, activity_durability, description) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [name, lovesString, likesString, dislikesString, hatesString, activity_durability, description],
-        function(err) {
-          if (err) {
-            console.error('Error adding character', err);
-            return res.status(500).send('Server Error while adding characer.');
-          }
-          console.log('Character added successfully.');
-          res.redirect('/dashboard');
-        }
-      );
-      
+        'INSERT INTO game_characters (name, loves, likes, dislikes, hates, activity_durability, description, npc_picture, color) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [name, lovesString, likesString, dislikesString, hatesString, activity_durability, description, npm_picture, color],
+        (err, result) => {
+            if (err) {
+                console.error('Error adding character', err);
+                return res.status(500).send('Server Error while adding character.');
+            }
 
+            const newCharacterId = result.insertId;
+
+            // Step 2: Insert into user_character_score
+            db.query('SELECT id FROM users', (err, users) => {
+                if (err) {
+                    console.error('Error fetching users', err);
+                    return res.status(500).send('Server Error while fetching users.');
+                }
+
+                const userScoreInserts = users.map(user => [user.id, newCharacterId, 0, null]); // happiness 0, durability NULL
+
+                db.query(
+                    'INSERT INTO user_character_score (user_id, character_id, happiness_score, durability_score) VALUES ?',
+                    [userScoreInserts],
+                    (err) => {
+                        if (err) {
+                            console.error('Error inserting user character scores', err);
+                            return res.status(500).send('Server Error inserting user character scores.');
+                        }
+
+                        // Step 3: Insert into character_likes_dislikes
+                        const allCategories = [...lovesArray, ...likesArray, ...dislikesArray, ...hatesArray];
+                        if (allCategories.length === 0) {
+                            return res.redirect('/dashboard');
+                        }
+
+                        const placeholders = allCategories.map(() => '?').join(', ');
+                        const query = `SELECT id, name FROM task_categories WHERE name IN (${placeholders})`;
+
+                        db.query(query, allCategories, (err, categoryRows) => {
+                            if (err) {
+                                console.error('Error fetching category IDs', err);
+                                return res.status(500).send('Server Error fetching category IDs.');
+                            }
+
+                            const nameToId = {};
+                            categoryRows.forEach(row => {
+                                nameToId[row.name] = row.id;
+                            });
+
+                            const likesDislikesInserts = [];
+
+                            lovesArray.forEach(category => {
+                                if (nameToId[category]) {
+                                    likesDislikesInserts.push([newCharacterId, nameToId[category], 'love']);
+                                }
+                            });
+
+                            likesArray.forEach(category => {
+                                if (nameToId[category]) {
+                                    likesDislikesInserts.push([newCharacterId, nameToId[category], 'like']);
+                                }
+                            });
+
+                            dislikesArray.forEach(category => {
+                                if (nameToId[category]) {
+                                    likesDislikesInserts.push([newCharacterId, nameToId[category], 'dislike']);
+                                }
+                            });
+
+                            hatesArray.forEach(category => {
+                                if (nameToId[category]) {
+                                    likesDislikesInserts.push([newCharacterId, nameToId[category], 'hate']);
+                                }
+                            });
+
+                            if (likesDislikesInserts.length > 0) {
+                                db.query(
+                                    'INSERT INTO character_likes_dislikes (character_id, category_id, opinions) VALUES ?',
+                                    [likesDislikesInserts],
+                                    (err) => {
+                                        if (err) {
+                                            console.error('Error inserting likes/dislikes', err);
+                                            return res.status(500).send('Server Error inserting likes/dislikes.');
+                                        }
+                                        console.log('Character fully created successfully.');
+                                        res.redirect('/dashboard');
+                                    }
+                                );
+                            } else {
+                                res.redirect('/dashboard');
+                            }
+                        });
+                    }
+                );
+            });
+        }
+    );
 });
+
 
 // ==============================================
 // admin management deleting a game character
 router.post('/admin/delete-character', isAdmin, (req, res) => {
     const { characterId } = req.body;
-    // First delete scores that depend on the character
-    db.query('DELETE FROM user_character_score WHERE character_id = ?', [characterId], (err, result) => {
-        if (err) throw err;
-        // Then delete the character
-        db.query('DELETE FROM game_characters WHERE id = ?', [characterId], (err, result) => {
-            if (err) throw err;
-            res.redirect('/dashboard'); // or wherever you want
+
+    // STEP 1: Delete from character_likes_dislikes
+    db.query('DELETE FROM character_likes_dislikes WHERE character_id = ?', [characterId], (err, result) => {
+        if (err) {
+            console.error('Error deleting from character_likes_dislikes:', err);
+            return res.status(500).send('Error deleting character likes/dislikes');
+        }
+
+        // STEP 2: Delete from user_character_score
+        db.query('DELETE FROM user_character_score WHERE character_id = ?', [characterId], (err, result) => {
+            if (err) {
+                console.error('Error deleting from user_character_score:', err);
+                return res.status(500).send('Error deleting character scores');
+            }
+
+            // STEP 3: Now safe to delete from game_characters
+            db.query('DELETE FROM game_characters WHERE id = ?', [characterId], (err, result) => {
+                if (err) {
+                    console.error('Error deleting character:', err);
+                    return res.status(500).send('Error deleting character');
+                }
+                res.redirect('/dashboard');
+            });
         });
     });
-
 });
+
 
 
 // ==============================================
@@ -394,5 +507,8 @@ router.post('/saveColor', (req, res) => {
 
 // ==============================================
 // Exporting router
+
+//Testing code
+//module.exports = {router, isAdmin};
 
 module.exports = router;

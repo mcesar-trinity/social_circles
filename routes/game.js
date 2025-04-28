@@ -73,6 +73,7 @@ function createCharacterGroups(characterResult){
 function calculateHappiness(happiness_score, opinions){
     console.log(opinions);
     var finalHappiness = happiness_score;
+    if(finalHappiness < 0) {return 0;}
         switch(opinions){
             case 'like': 
                 return finalHappiness += 1;
@@ -109,16 +110,21 @@ function createGame(req, res){
         `user_character_score uc where c.id = uc.character_id and uc.user_id = u.id and u.id = ` + db.escape(req.session.user.id);
 
         let opinionSQL = `select cld.character_id, cld.category_id, cld.opinions from character_likes_dislikes cld`;
-        
-        db.query(taskSQL + "; " + userSQL + "; " + infoSQL + "; " + opinionSQL + ";", (err, result) => {
+
+        let leaderSQL = ` SELECT u.username, u.profile_color, u.max_happiness_score, rank() Over (order by l.high_score desc) as 'rank' ` + 
+        ` FROM leaderboard l JOIN users u ON u.id = l.user_id limit 5;
+        -- Sort by user rank in ascending order`; 
+
+        db.query(taskSQL + "; " + userSQL + "; " + infoSQL + "; " + opinionSQL + ";" + leaderSQL + ";", (err, result) => {
             if(err) throw err;
             
             //Set maxScore to database max score, and assigned characters to random group via createCharacterGroups()
             maxScore = result[1][0].max_happiness_score
             characterGroups = createCharacterGroups(result[2]);
+            console.log(characterGroups);
             //opinionGroups = createOpinionGroup(result[3]);
 
-            res.render("game",{title: 'Social Circle Game', webTitle: 'Game Page', isUser:isUser, userData:result[1], characterGroups:characterGroups, opinions:result[3], tasks:result[0], customStyle:'/stylesheets/game.css'});
+            res.render("game",{title: 'Social Circle Game', webTitle: 'Game Page', isUser:isUser, userData:result[1], characterGroups:characterGroups, opinions:result[3], leader:result[4], tasks:result[0], customStyle:'/stylesheets/game.css'});
         });
     });
 }
@@ -141,17 +147,21 @@ function resetGame(req,res){
         `user_character_score uc where c.id = uc.character_id and uc.user_id = u.id and u.id = ` + db.escape(req.session.user.id);
 
         let opinionSQL = `select cld.character_id, cld.category_id, cld.opinions from character_likes_dislikes cld`;
+        let leaderSQL = ` SELECT u.username, u.profile_color, u.max_happiness_score, rank() Over (order by l.high_score desc) as 'rank' ` + 
+        ` FROM leaderboard l JOIN users u ON u.id = l.user_id limit 5;
+        -- Sort by user rank in ascending order`;
         
-        db.query(taskSQL + "; " + userSQL + "; " + infoSQL + "; " + opinionSQL + ";", (err, result) => {
+        db.query(taskSQL + "; " + userSQL + "; " + infoSQL + "; " + opinionSQL + ";" + leaderSQL + ";", (err, result) => {
             if(err) throw err;
             
             //Set maxScore to database max score, and assigned characters to random group via createCharacterGroups()
             maxScore = result[1][0].max_happiness_score; 
             characterGroups = characterGroups.length != 0 ? characterGroups : createCharacterGroups(result[2]);
+            console.log(characterGroups);
 
             newGame = true; 
             console.log(result[0]);
-            res.render("game",{title: 'Social Circle Game', webTitle: 'Game Page', isUser:isUser, userData:result[1], characterGroups:characterGroups, opinions:result[3], tasks:result[0], customStyle:'/stylesheets/game.css'});
+            res.render("game",{title: 'Social Circle Game', webTitle: 'Game Page', isUser:isUser, userData:result[1], characterGroups:characterGroups, opinions:result[3], leader:result[4], tasks:result[0], customStyle:'/stylesheets/game.css'});
         });
     });
 }
@@ -193,6 +203,9 @@ router.post("/", (req, res) => {
     db.query(selectedCharSQL + unselectedCharSQL, (err, result) => {
         if(err) throw err; 
 
+
+        console.log(result);
+
         var totalHappiness = 0; 
         var userCount = 0;
         var updateCharSQL = ""; 
@@ -223,10 +236,15 @@ router.post("/", (req, res) => {
         if(user_happiness > maxScore){
             maxScore = user_happiness; 
             updateCharSQL += `update users set happiness_score = ` + db.escape(maxScore) 
-            + `, max_happiness_score = ` + db.escape(maxScore) + ` where id = ` + db.escape(req.session.user.id);
+            + `, max_happiness_score = ` + db.escape(maxScore) + ` where id = ` + db.escape(req.session.user.id) + ";";
+
+            console.log(maxScore);
+
+            updateCharSQL += `update leaderboard set high_score = ` + db.escape(maxScore) + ' where user_id = ' + 
+            db.escape(req.session.user.id) + "; ";
         }else{
             updateCharSQL += `update users set happiness_score = ` + db.escape(user_happiness) 
-            + ` where id = ` + db.escape(req.session.user.id);
+            + ` where id = ` + db.escape(req.session.user.id) + "; "
         }
 
         db.query(updateCharSQL, (err,result) => {
@@ -236,6 +254,5 @@ router.post("/", (req, res) => {
     })
 });
 
-// TESTING CODE: module.exports = {router, getRandomTask, createCharacterGroups, calculateHappiness};
-
+//module.exports = {router, getRandomTask, createCharacterGroups, calculateHappiness};
 module.exports = router;

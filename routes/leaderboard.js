@@ -6,10 +6,11 @@ const db = require('../db'); // Assuming 'db' is your database connection file
 router.get('/', function(req, res, next) {
   // Define the SQL query to fetch leaderboard data without limiting the number of entries
   let sql = `
-    SELECT u.username, u.profile_color, u.max_happiness_score, l.user_rank
+    SELECT u.username, u.profile_color, u.max_happiness_score, rank()
+	  Over (order by l.high_score desc) as 'rank'
     FROM leaderboard l
-    JOIN users u ON u.id = l.user_id
-    ORDER BY l.user_rank ASC;  
+    JOIN users u ON u.id = l.user_id;
+
     -- Sort by user rank in ascending order
   `;
 
@@ -25,12 +26,13 @@ router.get('/', function(req, res, next) {
     // Map the database results into a format that can be easily rendered in the view
     var leaderboard = []
     result[0].forEach((user) => {
+      console.log("User: " + user.username);
       let icon = null;
       // Assign an icon based on the rank (e.g., crown for 1st, silver medal for 2nd, etc.)
-      if (user.user_rank === 1) icon = '👑';
-      else if (user.user_rank=== 2) icon = '🥈';
-      else if (user.user_rank === 3) icon = '🥉';
-      else if(user.user_rank >= 4) icon = user.user_rank;
+      if (user.rank === 1) icon = '👑';
+      else if (user.rank=== 2) icon = '🥈';
+      else if (user.rank === 3) icon = '🥉';
+      else if(user.rank >= 4) icon = user.rank;
     
       
       // Return an object with the leaderboard entry's rank, name, score, icon, and character information
@@ -38,7 +40,7 @@ router.get('/', function(req, res, next) {
         rank: icon, // User's rank on the leaderboard
         name: user.username, // User's username
         score: user.max_happiness_score,       // User's high score
-        color: user.profile_character // color associated with the user
+        color: user.profile_color // color associated with the user
       })     
     });
 

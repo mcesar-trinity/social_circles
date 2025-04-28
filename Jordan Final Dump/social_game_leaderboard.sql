@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.41, for macos15 (arm64)
+-- MySQL dump 10.13  Distrib 8.0.41, for macos15 (x86_64)
 --
 -- Host: 127.0.0.1    Database: social_game
 -- ------------------------------------------------------
@@ -16,34 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `user_character_score`
+-- Table structure for table `leaderboard`
 --
 
-DROP TABLE IF EXISTS `user_character_score`;
+DROP TABLE IF EXISTS `leaderboard`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user_character_score` (
+CREATE TABLE `leaderboard` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
-  `character_id` int DEFAULT NULL,
-  `happiness_score` int DEFAULT NULL,
-  `durability_score` int DEFAULT NULL,
+  `high_score` int DEFAULT '0',
+  `user_rank` int DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
-  KEY `character_id` (`character_id`),
-  CONSTRAINT `user_character_score_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `user_character_score_ibfk_2` FOREIGN KEY (`character_id`) REFERENCES `game_characters` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `leaderboard_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_character_score`
+-- Dumping data for table `leaderboard`
 --
 
-LOCK TABLES `user_character_score` WRITE;
-/*!40000 ALTER TABLE `user_character_score` DISABLE KEYS */;
-INSERT INTO `user_character_score` VALUES (1,1,1,0,5),(2,1,2,0,6),(3,1,3,0,4),(4,4,1,0,5),(5,4,2,0,6),(6,4,3,0,4),(7,5,1,18,0),(8,5,2,43,3),(9,5,3,1,4),(10,6,1,0,5),(11,6,2,0,6),(12,6,3,0,4),(13,7,1,0,5),(14,7,2,0,6),(15,7,3,0,4),(16,8,1,0,5),(17,8,2,0,6),(18,8,3,0,4),(19,11,1,0,NULL),(20,11,2,0,NULL),(21,11,3,0,NULL);
-/*!40000 ALTER TABLE `user_character_score` ENABLE KEYS */;
+LOCK TABLES `leaderboard` WRITE;
+/*!40000 ALTER TABLE `leaderboard` DISABLE KEYS */;
+INSERT INTO `leaderboard` VALUES (1,1,0,1,'2025-04-10 23:00:42','2025-04-10 23:00:42'),(2,4,0,2,'2025-04-10 23:00:42','2025-04-10 23:00:42'),(3,5,27,3,'2025-04-10 23:00:42','2025-04-28 07:30:44'),(4,6,0,4,'2025-04-10 23:00:42','2025-04-10 23:00:42'),(5,7,0,5,'2025-04-10 23:00:42','2025-04-10 23:00:42'),(6,8,0,6,'2025-04-10 23:00:42','2025-04-10 23:00:42');
+/*!40000 ALTER TABLE `leaderboard` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-27 20:50:12
+-- Dump completed on 2025-04-28  3:44:44
