@@ -42,16 +42,19 @@ when the user is not logged in*/
     margin-top: 50px;
 }
 
-/*Pushes all text to the top*/
+/* Manages Game Page design */ 
+/*Pushes names up in order to align with corresponding happiness
+and inclusion scores*/
 button div{ 
     position: relative;
 }
-/*Pushes the description closer to the center*/
 
+/* Set game height */ 
 form{
-    height: 50%;
+    height: 50%; 
 }
 
+/* task bar format start */ 
 .tasks-game{
     text-align: center;
 }
@@ -65,13 +68,17 @@ form{
     margin-top: 0.5em;
     background-color: grey;
 }
+/*task bar format end*/ 
 
+/* Sets the container holding the character groups, player's happiness
+and leaderboard */
 .info-section{
     height: 100%;
     width: 100%;
     display: flex;
 }
 
+/* Character section format starts */
 div.character-groups{
     width: 70%;
     height: 100%;
@@ -102,11 +109,6 @@ div.character{
     width: 50%;
 }
 
-div.leader-section{
-    width:30%;
-
-}
-
 .group{ 
     width: 75%;
     height: 25%;
@@ -135,7 +137,13 @@ div.leader-section{
     position:relative;
     top:1em;
 }
+/* Character section format ends */ 
 
+/* Leaderboard section format starts */ 
+div.leader-section{
+    width:30%;
+
+}
 
 .leaderboard-player{
     width: 50%;
@@ -194,6 +202,9 @@ div.leader-section{
     text-align: center;
 }
 
+/* Leaderboard format section end */ 
+
+/* Format "Assign Task" button starts */ 
 .assign-task{
     position: relative;
     text-align: center;
@@ -207,6 +218,7 @@ div.leader-section{
     border-width: .2em;
     border-radius: .5em;
 }
+/* Format "Assign Task" button ends */ 
 
 /*Navigation bar styling*/
 .header-content{
