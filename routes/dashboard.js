@@ -1,12 +1,17 @@
-// user account page !!
+// ==============================================
+// User profile page / dashboard routes
 
-// if (!req.session.user) return res.redirect('/authorize/login');
-
+// ==============================================
+//Handles the dashboard/account display, editing profiles,
+        // and admin management of tasks, users, and game characters
+// ==============================================
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
 const bcrypt = require('bcrypt');
 
+
+// ==============================================
 //render the dashboard page with user profile info
 router.get('/', (req, res) => {
     const user = req.session.user;
@@ -19,7 +24,7 @@ router.get('/', (req, res) => {
     }
 
     const userId = user.id;
-    const pageTitle = 'Dashboard | Social Cirlces'
+    const pageTitle = 'Dashboard | Social Circles'
     const getUserScore = 'SELECT max_happiness_score FROM users WHERE id = ?';
 
     db.query(getUserScore, [userId], (err, result) => {
@@ -31,7 +36,7 @@ router.get('/', (req, res) => {
         const happinessScore = result[0]?.max_happiness_score || 0;
 
 
-        // if admin editing
+        // Admin view for tasks, characters, and users
         if (user.role === 'admin') {
             db.query('SELECT tasks.*, task_categories.name AS category_name FROM tasks JOIN task_categories ON tasks.category_id = task_categories.id', (err, tasks) => {
                 if (err) throw err;
@@ -40,21 +45,23 @@ router.get('/', (req, res) => {
                     if (err) throw err;
                     db.query('SELECT * FROM task_categories', (err, categories) => {
                         if (err) throw err;
-                        res.render('dashboard', { user, isAdmin: true, tasks, gameCharacters, categories, title: pageTitle , happinessScore});
+                        db.query('SELECT id, username, email, role FROM users', (err, users) =>{
+                            if(err) throw err;
+                            res.render('dashboard', { user, isAdmin: true, tasks, gameCharacters, categories, users, title: pageTitle , happinessScore});
+                        });
                     });
                 });
             });
         } else {
+            //View for a regular user
             res.render('dashboard', { user, isAdmin: false, title: pageTitle , happinessScore});
         }
     });
 
 });
 
-//handle profile editing
-/*router.post('/edit', (req, res) => {
-    const bcrypt = require('bcrypt');*/
-
+// ==============================================
+// Editing profile (username, email, password updating)
 router.post('/edit', (req, res) => {
     console.log('Form submitted', req.body);
     const { name, email, currentPassword, newPassword } = req.body;
@@ -89,7 +96,7 @@ router.post('/edit', (req, res) => {
                 }
 
                 if (!isMatch) {
-                    return res.send('Incorrect current password.');
+                    return res.redirect('/dashboard?error=incorrectPassword');
                 }
 
                 // Hash new password and update
@@ -101,8 +108,7 @@ router.post('/edit', (req, res) => {
 
                     db.query(
                         'UPDATE users SET username = ?, email = ?, password_hash = ? WHERE id = ?',
-                        [name, email, hashedPassword, userId],
-                        (err) => {
+                        [name, email, hashedPassword, userId],(err) => {
                             if (err) {
                                 console.error('Error updating user:', err);
                                 return res.status(500).send('Server error');
@@ -118,17 +124,14 @@ router.post('/edit', (req, res) => {
                                     return res.status(500).send('Session save error');
                                 }
                                 console.log('Session saved successfully');
-                                res.redirect('/dashboard');
+                                res.redirect('/dashboard?success=profileUpdated');
                             });
-
-                            /*console.log('User updated successfully');
-                            res.redirect('/dashboard');*/
                         }
                     );
                 });
             });
         } else {
-            // No password change
+            // No password change, just the email and username
             db.query(
                 'UPDATE users SET username = ?, email = ? WHERE id = ?',
                 [name, email, userId],
@@ -146,11 +149,8 @@ router.post('/edit', (req, res) => {
                             return res.status(500).send('Session save error');
                         }
                         console.log('Session saved successfully');
-                        res.redirect('/dashboard');
+                        res.redirect('/dashboard?success=profileUpdated');
                     });
-
-                    /*console.log('User updated successfully');
-                    res.redirect('/dashboard');*/
                 }
             );
         }
@@ -158,6 +158,7 @@ router.post('/edit', (req, res) => {
 
 });
 
+// ==============================================
 //handle profile deleting
 router.post('/delete', (req, res) => {
     const loggedInUser = req.session.user;
@@ -173,6 +174,7 @@ router.post('/delete', (req, res) => {
     });
 });
 
+// ==============================================
 //log out router
 router.get('/logout', (req, res) => {
     console.log('Logging out user:', req.session.user);
@@ -194,15 +196,22 @@ router.post('/logout', (req, res) => {
     });
 });
 
-//ADMIN BELOW
+
+// ==============================================
+// ADMIN FUNCTIONALITY
+
+// ==============================================
+// middleware to only allow admin access
+
 
 function isAdmin(req, res, next) {
     if(req.session.user && req.session.user.role === 'admin') {
-        return next;
+        return next();
     }
     res.status(403).send('Forbidden');
 }
 
+// ==============================================
 //admin management adding task
 router.get('/admin/add-task', isAdmin, (req, res) => {
     db.query('SELECT * FROM task_categories', (err, categories) => {
@@ -213,24 +222,82 @@ router.get('/admin/add-task', isAdmin, (req, res) => {
 
 // admin management form submission for adding a task
 router.post('/admin/add-task', isAdmin, (req, res) => {
-    const { name, description, category_id, points } = req.body;
-    db.query('INSERT INTO tasks (name, description, category_id, points) VALUES (?, ?, ?, ?)',
-        [name, description, category_id, points], (err, result) => {
-            if(err) throw err;
+    console.log('Add task route hit', req.body);
+    const { taskName, category_id} = req.body;
+    
+    db.query(
+        'INSERT INTO tasks (name, category_id) VALUES (?, ?)',
+        [taskName, category_id],
+        (err, result) => {
+            if (err) {
+                console.error('Error adding task:', err);
+                return res.status(500).send('Server error while adding task');
+            }
+            console.log('Task added successfully.');
             res.redirect('/dashboard');
-    });
+        }
+    );
 });
 
-//admin management editing 
+// ==============================================
+//admin management editing user
 router.post('/admin/edit-user', isAdmin, (req, res) => {
-    const { userId, newName, newEmail } = req.body 
-    db.query('UPDATE users SET username = ?, email = ? WHERE id = ?',
-    [newName, newEmail, userId], (err, results) => {
-        if(err) throw err;
-        res.redirect('/dashboard');
+    const { userId, newName, newEmail } = req.body;
+    const loggedInUserId = req.session.user.id; // current admin logged in
+
+    db.query('UPDATE users SET username = ?, email = ? WHERE id = ?', 
+        [newName, newEmail, userId], (err, results) => {
+            if (err) {
+                console.error('Error updating user:', err);
+                return res.status(500).send('Server error');
+            }
+
+            // Check if admin edited their own account
+            if (parseInt(userId) === parseInt(loggedInUserId)) {
+                // Update session
+                req.session.user.username = newName;
+                req.session.user.email = newEmail;
+                req.session.user.name = newName; // if you also use `name` in session
+            }
+
+            res.redirect('/dashboard');
+        });
+});
+
+
+// ==============================================
+//admin management deleting user
+router.post('/admin/delete-user', isAdmin, (req, res) => {
+    const { userId } = req.body;
+
+    // STEP 1: Delete from user_character_score
+    db.query('DELETE FROM user_character_score WHERE user_id = ?', [userId], (err, result) => {
+        if (err) {
+            console.error('Error deleting from user_character_score:', err);
+            return res.status(500).send('Error deleting character scores');
+        }
+
+        // STEP 2: Delete from leaderboard
+        db.query('DELETE FROM leaderboard WHERE user_id = ?', [userId], (err, result) => {
+            if (err) {
+                console.error('Error deleting from leaderboard:', err);
+                return res.status(500).send('Error deleting leaderboard entry');
+            }
+
+            // STEP 3: Finally, delete from users
+            db.query('DELETE FROM users WHERE id = ?', [userId], (err, result) => {
+                if (err) {
+                    console.error('Error deleting user:', err);
+                    return res.status(500).send('Error deleting user');
+                }
+                res.redirect('/dashboard');
+            });
+        });
     });
 });
 
+
+// ==============================================
 //admin management editing task
 router.post('/admin/edit-task', isAdmin, (req, res) => {
     const { taskId, taskDescription} = req.body;
@@ -240,6 +307,7 @@ router.post('/admin/edit-task', isAdmin, (req, res) => {
     })
 })
 
+// ==============================================
 //admin management delete task
 router.post('/admin/delete-task', isAdmin, (req, res) => {
     const { taskId } = req.body;
@@ -249,30 +317,82 @@ router.post('/admin/delete-task', isAdmin, (req, res) => {
     });
 });
 
+// ==============================================
 // Route for adding game characters
 router.get('/admin/add-character', isAdmin, (req, res) => {
     res.render('admin/add-character');
 });
 
+// ==============================================
 // admin management form submission for adding a character
 router.post('/admin/add-character', isAdmin, (req, res) => {
-    const { name, loves, likes, dislikes, hates, activity_durability, happiness_score } = req.body;
-    db.query('INSERT INTO game_characters (name, loves, likes, dislikes, hates, activity_durability, happiness_score) VALUES (?, ?, ?, ?, ?, ?, ?)', 
-    [name, loves, likes, dislikes, hates, activity_durability, happiness_score], (err, result) => {
-        if (err) throw err;
-        res.redirect('/dashboard');  // Redirect after character is added
-    });
+    const { name, loves, likes, dislikes, hates, activity_durability, description} = req.body;
+    
+    const lovesString = Array.isArray(loves) ? loves.join(', ') : (loves || '');
+    const likesString = Array.isArray(likes) ? likes.join(', ') : (likes || '');
+    const dislikesString = Array.isArray(dislikes) ? dislikes.join(', ') : (dislikes || '');
+    const hatesString = Array.isArray(hates) ? hates.join(', ') : (hates || '');
+
+    
+    db.query(
+        'INSERT INTO game_characters (name, loves, likes, dislikes, hates, activity_durability, description) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [name, lovesString, likesString, dislikesString, hatesString, activity_durability, description],
+        function(err) {
+          if (err) {
+            console.error('Error adding character', err);
+            return res.status(500).send('Server Error while adding characer.');
+          }
+          console.log('Character added successfully.');
+          res.redirect('/dashboard');
+        }
+      );
+      
+
 });
 
+// ==============================================
 // admin management deleting a game character
 router.post('/admin/delete-character', isAdmin, (req, res) => {
     const { characterId } = req.body;
-    db.query('DELETE FROM game_characters WHERE id = ?', [characterId], (err, result) => {
+    // First delete scores that depend on the character
+    db.query('DELETE FROM user_character_score WHERE character_id = ?', [characterId], (err, result) => {
         if (err) throw err;
-        res.redirect('/dashboard');  // Redirect after deleting a character
+        // Then delete the character
+        db.query('DELETE FROM game_characters WHERE id = ?', [characterId], (err, result) => {
+            if (err) throw err;
+            res.redirect('/dashboard'); // or wherever you want
+        });
+    });
+
+});
+
+
+// ==============================================
+// Save profile color 
+
+router.post('/saveColor', (req, res) => {
+    const userId = req.session.user.id;
+    const { profile_color } = req.body;
+
+    if (!profile_color || typeof profile_color !== 'string') {
+        return res.status(400).json({ error: 'Invalid color' });
+    }
+
+    const sql = 'UPDATE users SET profile_color = ? WHERE id = ?';
+    db.query(sql, [profile_color, userId], (err, result) => {
+        if (err) {
+            console.error('Error saving profile color:', err);
+            return res.status(500).json({ error: 'Database error' });
+        }
+
+        req.session.user.profile_color = profile_color;
+        
+        res.json({ message: 'Color saved' });
     });
 });
 
 
+// ==============================================
+// Exporting router
 
 module.exports = router;

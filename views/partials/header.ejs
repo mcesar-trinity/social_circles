@@ -1,7 +1,20 @@
 <!DOCTYPE html>
 <html> 
+    <!-- ============================================== 
+        This header section is the navigation bar for the whole website
+        It will appear on every page that includes it
+    =============================================== -->
     <header class="heading"> 
+        <!-- ============================================== 
+            Main Page title
+            This comes from the server-rendered value: <%= title %>
+        =============================================== -->
         <h1><%= title %></h1>
+
+        <!-- ============================================== 
+            Navigation Menu
+            This links ot main sections of the site
+        =============================================== -->
         <div class="header-content">
             <nav class="main-nav">
                 <ul>
@@ -12,12 +25,31 @@
                 </ul>
             </nav>
         </div>
-        <% if(isUser) {%>
+
+        <!-- ============================================== 
+            If a user is logged in, then isUser = true:
+            Then it will show the "Profile Circle" button that leads to the dashboard page
+        =============================================== -->
+        <% if (isUser) { %>
             <form action="/dashboard">
-                <button type="submit" class="account-button"><%= user?.username || 'Profile' %></button>
+                <button 
+                    id="profileCircle"
+                    type="submit" 
+                    class="account-button" 
+                    style="background-color: <%= user.profile_color || '#808080' %>; transition: background-color 0.5s, color 0.5s;">
+                    <span id="profileUsername" style="color:#ffffff ;transition: color 0.5s;">
+                        <%= user?.username || 'Profile' %>
+                    </span>
+                </button>
             </form>
-        <% } %> 
+        <% } %>
+        
+        
     </header>
+
+    <!-- ============================================== 
+        Head Section for each page
+    =============================================== -->
 
     <head>
         <title><%= typeof webTitle !== 'undefined' ? webTitle : 'Social Circles' %></title>
