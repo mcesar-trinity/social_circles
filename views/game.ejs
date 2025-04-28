@@ -137,11 +137,12 @@
                     <div class="leaderboard-section">
                         <div class="info"> 
                             <h2>Top 5 Player</h2>
-                            <h3>Placeholder</h3>                            
-                            <h3>Placeholder</h3>
-                            <h3>Placeholder</h3>
-                            <h3>Placeholder</h3>
-                            <h3>Placeholder</h3>
+                            <% leader.forEach(entry => { %>
+                                <div class="entry" style="color:<%=entry.profile_color%>; font-weight: bold;">
+                                    <div class="rank"> <%=entry.rank%> </div>
+                                    <div class="name">:  <%= entry.username %> — <%= entry.max_happiness_score %> pts </div>
+                                </div>
+                            <% }); %>
                         </div>
 
                         <div class="game-to-leaderboard">

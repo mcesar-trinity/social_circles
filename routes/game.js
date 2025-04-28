@@ -110,8 +110,12 @@ function createGame(req, res){
         `user_character_score uc where c.id = uc.character_id and uc.user_id = u.id and u.id = ` + db.escape(req.session.user.id);
 
         let opinionSQL = `select cld.character_id, cld.category_id, cld.opinions from character_likes_dislikes cld`;
-        
-        db.query(taskSQL + "; " + userSQL + "; " + infoSQL + "; " + opinionSQL + ";", (err, result) => {
+
+        let leaderSQL = ` SELECT u.username, u.profile_color, u.max_happiness_score, rank() Over (order by l.high_score desc) as 'rank' ` + 
+        ` FROM leaderboard l JOIN users u ON u.id = l.user_id limit 5;
+        -- Sort by user rank in ascending order`; 
+
+        db.query(taskSQL + "; " + userSQL + "; " + infoSQL + "; " + opinionSQL + ";" + leaderSQL + ";", (err, result) => {
             if(err) throw err;
             
             //Set maxScore to database max score, and assigned characters to random group via createCharacterGroups()
@@ -119,7 +123,7 @@ function createGame(req, res){
             characterGroups = createCharacterGroups(result[2]);
             //opinionGroups = createOpinionGroup(result[3]);
 
-            res.render("game",{title: 'Social Circle Game', webTitle: 'Game Page', isUser:isUser, userData:result[1], characterGroups:characterGroups, opinions:result[3], tasks:result[0], customStyle:'/stylesheets/game.css'});
+            res.render("game",{title: 'Social Circle Game', webTitle: 'Game Page', isUser:isUser, userData:result[1], characterGroups:characterGroups, opinions:result[3], leader:result[4], tasks:result[0], customStyle:'/stylesheets/game.css'});
         });
     });
 }
@@ -142,8 +146,11 @@ function resetGame(req,res){
         `user_character_score uc where c.id = uc.character_id and uc.user_id = u.id and u.id = ` + db.escape(req.session.user.id);
 
         let opinionSQL = `select cld.character_id, cld.category_id, cld.opinions from character_likes_dislikes cld`;
+        let leaderSQL = ` SELECT u.username, u.profile_color, u.max_happiness_score, rank() Over (order by l.high_score desc) as 'rank' ` + 
+        ` FROM leaderboard l JOIN users u ON u.id = l.user_id limit 5;
+        -- Sort by user rank in ascending order`;
         
-        db.query(taskSQL + "; " + userSQL + "; " + infoSQL + "; " + opinionSQL + ";", (err, result) => {
+        db.query(taskSQL + "; " + userSQL + "; " + infoSQL + "; " + opinionSQL + ";" + leaderSQL + ";", (err, result) => {
             if(err) throw err;
             
             //Set maxScore to database max score, and assigned characters to random group via createCharacterGroups()
@@ -152,7 +159,7 @@ function resetGame(req,res){
 
             newGame = true; 
             console.log(result[0]);
-            res.render("game",{title: 'Social Circle Game', webTitle: 'Game Page', isUser:isUser, userData:result[1], characterGroups:characterGroups, opinions:result[3], tasks:result[0], customStyle:'/stylesheets/game.css'});
+            res.render("game",{title: 'Social Circle Game', webTitle: 'Game Page', isUser:isUser, userData:result[1], characterGroups:characterGroups, opinions:result[3], leader:result[4], tasks:result[0], customStyle:'/stylesheets/game.css'});
         });
     });
 }
