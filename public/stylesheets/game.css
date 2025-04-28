@@ -42,18 +42,6 @@ when the user is not logged in*/
     margin-top: 50px;
 }
 
-<<<<<<< HEAD
-/*Pushes all text to the top*/
-button div{ 
-    position: relative;
-}
-/*Pushes the description closer to the center*/
-
-form{
-    height: 50%;
-}
-
-=======
 /* Manages Game Page design */ 
 /*Pushes names up in order to align with corresponding happiness
 and inclusion scores*/
@@ -67,7 +55,6 @@ form{
 }
 
 /* task bar format start */ 
->>>>>>> ed5217b5c95b87b81ca1f4dcdfaec54da0d2e8f0
 .tasks-game{
     text-align: center;
 }
@@ -81,24 +68,17 @@ form{
     margin-top: 0.5em;
     background-color: grey;
 }
-<<<<<<< HEAD
-
-=======
 /*task bar format end*/ 
 
 /* Sets the container holding the character groups, player's happiness
 and leaderboard */
->>>>>>> ed5217b5c95b87b81ca1f4dcdfaec54da0d2e8f0
 .info-section{
     height: 100%;
     width: 100%;
     display: flex;
 }
 
-<<<<<<< HEAD
-=======
 /* Character section format starts */
->>>>>>> ed5217b5c95b87b81ca1f4dcdfaec54da0d2e8f0
 div.character-groups{
     width: 70%;
     height: 100%;
@@ -129,14 +109,6 @@ div.character{
     width: 50%;
 }
 
-<<<<<<< HEAD
-div.leader-section{
-    width:30%;
-
-}
-
-=======
->>>>>>> ed5217b5c95b87b81ca1f4dcdfaec54da0d2e8f0
 .group{ 
     width: 75%;
     height: 25%;
@@ -165,9 +137,6 @@ div.leader-section{
     position:relative;
     top:1em;
 }
-<<<<<<< HEAD
-
-=======
 /* Character section format ends */ 
 
 /* Leaderboard section format starts */ 
@@ -175,7 +144,6 @@ div.leader-section{
     width:30%;
 
 }
->>>>>>> ed5217b5c95b87b81ca1f4dcdfaec54da0d2e8f0
 
 .leaderboard-player{
     width: 50%;
@@ -234,12 +202,9 @@ div.leader-section{
     text-align: center;
 }
 
-<<<<<<< HEAD
-=======
 /* Leaderboard format section end */ 
 
 /* Format "Assign Task" button starts */ 
->>>>>>> ed5217b5c95b87b81ca1f4dcdfaec54da0d2e8f0
 .assign-task{
     position: relative;
     text-align: center;
@@ -253,10 +218,7 @@ div.leader-section{
     border-width: .2em;
     border-radius: .5em;
 }
-<<<<<<< HEAD
-=======
 /* Format "Assign Task" button ends */ 
->>>>>>> ed5217b5c95b87b81ca1f4dcdfaec54da0d2e8f0
 
 /*Navigation bar styling*/
 .header-content{
