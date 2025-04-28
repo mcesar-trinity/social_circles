@@ -72,6 +72,7 @@ function createCharacterGroups(characterResult){
 //based on current character happiness score 
 function calculateHappiness(happiness_score, opinions){
     var finalHappiness = happiness_score;
+    if(finalHappiness < 0) {return 0;}
         switch(opinions){
             case 'like': 
                 return finalHappiness += 1;
@@ -192,6 +193,9 @@ router.post("/", (req, res) => {
     db.query(selectedCharSQL + unselectedCharSQL, (err, result) => {
         if(err) throw err; 
 
+
+        console.log(result);
+
         var totalHappiness = 0; 
         var userCount = 0;
         var updateCharSQL = ""; 
@@ -235,4 +239,5 @@ router.post("/", (req, res) => {
     })
 });
 
-module.exports = {router, getRandomTask, createCharacterGroups, calculateHappiness};
+//module.exports = {router, getRandomTask, createCharacterGroups, calculateHappiness};
+module.exports = router;
