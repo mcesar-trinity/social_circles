@@ -1,7 +1,20 @@
 <!DOCTYPE html>
 <html> 
+    <!-- ============================================== 
+        This header section is the navigation bar for the whole website
+        It will appear on every page that includes it
+    =============================================== -->
     <header class="heading"> 
+        <!-- ============================================== 
+            Main Page title
+            This comes from the server-rendered value: <%= title %>
+        =============================================== -->
         <h1><%= title %></h1>
+
+        <!-- ============================================== 
+            Navigation Menu
+            This links ot main sections of the site
+        =============================================== -->
         <div class="header-content">
             <nav class="main-nav">
                 <ul>
@@ -12,6 +25,11 @@
                 </ul>
             </nav>
         </div>
+
+        <!-- ============================================== 
+            If a user is logged in, then isUser = true:
+            Then it will show the "Profile Circle" button that leads to the dashboard page
+        =============================================== -->
         <% if (isUser) { %>
             <form action="/dashboard">
                 <button 
@@ -28,6 +46,10 @@
         
         
     </header>
+
+    <!-- ============================================== 
+        Head Section for each page
+    =============================================== -->
 
     <head>
         <title><%= typeof webTitle !== 'undefined' ? webTitle : 'Social Circles' %></title>

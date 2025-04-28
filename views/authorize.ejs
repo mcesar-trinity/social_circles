@@ -2,33 +2,67 @@
 
     <body class="home"> 
        <div class="auth-container">
+
+            <!-- ==============================================
+                Main Header: This changes based on whether the page is Login or Register
+                If type = 'login' then it shows "Login to your account"
+                If type = 'register' then it shows "Create an account"
+            =============================================== -->
             <h2><%= type === 'login' ? 'Login to your account' : 'Create an account' %></h2>
 
-            <!-- error message display -->
+            <!-- ==============================================
+                Error Message Display Block
+                If an error message (e.g., "Incorrect password") is passed from the server, it will show here
+            =============================================== -->
              <% if(locals.error) { %> 
                 <div class ="error-message">
                     <%= error %>
                 </div>
             <% } %>
-
-
+            
+            <!-- ==============================================
+                Form Section
+                Submits to either /authorize/login or /authorize/register depending on page type
+            ==============================================+ -->
             <form action="/authorize/<%= type %>" method="POST">
+
+                <!-- ==============================================
+                    If Register Page:
+                    Also show Username input (Login does not ask for Username)
+                =============================================== --> 
                 <% if (type === 'register') { %>
                     <input type="text" name="username" placeholder="Username" required />
                 <% } %>
 
-                <!-- preserve email if provided -->
+                <!-- ==============================================
+                    Email Input
+                    Pre-fills the email field if it was previously entered (such as after an error) 
+                =====+========================================= -->
                 <input type="email" name="email" placeholder="Email" value="<%= locals.email || ''%>" required />
-                <input type="password" name="password" placeholder="Password" required />
                 
+                <!-- Password Input -->
+                <input type="password" name="password" placeholder="Password" required />
+               
+                <!-- 
+                    If it is on the Register Page, it will also ask to confirm password
+                -->
                 <% if (type === 'register') { %>
                     <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
                 <% } %>
-                
+
+                <!-- ==============================================
+                    Submit Button, it changes text depending on login/register page
+                =============================================== -->
                 <button type="submit">
                     <%= type === 'login' ? 'Login' : 'Register' %>
                 </button>
             </form>
+
+            <!-- ==============================================
+                Alternate Action Link
+                If on Login → offer link to Register
+                If on Register → offer link to Login
+            =============================================== -->
             <p>
                 <% if (type === 'login') { %>
                     Don't have an account?  <a href="/authorize/register">Register</a>
