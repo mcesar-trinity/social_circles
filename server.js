@@ -48,6 +48,8 @@ const leaderboard = require('./routes/leaderboard.js');
 const viewCharacter = require('./routes/viewCharacter.js');
 
 
+
+
 //redirecting authorize to authorize login
 app.get('/authorize', (req, res) => {
     res.redirect('/authorize/login');
@@ -65,7 +67,7 @@ app.use('/leaderboard', leaderboard);
 app.use('/character/viewCharacter', viewCharacter);
 
 app.use((req, res, next) => {
-    console.log('[$new Date().toISOString()}] ${req.method} ${req.url}');
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     console.log('Session contents:', req.session);
     next();
 });

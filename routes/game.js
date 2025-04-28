@@ -71,6 +71,7 @@ function createCharacterGroups(characterResult){
 //Using the opinions of the given character changes the happiness score
 //based on current character happiness score 
 function calculateHappiness(happiness_score, opinions){
+    console.log(opinions);
     var finalHappiness = happiness_score;
     if(finalHappiness < 0) {return 0;}
         switch(opinions){
