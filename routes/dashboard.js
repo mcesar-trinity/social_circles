@@ -198,7 +198,7 @@ router.post('/logout', (req, res) => {
 
 function isAdmin(req, res, next) {
     if(req.session.user && req.session.user.role === 'admin') {
-        return next;
+        return next();
     }
     res.status(403).send('Forbidden');
 }
@@ -213,13 +213,23 @@ router.get('/admin/add-task', isAdmin, (req, res) => {
 
 // admin management form submission for adding a task
 router.post('/admin/add-task', isAdmin, (req, res) => {
-    const { name, description, category_id, points } = req.body;
-    db.query('INSERT INTO tasks (name, description, category_id, points) VALUES (?, ?, ?, ?)',
-        [name, description, category_id, points], (err, result) => {
-            if(err) throw err;
+    console.log('Add task route hit', req.body);
+    const { taskName, category_id} = req.body;
+    
+    db.query(
+        'INSERT INTO tasks (name, category_id) VALUES (?, ?)',
+        [taskName, category_id],
+        (err, result) => {
+            if (err) {
+                console.error('Error adding task:', err);
+                return res.status(500).send('Server error while adding task');
+            }
+            console.log('Task added successfully.');
             res.redirect('/dashboard');
-    });
+        }
+    );
 });
+
 
 //admin management editing 
 router.post('/admin/edit-user', isAdmin, (req, res) => {
@@ -256,12 +266,28 @@ router.get('/admin/add-character', isAdmin, (req, res) => {
 
 // admin management form submission for adding a character
 router.post('/admin/add-character', isAdmin, (req, res) => {
-    const { name, loves, likes, dislikes, hates, activity_durability, happiness_score } = req.body;
-    db.query('INSERT INTO game_characters (name, loves, likes, dislikes, hates, activity_durability, happiness_score) VALUES (?, ?, ?, ?, ?, ?, ?)', 
-    [name, loves, likes, dislikes, hates, activity_durability, happiness_score], (err, result) => {
-        if (err) throw err;
-        res.redirect('/dashboard');  // Redirect after character is added
-    });
+    const { name, loves, likes, dislikes, hates, activity_durability } = req.body;
+    
+    const lovesJson = JSON.stringify(loves || []);
+    const likesJson = JSON.stringify(likes || []);
+    const dislikesJson = JSON.stringify(dislikes || []);
+    const hatesJson = JSON.stringify(hates || []);
+    
+    db.query(
+        'INSERT INTO game_characters (name, loves, likes, dislikes, hates, activity_durability) VALUES (?, ?, ?, ?, ?, ?)',
+        [name, lovesJson, likesJson, dislikesJson, hatesJson, activity_durability],
+        function(error, results, fields) {
+          if (error) {
+            console.error(error);
+            res.status(500).send('Server Error');
+            return;
+          }
+      
+          res.redirect('/dashboard');
+        }
+      );
+      
+
 });
 
 // admin management deleting a game character
@@ -272,6 +298,28 @@ router.post('/admin/delete-character', isAdmin, (req, res) => {
         res.redirect('/dashboard');  // Redirect after deleting a character
     });
 });
+
+router.post('/saveColor', (req, res) => {
+    const userId = req.session.user.id;
+    const { profile_color } = req.body;
+
+    if (!profile_color || typeof profile_color !== 'string') {
+        return res.status(400).json({ error: 'Invalid color' });
+    }
+
+    const sql = 'UPDATE users SET profile_color = ? WHERE id = ?';
+    db.query(sql, [profile_color, userId], (err, result) => {
+        if (err) {
+            console.error('Error saving profile color:', err);
+            return res.status(500).json({ error: 'Database error' });
+        }
+
+        req.session.user.profile_color = profile_color;
+        
+        res.json({ message: 'Color saved' });
+    });
+});
+
 
 
 

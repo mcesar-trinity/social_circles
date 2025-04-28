@@ -1,4 +1,6 @@
 <%- include('./partials/header') %> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
     <body class="home"> 
         <div class="dashboard-container">
@@ -13,6 +15,19 @@
                     <p><strong>Email: </strong><%= user.email %></p>
                     <button id="edit-profile-btn" class="btn btn-secondary">Edit Profile</button>
                 </div>
+
+                <div class="profile-color-settings">
+                    <label for="colorSlider">Choose Profile Color:</label><br>
+                    <input type="range" id="colorSlider" min="0" max="360" value="180" data-initialized="false"><br><br>
+                
+                    <button id="saveColorButton" type="button">Save Color</button>
+                    <button id="resetColorButton" type="button">Reset to Default</button>
+                
+                    <div id="saveMessage" style="display: none; color: green; margin-top: 10px; font-weight: bold;">
+                        Color Saved!
+                    </div>
+                </div>
+                            
 
                 <!-- Profile editing form, hidden initially -->
                 <form id="edit-profile-form" action="/dashboard/edit" method="POST" style="display: none;">
@@ -74,10 +89,7 @@
                     <form action="/dashboard/admin/add-task" method="POST">
                         <div class="form-group">
                             <label for="taskName">Task Name:</label>
-                            <input type="text" name="username" required><br>
-
-                            <label for="taskDescription">Task Description:</label>
-                            <textarea name="description"></textarea><br>
+                            <input type="text" name="taskName" required><br>
 
                             <label for="taskCategory">Category:</label>
                             <select name="category_id" required>
@@ -85,9 +97,6 @@
                                     <option value="<%= category.id %>"><%= category.name %></option>
                                 <% }); %>
                             </select><br>
-
-                            <label for="taskPoints">Points:</label>
-                            <input type="number" name="points" min="0"><br>
                         </div>
                         <div class="form-actions">
                             <button type="submit" class="btn btn-primary">Add Task</button>
@@ -96,9 +105,9 @@
 
                     <!-- List of tasks with delete option -->
                     <h3>Existing Tasks</h3>
-                    <div class="item-list"></div>
+                    <div class="admin-tasks-box">
                         <% tasks.forEach(task => { %>
-                            <div class="itme-card">
+                            <div class="admin-task-item">
                                 <p><strong><%= task.name %></strong>: <%= task.description %></p>
                                 <p>Category: <%= task.category_name %></p>
                                 <div class="item-card-actions">
@@ -115,20 +124,33 @@
                         <!-- Form to add a game character -->
                         <form action="/dashboard/admin/add-character" method="POST">
                             <div class="form-group">
-                                <label for="characterName">Character Name:</label>
-                                <input type="text" name="name" required><br>
-
                                 <label for="characterLoves">Loves:</label>
-                                <input type="text" name="loves"><br>
+                                <select name="loves[]" id="characterLoves" multiple required class="choices-multiple">
+                                    <% categories.forEach(category => { %>
+                                        <option value="<%= category.name %>"><%= category.name %></option>
+                                    <% }) %>
+                                </select><br>
 
                                 <label for="characterLikes">Likes:</label>
-                                <input type="text" name="likes"><br>
+                                <select name="likes[]" id="characterLikes" multiple required class="choices-multiple">
+                                    <% categories.forEach(category => { %>
+                                        <option value="<%= category.name %>"><%= category.name %></option>
+                                    <% }) %>
+                                </select><br>
 
                                 <label for="characterDislikes">Dislikes:</label>
-                                <input type="text" name="dislikes"><br>
+                                <select name="dislikes[]" id="characterDislikes" multiple required class="choices-multiple">
+                                    <% categories.forEach(category => { %>
+                                        <option value="<%= category.name %>"><%= category.name %></option>
+                                    <% }) %>
+                                </select><br>
 
                                 <label for="characterHates">Hates:</label>
-                                <input type="text" name="hates"><br>
+                                <select name="hates[]" id="characterHates" multiple required class="choices-multiple">
+                                    <% categories.forEach(category => { %>
+                                        <option value="<%= category.name %>"><%= category.name %></option>
+                                    <% }) %>
+                                </select><br>
 
                                 <label for="activityDurability">Activity Durability:</label>
                                 <input type="number" name="activity_durability" min="0" step="1"><br>
@@ -136,16 +158,16 @@
                                 <label for="happinessScore">Happiness Score:</label>
                                 <input type="number" name="happiness_score" min="0" max="100" step="1"><br>
                             </div>
-                            <div clas="form-actions">
+                            <div class="form-actions">
                                 <button type="submit" class="btn btn-primary">Add Character</button>
                             </div>
                         </form>
 
                     <!-- List of game characters with delete option -->
                     <h3>Existing Game Characters</h3>
-                    <div class="item-list">
+                    <div class="admin-characters-box">
                         <% gameCharacters.forEach(character => { %>
-                            <div class="item-card">
+                            <div class="admin-character-item">
                                 <p><%= character.name %></p>
                                 <p>Loves: <%= character.loves %>, Likes: <%= character.likes %></p> 
                                 <p>Dislikes: <%= character.dislikes %>, Hates: <%= character.hates %></p>
@@ -192,5 +214,136 @@
                 modal.style.display = 'none';
             });
         </script>
+
+        <!-- FINAL color slider script -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            const colorSlider = document.getElementById('colorSlider');
+            const profileCircle = document.getElementById('profileCircle');
+            const profileUsername = document.getElementById('profileUsername');
+            const saveColorButton = document.getElementById('saveColorButton');
+            const resetColorButton = document.getElementById('resetColorButton');
+            const accountHeader = document.querySelector('.heading');
+            const saveMessage = document.getElementById('saveMessage');
+
+            // New: grab saved color from server
+            const savedColor = "<%= user.profile_color || '#808080' %>";
+
+            function hslToHex(h, s, l) {
+                l /= 100;
+                const a = s * Math.min(l, 1 - l) / 100;
+                const f = n => {
+                    const k = (n + h / 30) % 12;
+                    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+                    return Math.round(255 * color).toString(16).padStart(2, '0');
+                };
+                return `#${f(0)}${f(8)}${f(4)}`;
+            }
+
+            function updateLivePreview(hue) {
+                if (hue === undefined) return;
+                let selectedColor = hslToHex(hue, 100, 50);
+
+                profileCircle.style.backgroundColor = selectedColor;
+
+                const r = parseInt(selectedColor.substr(1, 2), 16);
+                const g = parseInt(selectedColor.substr(3, 2), 16);
+                const b = parseInt(selectedColor.substr(5, 2), 16);
+                const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+
+                if (brightness > 200) {
+                    profileUsername.style.color = '#000000';
+                } else {
+                    profileUsername.style.color = '#ffffff';
+                }
+
+                if (accountHeader) {
+                    accountHeader.style.backgroundColor = selectedColor;
+                }
+            }
+
+            // 🛠 New: On page load, set the real saved color
+            profileCircle.style.backgroundColor = savedColor;
+            accountHeader.style.backgroundColor = savedColor;
+
+            // Calculate brightness for username text color
+            const r = parseInt(savedColor.substr(1, 2), 16);
+            const g = parseInt(savedColor.substr(3, 2), 16);
+            const b = parseInt(savedColor.substr(5, 2), 16);
+            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+            if (brightness > 200) {
+                profileUsername.style.color = '#000000';
+            } else {
+                profileUsername.style.color = '#ffffff';
+            }
+
+            colorSlider.addEventListener('input', function() {
+                if (colorSlider.dataset.initialized === "false") {
+                    colorSlider.dataset.initialized = "true";
+                }
+                updateLivePreview(colorSlider.value);
+            });
+            
+                saveColorButton.addEventListener('click', function() {
+                    let colorToSave;
+
+                    if (colorSlider.dataset.initialized === "false") {
+                        // User never touched slider → default grey
+                        colorToSave = '#808080';
+                    } else {
+                        const hue = colorSlider.value;
+                        colorToSave = hslToHex(hue, 100, 50);
+                    }
+
+                    fetch('/dashboard/saveColor', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ profile_color: colorToSave }),
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            saveMessage.style.display = 'block';
+                            saveMessage.style.opacity = '1';
+                            setTimeout(() => {
+                                saveMessage.style.opacity = '0';
+                                setTimeout(() => {
+                                    saveMessage.style.display = 'none';
+                                }, 500);
+                            }, 2000);
+                        } else {
+                            alert('Failed to save color.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error saving color:', error);
+                    });
+                });
+
+                resetColorButton.addEventListener('click', function() {
+                    colorSlider.value = 180; // or any center you want
+                    colorSlider.dataset.initialized = "false";
+
+                    const neutralGrey = '#808080';
+
+                    profileCircle.style.backgroundColor = neutralGrey;
+                    profileUsername.style.color = '#ffffff';
+                    accountHeader.style.backgroundColor = neutralGrey;
+                });
+
+
+            });
+            </script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const elements = document.querySelectorAll('.choices-multiple');
+                    elements.forEach(element => {
+                        new Choices(element, {
+                            removeItemButton: true,  // Adds "X" button to remove selections
+                        });
+                    });
+                });
+                </script>                
     </body>
 </html>
