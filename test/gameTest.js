@@ -43,7 +43,7 @@ describe("createCharacterGroups Test", () => {
         })
     });
 
-    it('Given x characters that cannot be dvided into 3 evenly split groups', () => {
+    it('Given x characters that cannot be divided into 3 evenly split groups', () => {
         let characters = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; 
         let groups = createCharacterGroups(characters);
         assert.equal(groups.length, 3);

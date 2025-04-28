@@ -348,7 +348,7 @@ router.post('/admin/add-character', isAdmin, (req, res) => {
 
     // Step 1: Insert into game_characters
     db.query(
-        'INSERT INTO game_characters (name, loves, likes, dislikes, hates, activity_durability, description, npm_picture, color) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        'INSERT INTO game_characters (name, loves, likes, dislikes, hates, activity_durability, description, npc_picture, color) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
         [name, lovesString, likesString, dislikesString, hatesString, activity_durability, description, npm_picture, color],
         (err, result) => {
             if (err) {
