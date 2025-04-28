@@ -149,7 +149,7 @@ html, body {
 /* Assign task */
 .assign-task {
     text-align: center;
-    margin: 2em 0;
+    margin: 0.75em 0;
 }
 
 #assign-task-button {
