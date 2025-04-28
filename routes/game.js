@@ -236,11 +236,13 @@ router.post("/", (req, res) => {
             updateCharSQL += `update users set happiness_score = ` + db.escape(maxScore) 
             + `, max_happiness_score = ` + db.escape(maxScore) + ` where id = ` + db.escape(req.session.user.id) + ";";
 
+            console.log(maxScore);
+
             updateCharSQL += `update leaderboard set high_score = ` + db.escape(maxScore) + ' where user_id = ' + 
             db.escape(req.session.user.id) + "; ";
         }else{
             updateCharSQL += `update users set happiness_score = ` + db.escape(user_happiness) 
-            + ` where id = ` + db.escape(req.session.user.id) + "; ";
+            + ` where id = ` + db.escape(req.session.user.id) + "; "
         }
 
         db.query(updateCharSQL, (err,result) => {

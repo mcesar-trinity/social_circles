@@ -32,7 +32,7 @@ router.get('/', function(req, res, next) {
       if (user.rank === 1) icon = '👑';
       else if (user.rank=== 2) icon = '🥈';
       else if (user.rank === 3) icon = '🥉';
-      else if(user.rank >= 4) icon = user.user_rank;
+      else if(user.rank >= 4) icon = user.rank;
     
       
       // Return an object with the leaderboard entry's rank, name, score, icon, and character information
