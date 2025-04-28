@@ -83,6 +83,15 @@ router.get('/:id', async (req, res) => {
         if (character.length === 0) {
             return res.status(404).send('Character not found');
         }
+        // Fetch the happiness score for the character
+        const happinessScore = await new Promise((resolve, reject) => {
+            db.query(`SELECT happiness_score FROM user_character_score WHERE character_id = ?`, [characterId], (err, scoreResult) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(scoreResult[0] ? scoreResult[0].happiness_score : null);
+            });
+        });
 
         // Prepare tasks based on character preferences
         const tasks = {
