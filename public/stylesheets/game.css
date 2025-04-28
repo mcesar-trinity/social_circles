@@ -51,7 +51,7 @@ button div{
 
 /* Set game height */ 
 form{
-    height: 50%; 
+    height: 60%; 
 }
 
 /* task bar format start */ 
@@ -149,7 +149,7 @@ div.leader-section{
     width: 50%;
     height: 100%;
 
-    margin: 1.5em;
+    margin: 1em;
     border-color: black;
     border-width: .3em;
     border-radius: .5em;
@@ -170,7 +170,7 @@ div.leader-section{
 }
 
 .leaderboard-section{
-    background-color: #8B0000;
+    background-color: #ffffff;
 
     width: 75%;
     height: 50%;
@@ -194,6 +194,11 @@ div.leader-section{
     border-color: black;
     border-width: .2em;
     border-radius: .5em;
+}
+
+.entry{
+    display:flex;
+    font-size: 1.5em;
 }
 
 .info h2{
