@@ -121,6 +121,7 @@ function createGame(req, res){
             //Set maxScore to database max score, and assigned characters to random group via createCharacterGroups()
             maxScore = result[1][0].max_happiness_score
             characterGroups = createCharacterGroups(result[2]);
+            console.log(characterGroups);
             //opinionGroups = createOpinionGroup(result[3]);
 
             res.render("game",{title: 'Social Circle Game', webTitle: 'Game Page', isUser:isUser, userData:result[1], characterGroups:characterGroups, opinions:result[3], leader:result[4], tasks:result[0], customStyle:'/stylesheets/game.css'});
@@ -156,6 +157,7 @@ function resetGame(req,res){
             //Set maxScore to database max score, and assigned characters to random group via createCharacterGroups()
             maxScore = result[1][0].max_happiness_score; 
             characterGroups = characterGroups.length != 0 ? characterGroups : createCharacterGroups(result[2]);
+            console.log(characterGroups);
 
             newGame = true; 
             console.log(result[0]);
@@ -252,5 +254,5 @@ router.post("/", (req, res) => {
     })
 });
 
-//TESTING CODE: module.exports = {router, getRandomTask, createCharacterGroups, calculateHappiness};
+//module.exports = {router, getRandomTask, createCharacterGroups, calculateHappiness};
 module.exports = router;
