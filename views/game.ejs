@@ -50,7 +50,11 @@
             var text = "";
 
             for(let i = 0; i < element.length; i++){
-                text += element[i].innerText;
+                if(i + 1 != element.length){
+                    text += element[i].innerText + ",";
+                }else{
+                    text += element[i].innerText;
+                }
             }
             return text;
         }
