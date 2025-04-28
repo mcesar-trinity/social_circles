@@ -20,64 +20,15 @@
 
 <body>
     <h1 class="selectCharacter">Select a Character</h1>
-
-    <div>
-        <form name="characterForm" action="/character/viewCharacter" method="post" id="characterForm"> 
-            <div class="dropdown-container">
-                <select name="characters" id="characters">
-                    <option value="Molly">Molly</option>
-                    <option value="Jeepers Creepers">Jeepers Creepers</option>
-                    <option value="Krypton">Krypton</option>
-                    <option value="Dumbo">Dumbo</option>
-                    <option value="Virgil">Virgil</option>
-                    <option value="Zombozo">Zombozo</option>
-                    <option value="Elliot">Elliot</option>
-                    <option value="Kingston">Kingston</option>
-                    <option value="Thalion">Thalion</option>
-                    <!-- Add more character options here -->
-                </select>
-            </div>
-            <button class="view-btn" type="submit" value="View Character">View Character</button>
-        </form>
-    </div>
-
     <div class="character-grid">
-        <div class="character-icon">
-            <img src="/images/Molly.png" alt="Molly" />
-            <div class="character-name">Molly</div>
-        </div>
-        <div class="character-icon">
-            <img src="/images/Jeepers Creepers.png" alt="Jeepers Creepers" />
-            <div class="character-name">Jeepers Creepers</div>
-        </div>
-        <div class="character-icon">
-            <img src="/images/Krypton.png" alt="Krypton" />
-            <div class="character-name">Krypton</div>
-        </div>
-        <div class="character-icon">
-            <img src="/images/Dumbo.png" alt="Dumbo" />
-            <div class="character-name">Dumbo</div>
-        </div>
-        <div class="character-icon">
-            <img src="/images/Virgil.png" alt="Virgil" />
-            <div class="character-name">Virgil</div>
-        </div>
-        <div class="character-icon">
-            <img src="/images/Zombozo.png" alt="Zombozo" />
-            <div class="character-name">Zombozo</div>
-        </div>
-        <div class="character-icon">
-            <img src="/images/Elliot.png" alt="Elliot" />
-            <div class="character-name">Elliot</div>
-        </div>
-        <div class="character-icon">
-            <img src="/images/Kingston.png" alt="Kingston" />
-            <div class="character-name">Kingston</div>
-        </div>
-        <div class="character-icon">
-            <img src="/images/Thalion.png" alt="Thalion" />
-            <div class="character-name">Thalion</div>
-        </div>
+        <% characters.forEach(character => { %>
+            <div class="character-icon">
+                <a href="/character/viewCharacter/<%= character.id %>">
+                    <img src="/images/<%= character.npc_picture %>" alt="<%= character.name %>" />
+                    <div class="character-name"><%= character.name %></div>
+                </a>
+            </div>
+        <% }); %>
     </div>
 
     <script>

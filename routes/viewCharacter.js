@@ -1,13 +1,11 @@
-//viewCharacter.js
-
 const express = require('express');
 const router = express.Router();
-const db = require('../db'); // import database connection if needed (currently not used)
+const db = require('../db'); // Import database connection if needed
 
 // Helper function to fetch tasks based on category ID
 function fetchTasksByCategory(categoryId) {
     return new Promise((resolve, reject) => {
-        db.query(`SELECT * FROM tasks WHERE category_id = ?`, [categoryId], (err, taskList) => {
+        db.query(`SELECT name FROM task_categories WHERE id = ?`, [categoryId], (err, taskList) => {
             if (err) {
                 return reject(err);
             }
@@ -16,18 +14,26 @@ function fetchTasksByCategory(categoryId) {
     });
 }
 
-// Helper function to get category ID by name
-function getCategoryIdByName(name) {
+// Helper function to get category IDs by character name and opinion
+function getCategoryIdsByCharacter(characterName) {
     return new Promise((resolve, reject) => {
-        db.query(`SELECT id FROM task_categories WHERE name = ?`, [name], (err, result) => {
-            if (err) {
-                return reject(err);
+        db.query(
+            `SELECT tc.id, cld.opinions FROM task_categories tc 
+             JOIN character_likes_dislikes cld 
+             ON tc.id = cld.category_id
+             JOIN game_characters gc
+             ON gc.id = cld.character_id
+             WHERE gc.name = ?`, 
+            [characterName], 
+            (err, result) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(result);
             }
-            resolve(result.length > 0 ? result[0].id : null);
-        });
+        );
     });
 }
-
 
 // Route to handle viewing a character based on the selected character name
 router.post('/', (req, res) => {
@@ -86,37 +92,14 @@ router.get('/:id', async (req, res) => {
             hate: []
         };
 
-        // Fetch tasks based on character's loves, likes, dislikes, and hates
-        await Promise.all([
-            ...character[0].loves.split(',').map(async (love) => {
-                const categoryId = await getCategoryIdByName(love.trim());
-                if (categoryId) {
-                    const taskList = await fetchTasksByCategory(categoryId);
-                    tasks.love.push(...taskList);
-                }
-            }),
-            ...character[0].likes.split(',').map(async (like) => {
-                const categoryId = await getCategoryIdByName(like.trim());
-                if (categoryId) {
-                    const taskList = await fetchTasksByCategory(categoryId);
-                    tasks.like.push(...taskList);
-                }
-            }),
-            ...character[0].dislikes.split(',').map(async (dislike) => {
-                const categoryId = await getCategoryIdByName(dislike.trim());
-                if (categoryId) {
-                    const taskList = await fetchTasksByCategory(categoryId);
-                    tasks.dislike.push(...taskList);
-                }
-            }),
-            ...character[0].hates.split(',').map(async (hate) => {
-                const categoryId = await getCategoryIdByName(hate.trim());
-                if (categoryId) {
-                    const taskList = await fetchTasksByCategory(categoryId);
-                    tasks.hate.push(...taskList);
-                }
-            })
-        ]);
+        // Fetch all task categories based on the character's preferences
+        const preferences = await getCategoryIdsByCharacter(character[0].name);
+
+        // Loop through the preferences and fetch the task categories for each opinion
+        await Promise.all(preferences.map(async (pref) => {
+            const taskList = await fetchTasksByCategory(pref.id);
+            tasks[pref.opinions].push(...taskList);
+        }));
 
         // Render the character page with character details and tasks
         res.render('characters', {
@@ -129,6 +112,5 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-
-
 module.exports = router;
+

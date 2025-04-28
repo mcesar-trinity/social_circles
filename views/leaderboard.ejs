@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="/stylesheets/leaderboard.css">
+</head>
+<body>
+    <nav class="navbar">
+        <p>Social Circles</p>
+        <a href="/game">
+            <button class="back-btn">Back to Game</button>
+        </a>
+    </nav>
+
+    <div class="star-field" id="stars"></div>
+
+    <div class="leaderboard">
+        <h1>Leaderboard</h1>
+        <% leaderboard.forEach(entry => { %>
+            <div class="entry">
+                <div class="rank"><%=entry.rank%></div>
+                <div class="user-icon"></div>
+                <div class="name"><%= entry.name %> — <%= entry.score %> pts</div>
+            </div>
+        <% }); %>
+    </div>
+
+    <script>
+        const starField = document.getElementById('stars');
+        const numStars = 50; // Adjust for more/less stars
+
+        for (let i = 0; i < numStars; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.animationDuration = `${1.5 + Math.random() * 3}s`;
+            starField.appendChild(star);
+        }
+    </script>
+</body>
+</html>
+
+
+
