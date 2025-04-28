@@ -266,23 +266,23 @@ router.get('/admin/add-character', isAdmin, (req, res) => {
 
 // admin management form submission for adding a character
 router.post('/admin/add-character', isAdmin, (req, res) => {
-    const { name, loves, likes, dislikes, hates, activity_durability } = req.body;
+    const { name, loves, likes, dislikes, hates, activity_durability, description} = req.body;
     
-    const lovesJson = JSON.stringify(loves || []);
-    const likesJson = JSON.stringify(likes || []);
-    const dislikesJson = JSON.stringify(dislikes || []);
-    const hatesJson = JSON.stringify(hates || []);
+    const lovesString = Array.isArray(loves) ? loves.join(', ') : (loves || '');
+    const likesString = Array.isArray(likes) ? likes.join(', ') : (likes || '');
+    const dislikesString = Array.isArray(dislikes) ? dislikes.join(', ') : (dislikes || '');
+    const hatesString = Array.isArray(hates) ? hates.join(', ') : (hates || '');
+
     
     db.query(
-        'INSERT INTO game_characters (name, loves, likes, dislikes, hates, activity_durability) VALUES (?, ?, ?, ?, ?, ?)',
-        [name, lovesJson, likesJson, dislikesJson, hatesJson, activity_durability],
-        function(error, results, fields) {
-          if (error) {
-            console.error(error);
-            res.status(500).send('Server Error');
-            return;
+        'INSERT INTO game_characters (name, loves, likes, dislikes, hates, activity_durability, description) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [name, lovesString, likesString, dislikesString, hatesString, activity_durability, description],
+        function(err, results, fields) {
+          if (err) {
+            console.error('Error adding character', err);
+            return res.status(500).send('Server Error while adding characer.');
           }
-      
+          console.log('Character added successfully.');
           res.redirect('/dashboard');
         }
       );

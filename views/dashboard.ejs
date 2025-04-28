@@ -124,6 +124,9 @@
                         <!-- Form to add a game character -->
                         <form action="/dashboard/admin/add-character" method="POST">
                             <div class="form-group">
+                                <label for="name">Character Name:</label>
+                                <input type="text" name="name" required><br>
+
                                 <label for="characterLoves">Loves:</label>
                                 <select name="loves[]" id="characterLoves" multiple required class="choices-multiple">
                                     <% categories.forEach(category => { %>
@@ -155,8 +158,9 @@
                                 <label for="activityDurability">Activity Durability:</label>
                                 <input type="number" name="activity_durability" min="0" step="1"><br>
 
-                                <label for="happinessScore">Happiness Score:</label>
-                                <input type="number" name="happiness_score" min="0" max="100" step="1"><br>
+                                <label for="description">Character description:</label>
+                                <input type="text" name="description" required><br>
+
                             </div>
                             <div class="form-actions">
                                 <button type="submit" class="btn btn-primary">Add Character</button>
@@ -171,7 +175,7 @@
                                 <p><%= character.name %></p>
                                 <p>Loves: <%= character.loves %>, Likes: <%= character.likes %></p> 
                                 <p>Dislikes: <%= character.dislikes %>, Hates: <%= character.hates %></p>
-                                <p>Activity Durability: <%= character.activity_durability %>, Happiness Score: <%= character.happiness_score %></p>
+                                <p>Activity Durability: <%= character.activity_durability %></p>
                                 <div class="item-card-actions">
                                     <form action="/dashboard/admin/delete-character" method="POST">
                                         <input type="hidden" name="characterId" value="<%= character.id %>">
@@ -344,6 +348,63 @@
                         });
                     });
                 });
-                </script>                
+            </script>   
+           <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                const selectElements = {
+                    loves: document.getElementById('loves'),
+                    likes: document.getElementById('likes'),
+                    dislikes: document.getElementById('dislikes'),
+                    hates: document.getElementById('hates')
+                };
+            
+                // Save all original options
+                const allOptions = {};
+                for (let key in selectElements) {
+                    const options = Array.from(selectElements[key].options);
+                    allOptions[key] = options.map(opt => ({ value: opt.value, text: opt.text }));
+                }
+            
+                function updateDropdowns() {
+                    // Find all selected values across ALL selects
+                    const selectedValues = new Set();
+                    for (let key in selectElements) {
+                        const selected = Array.from(selectElements[key].selectedOptions).map(opt => opt.value);
+                        selected.forEach(val => selectedValues.add(val));
+                    }
+            
+                    // Now reset and rebuild each select
+                    for (let key in selectElements) {
+                        const select = selectElements[key];
+                        const currentSelections = Array.from(select.selectedOptions).map(opt => opt.value);
+            
+                        // Clear all options
+                        select.innerHTML = '';
+            
+                        // Re-add only unselected options OR the ones currently selected in THIS select
+                        allOptions[key].forEach(optData => {
+                            if (!selectedValues.has(optData.value) || currentSelections.includes(optData.value)) {
+                                const option = document.createElement('option');
+                                option.value = optData.value;
+                                option.text = optData.text;
+                                if (currentSelections.includes(optData.value)) {
+                                    option.selected = true;
+                                }
+                                select.appendChild(option);
+                            }
+                        });
+                    }
+                }
+            
+                // Add change listeners
+                for (let key in selectElements) {
+                    selectElements[key].addEventListener('change', updateDropdowns);
+                }
+            
+                updateDropdowns(); // Call once on load
+            });
+            </script>
+            
+                                                    
     </body>
 </html>
