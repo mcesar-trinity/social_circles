@@ -37,7 +37,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +46,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'malea_bea','mlc.enge@gmail.com','$2b$10$2J7ysDWC1Ctf79X1fGSM2uhfJd3BzQYODcP0CO9gkOwwttpe3O6RC','2025-04-06 21:42:47','2025-04-22 14:02:45','admin',NULL,18,0,'#808080'),(4,'malea!','malea.cesar26@gmail.com','$2b$10$9dJLCVxwtxwzcDotj5.MqeIEzkbvzzFCo.Oq2vMq1.iAwRnXn9aTq','2025-04-06 22:50:31','2025-04-22 14:02:45','user',NULL,18,0,'#808080'),(5,'shadow','pikmin@gmail.com','$2b$10$J1pLcz7yocjUvnAgJSmJFOJDWTbbp1RTe22NfiZIizb3lbmdxGFoO','2025-04-07 18:42:04','2025-04-28 16:19:42','admin',NULL,5,27,'#00ff73'),(6,'mel','pop@gmail.com','$2b$10$hE41cOv2SxsJr/NsJX9XSeq2okrzC5gpwTDKq6uI/hL6gXn7hbopK','2025-04-08 23:14:51','2025-04-22 14:02:45','user',NULL,18,0,'#808080'),(7,'farquad','quad22@gmail.com','$2b$10$2s1mGYj9UPgCaGJk3ENpBOcCTOn2oYaN3rvOiMXEBfFlrpeO3xi7a','2025-04-08 23:18:33','2025-04-22 14:02:45','user',NULL,18,0,'#808080'),(8,'Meow3','pickme@gmail.com','$2b$10$tzu77p.4w4h.h91wzowFF.RPZOG4cF73f0mwD4VdPe7O3SQ82xrWu','2025-04-08 23:23:49','2025-04-22 14:02:45','user',NULL,18,0,'#808080'),(9,'dummyAccount','dummy10@gmail.com','$2b$10$N2kqq1h.wq3xJd9eiV9TpuqDyx1kdZr.gAQHF9mh6Hq0bHmMsgyoK','2025-04-11 14:11:40','2025-04-22 14:02:45','user',NULL,18,0,'#808080'),(11,'bea','bea@gmail.com','$2b$10$1lE9dPnH3ldE8CWKb.DJzegVToYL2nEEUt82NHEHiZRcN.Cgwjlj.','2025-04-22 21:15:08','2025-04-28 01:20:23','admin',NULL,NULL,NULL,'#bbff00');
+INSERT INTO `users` VALUES (1,'malea_bea','mlc.enge@gmail.com','$2b$10$2J7ysDWC1Ctf79X1fGSM2uhfJd3BzQYODcP0CO9gkOwwttpe3O6RC','2025-04-06 21:42:47','2025-04-28 16:51:35','admin',NULL,18,9,'#4287f5'),(4,'malea!','malea.cesar26@gmail.com','$2b$10$9dJLCVxwtxwzcDotj5.MqeIEzkbvzzFCo.Oq2vMq1.iAwRnXn9aTq','2025-04-06 22:50:31','2025-04-28 16:54:03','user',NULL,18,13,'#42f54e'),(5,'shadow','pikmin@gmail.com','$2b$10$J1pLcz7yocjUvnAgJSmJFOJDWTbbp1RTe22NfiZIizb3lbmdxGFoO','2025-04-07 18:42:04','2025-04-28 17:15:59','admin',NULL,6,27,'#2fff00'),(6,'mel','pop@gmail.com','$2b$10$hE41cOv2SxsJr/NsJX9XSeq2okrzC5gpwTDKq6uI/hL6gXn7hbopK','2025-04-08 23:14:51','2025-04-28 16:54:27','user',NULL,18,17,'#a89e32'),(7,'farquad','quad22@gmail.com','$2b$10$2s1mGYj9UPgCaGJk3ENpBOcCTOn2oYaN3rvOiMXEBfFlrpeO3xi7a','2025-04-08 23:18:33','2025-04-28 16:54:44','user',NULL,18,7,'#a83294'),(8,'Meow3','pickme@gmail.com','$2b$10$tzu77p.4w4h.h91wzowFF.RPZOG4cF73f0mwD4VdPe7O3SQ82xrWu','2025-04-08 23:23:49','2025-04-28 16:46:42','user',NULL,18,2,'#808080'),(9,'dummyAccount','dummy10@gmail.com','$2b$10$N2kqq1h.wq3xJd9eiV9TpuqDyx1kdZr.gAQHF9mh6Hq0bHmMsgyoK','2025-04-11 14:11:40','2025-04-28 16:52:01','user',NULL,18,NULL,'#42f54e'),(11,'bea','bea@gmail.com','$2b$10$1lE9dPnH3ldE8CWKb.DJzegVToYL2nEEUt82NHEHiZRcN.Cgwjlj.','2025-04-22 21:15:08','2025-04-28 01:20:23','admin',NULL,NULL,NULL,'#bbff00'),(12,'test','jdf@gmail.com','$2b$10$BGsUeYsdPKePsFjsozujq.BC5jM1PJuDU8.qNnwsGDrgTx8nJNCfu','2025-04-28 17:19:29','2025-04-28 19:01:51','user',NULL,2,2,'#808080'),(13,'tester','test@gmail.com','$2b$10$Pb1fewYKo.ujyE3gSA/yHuD32aYuVR1KN8uLdjnMa.9MyoYD/rj62','2025-04-30 14:45:10','2025-04-30 14:50:47','user',NULL,2,2,'#808080');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -59,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-28 11:25:26
+-- Dump completed on 2025-04-30  9:54:29

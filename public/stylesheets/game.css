@@ -38,6 +38,7 @@ html, body {
 #task-options {
     width: 80%;
     font-size: 1.5em;
+    text-align: center;
     padding: 0.5em;
     border-radius: 8px;
     background-color: grey;
