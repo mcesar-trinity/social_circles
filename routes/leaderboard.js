@@ -4,57 +4,51 @@ const db = require('../db'); // Assuming 'db' is your database connection file
 
 // SQL query to get all leaderboard entries, ordered by user rank
 router.get('/', function(req, res, next) {
-  // Define the SQL query to fetch leaderboard data without limiting the number of entries
   let sql = `
-    SELECT u.id, u.username, u.profile_color, u.max_happiness_score, rank()
-	  Over (order by l.high_score desc) as 'rank'
+    SELECT u.id, u.username, u.profile_color, l.high_score as max_happiness_score
     FROM leaderboard l
-    JOIN users u ON u.id = l.user_id;
-
-    -- Sort by user rank in ascending order
+    JOIN users u ON u.id = l.user_id
+    ORDER BY l.high_score DESC;
   `;
 
-  // Query the database to fetch leaderboard data
   db.query(sql, (err, result) => {
     if (err) {
-      // Handle any errors that occur while querying the database
       console.error('Error fetching leaderboard:', err);
-      return res.status(500).send('Server error');  // Send a 500 status if error occurs
+      return res.status(500).send('Server error');
     }
 
-    
-    // Map the database results into a format that can be easily rendered in the view
-    var leaderboard = []
-    result[0].forEach((user) => {
-      console.log("User: " + user.username);
+    let leaderboard = [];
+
+    // Assign ranks to the users
+    result.forEach((user, index) => {
       let icon = null;
-      // Assign an icon based on the rank (e.g., crown for 1st, silver medal for 2nd, etc.)
-      if (user.rank === 1) icon = '👑';
-      else if (user.rank=== 2) icon = '🥈';
-      else if (user.rank === 3) icon = '🥉';
-      else if(user.rank >= 4) icon = user.rank;
-    
-      
-      // Return an object with the leaderboard entry's rank, name, score, icon, and character information
+      let rank = index + 1; // Manually assign rank (starting from 1)
+
+      // Assign an icon based on the rank
+      if (rank === 1) icon = '👑';
+      else if (rank === 2) icon = '🥈';
+      else if (rank === 3) icon = '🥉';
+      else if (rank >= 4) icon = rank;
+
       leaderboard.push({
-        rank: icon, // User's rank on the leaderboard
-        name: user.username, // User's username
-        score: user.max_happiness_score,       // User's high score
-        color: user.profile_color, // color associated with the user
+        rank: icon,
+        name: user.username,
+        score: user.max_happiness_score,
+        color: user.profile_color,
         id: user.id
-      });   
-      console.log(leaderboard); 
+      });
     });
 
     // Optionally: Get the current user's rank from the session (if logged in)
     const currentUserRank = req.session.user ? leaderboard.find(entry => entry.name === req.session.user.username)?.rank : null;
 
-    console.log("Current rank:" + leaderboard);
+    console.log("Leaderboard:", leaderboard);
+
     // Render the 'leaderboard' view and pass the leaderboard data to it
-    res.render('leaderboard', { leaderboard});
-    // Pass the user's rank (if any) to the view for the rank box
-    });
+    res.render('leaderboard', { leaderboard });
   });
+});
+
 
 
 // Export the router so it can be used in the main app file

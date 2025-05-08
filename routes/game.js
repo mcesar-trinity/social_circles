@@ -110,9 +110,12 @@ function createGame(req, res){
 
         let opinionSQL = `select cld.character_id, cld.category_id, cld.opinions from character_likes_dislikes cld`;
 
-        let leaderSQL = ` SELECT u.username, u.profile_color, u.max_happiness_score, rank() Over (order by l.high_score desc) as 'rank' ` + 
-        ` FROM leaderboard l JOIN users u ON u.id = l.user_id limit 5;
-        -- Sort by user rank in ascending order`; 
+        let leaderSQL = `SELECT u.username, u.profile_color, u.max_happiness_score
+                 FROM leaderboard l 
+                 JOIN users u ON u.id = l.user_id
+                 ORDER BY l.high_score DESC
+                 LIMIT 5;`;
+
 
         db.query(taskSQL + "; " + userSQL + "; " + infoSQL + "; " + opinionSQL + ";" + leaderSQL + ";", (err, result) => {
             if(err) throw err;
@@ -145,9 +148,12 @@ function resetGame(req,res){
         `user_character_score uc where c.id = uc.character_id and uc.user_id = u.id and u.id = ` + db.escape(req.session.user.id);
 
         let opinionSQL = `select cld.character_id, cld.category_id, cld.opinions from character_likes_dislikes cld`;
-        let leaderSQL = ` SELECT u.username, u.profile_color, u.max_happiness_score, rank() Over (order by l.high_score desc) as 'rank' ` + 
-        ` FROM leaderboard l JOIN users u ON u.id = l.user_id limit 5;
-        -- Sort by user rank in ascending order`;
+        let leaderSQL = `SELECT u.username, u.profile_color, u.max_happiness_score
+                 FROM leaderboard l 
+                 JOIN users u ON u.id = l.user_id
+                 ORDER BY l.high_score DESC
+                 LIMIT 5;`;
+
         
         db.query(taskSQL + "; " + userSQL + "; " + infoSQL + "; " + opinionSQL + ";" + leaderSQL + ";", (err, result) => {
             if(err) throw err;
