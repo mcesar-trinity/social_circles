@@ -11,18 +11,27 @@ router.get('/', function(req, res, next) {
     ORDER BY l.high_score DESC;
   `;
 
+  
   db.query(sql, (err, result) => {
     if (err) {
       console.error('Error fetching leaderboard:', err);
       return res.status(500).send('Server error');
     }
 
+    const updateLeaderboardRank = `UPDATE leaderboard SET user_rank = ? WHERE user_id = ?`;
+
+
     let leaderboard = [];
+
+    let completed = 0;
+    const total = result.length;
+    let errorOccurred = false;
 
     // Assign ranks to the users
     result.forEach((user, index) => {
       let icon = null;
       let rank = index + 1; // Manually assign rank (starting from 1)
+
 
       // Assign an icon based on the rank
       if (rank === 1) icon = '👑';
@@ -36,6 +45,20 @@ router.get('/', function(req, res, next) {
         score: user.max_happiness_score,
         color: user.profile_color,
         id: user.id
+      });
+
+      db.query(updateLeaderboardRank, [rank, user.id], (err) => {
+        if (err && !errorOccurred) {
+          errorOccurred = true;
+          console.error('Error updating leaderboard rank:', err);
+          return res.status(500).send('Server error');
+        }
+    
+        completed++;
+        if (completed === total && !errorOccurred) {
+          // Send final response here
+          res.json({ leaderboard });
+        }
       });
     });
 
