@@ -1106,3 +1106,20 @@ body {
     cursor: pointer;
     transition: background 0.3s, border 0.3s;
 }
+
+.instructions-intro { 
+    font: 15px; 
+    display: flex; 
+    flex-direction: column; 
+    text-align: center;
+    font-weight: bold;
+    margin-top: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.instructions-text {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-left: 5rem;
+    padding-right: 5rem;
+}
