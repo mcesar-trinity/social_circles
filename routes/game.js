@@ -93,7 +93,7 @@ function calculateHappiness(happiness_score, opinions){
 
 //Used to create a new game
 //Intells randomizing the set of tasks and character assignemnt 
-function createGame(req, res){
+function createGame(req, res, oldValues = { }){
     //Query the amount tasks in the database
     let counterSQL = ` select count(*) as tasksCount from tasks`;
     db.query(counterSQL, (counterErr, counterResult) => {
@@ -122,7 +122,18 @@ function createGame(req, res){
             characterGroups = createCharacterGroups(result[2]);
             //opinionGroups = createOpinionGroup(result[3]);
 
-            res.render("game",{title: 'Social Circle Game', webTitle: 'Game Page', isUser:isUser, userData:result[1], characterGroups:characterGroups, opinions:result[3], leader:result[4], tasks:result[0], customStyle:'/stylesheets/game.css'});
+            res.render("game",{
+                title: 'Social Circle Game', 
+                webTitle: 'Game Page', 
+                isUser: isUser, 
+                userData: result[1], 
+                characterGroups: characterGroups, 
+                opinions: result[3], 
+                leader: result[4], 
+                tasks: result[0], 
+                customStyle: '/stylesheets/game.css',
+                oldValues
+            });
         });
     });
 }
@@ -157,7 +168,18 @@ function resetGame(req,res){
             characterGroups = characterGroups.length != 0 ? characterGroups : createCharacterGroups(result[2]);
 
             newGame = true; 
-            res.render("game",{title: 'Social Circle Game', webTitle: 'Game Page', isUser:isUser, userData:result[1], characterGroups:characterGroups, opinions:result[3], leader:result[4], tasks:result[0], customStyle:'/stylesheets/game.css'});
+            res.render("game",{ 
+                title: 'Social Circle Game', 
+                webTitle: 'Game Page', 
+                isUser: isUser, 
+                userData: result[1], 
+                characterGroups: characterGroups, 
+                opinions: result[3], 
+                leader: result[4], 
+                tasks: result[0], 
+                customStyle:'/stylesheets/game.css',
+                oldValues: { }
+            });
         });
     });
 }
@@ -208,8 +230,15 @@ router.post("/", (req, res) => {
         var userCount = 0;
         var updateCharSQL = ""; 
 
+        let oldValues = { };
+
         result[0].forEach((selected) => {
             console.log("Selected: " + selected.id);
+
+            oldValues[selected.id] = { };
+            oldValues[selected.id].happiness = selected.happiness_score;
+            oldValues[selected.id].durability = selected.durability_score;
+
             var character_happiness = calculateHappiness(selected.happiness_score, selected.opinions);
             totalHappiness += character_happiness;
             userCount += 1;
@@ -224,6 +253,10 @@ router.post("/", (req, res) => {
         }); 
 
         result[1].forEach((unSelected) => {
+            oldValues[unSelected.id] = { };
+            oldValues[unSelected.id].happiness = unSelected.happiness_score;
+            oldValues[unSelected.id].durability = unSelected.durability_score;
+
             var durability_score = (unSelected.durability_score - 1 < 0) ? 0 : (unSelected.durability_score - 1);
             var un_happiness_score = ((unSelected.durability_score - 1 < 0) && (unSelected.happiness_score - 1 >= 0)) ? (unSelected.happiness_score - 1) : unSelected.happiness_score;
             
@@ -236,22 +269,21 @@ router.post("/", (req, res) => {
         });
 
         user_happiness = Math.round(totalHappiness / userCount);
-        if(user_happiness > maxScore){
+        if(user_happiness > maxScore) {
             maxScore = user_happiness; 
             updateCharSQL += `update users set happiness_score = ` + db.escape(maxScore) 
             + `, max_happiness_score = ` + db.escape(maxScore) + ` where id = ` + db.escape(req.session.user.id) + ";";
 
             updateCharSQL += `update leaderboard set high_score = ` + db.escape(maxScore) + ' where user_id = ' + 
             db.escape(req.session.user.id) + "; ";
-        }else{
+        } else {
             updateCharSQL += `update users set happiness_score = ` + db.escape(user_happiness) 
             + ` where id = ` + db.escape(req.session.user.id) + "; "
         }
 
-
         db.query(updateCharSQL, (err,result) => {
             if(err) throw err;
-            createGame(req,res);
+            createGame(req,res,oldValues);
         });
     })
 });
