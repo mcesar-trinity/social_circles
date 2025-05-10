@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Select a Character</title>
     <link rel="stylesheet" href="/stylesheets/style.css">
     <style>
         .character-icon {
-            text-align: center; /* Center the text below the icon */
-            margin: 10px; /* Add some space around each icon */
+            text-align: center;
+            /* Center the text below the icon */
+            margin: 10px;
+            /* Add some space around each icon */
         }
 
         .character-name {
-            color: white; /* Set the font color to white */
-            margin-top: 5px; /* Space between the icon and the name */
+            color: white;
+            /* Set the font color to white */
+            margin-top: 5px;
+            /* Space between the icon and the name */
         }
     </style>
 </head>
@@ -21,14 +26,16 @@
 <body>
     <h1 class="selectCharacter">Select a Character</h1>
     <div class="character-grid">
-        <% characters.forEach(character => { %>
+        <% characters.forEach(character=> { %>
             <div class="character-icon">
                 <a href="/character/viewCharacter/<%= character.id %>">
                     <img src="/images/<%= character.npc_picture %>" alt="<%= character.name %>" />
-                    <div class="character-name"><%= character.name %></div>
+                    <div class="character-name">
+                        <%= character.name %>
+                    </div>
                 </a>
             </div>
-        <% }); %>
+            <% }); %>
     </div>
 
     <script>
@@ -53,9 +60,9 @@
         }
     </script>
     <form action="/">
-    <button type="submit" class="close-button">Back to Home</button>
+        <button type="submit" class="close-button">Back to Home</button>
     </form>
-   
+
     <div class="star-field" id="stars"></div>
     <script>
         const starField = document.getElementById('stars');
@@ -71,4 +78,5 @@
         }
     </script>
 </body>
+
 </html>
