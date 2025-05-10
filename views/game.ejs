@@ -9,9 +9,10 @@
 
             return names;
         }
+        
+        function submit(){
+            document.getElementById("gameForm").submit();
 
-        function submit() {
-            document.getElementById("gameForm").submit;
         }
 
         function selectedButton(id) {
@@ -154,24 +155,28 @@
                     </div>
 
                     <div class="leaderboard-section">
-                        <div class="info">
-                            <h2>Top 5 Players</h2>
-                            <% leader.forEach(entry=> { %>
-                                <div class="entry" style="color:<%=entry.profile_color%>; font-weight: bold;">
-                                    <div class="rank">
-                                        <%=entry.rank%>
-                                    </div>
-                                    <div class="name">: <%= entry.username %> — <%= entry.max_happiness_score %> pts
-                                    </div>
-                                </div>
-                                <% }); %>
-                        </div>
 
+                        <div class="info"> 
+                            <h2>Top 5 Player</h2>
+                            <% leader.sort((a, b) => b.max_happiness_score - a.max_happiness_score); %>
+                            <% let place = 1; %>
+                            <% leader.forEach(entry => { %>
+                                <div class="entry" style="color:<%= entry.profile_color %>; font-weight: bold;">
+                                    <div class="rank"> <%= place %> </div>
+                                    <div class="name">:  <%= entry.username %> — <%= entry.max_happiness_score %> pts </div>
+                                </div>
+                                <% place++; %> <!-- Increment rank after each entry -->
+                            <% }); %>
+
+                        </div>
+                    
                         <div class="game-to-leaderboard">
+
                             <button type="submit" id="leaderboard" name="option" value="Leaderboard"
                                 onclick="window.location=`/leaderboard`; return false;">Leaderboard</button>
                         </div>
                     </div>
+                    
                 </div>
             </div>
 

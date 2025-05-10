@@ -91,6 +91,47 @@ function calculateHappiness(happiness_score, opinions){
         return finalHappiness;
 }
 
+
+//fuction that get the values of the character durability score
+function updateCharacterDurability(req, res) {
+    let characterDurabilitySQL = `
+        SELECT uc.character_id, uc.durability_score, c.activity_durability
+        FROM user_character_score uc
+        JOIN game_characters c ON uc.character_id = c.id
+        WHERE uc.user_id = ?;
+    `;
+
+    db.query(characterDurabilitySQL, [req.session.user.id], (err, result) => {
+        if (err) throw err;
+
+        let updateDurabilitySQL = '';
+
+        result.forEach(character => {
+            let durability_score = character.durability_score;
+            if (durability_score === null) {
+                durability_score = character.activity_durability;
+            }
+
+            updateDurabilitySQL += `
+                UPDATE user_character_score
+                SET durability_score = ${db.escape(durability_score)}
+                WHERE user_id = ${db.escape(req.session.user.id)} 
+                AND character_id = ${db.escape(character.character_id)};
+            `;
+        });
+
+        if (updateDurabilitySQL !== '') {
+            db.query(updateDurabilitySQL, (err, updateResult) => {
+                if (err) throw err;
+                console.log('Durability scores updated successfully.');
+                // After updating durability, create the game
+            });
+        }
+    });
+}
+
+
+
 //Used to create a new game
 //Intells randomizing the set of tasks and character assignemnt 
 function createGame(req, res){
@@ -110,9 +151,12 @@ function createGame(req, res){
 
         let opinionSQL = `select cld.character_id, cld.category_id, cld.opinions from character_likes_dislikes cld`;
 
-        let leaderSQL = ` SELECT u.username, u.profile_color, u.max_happiness_score, rank() Over (order by l.high_score desc) as 'rank' ` + 
-        ` FROM leaderboard l JOIN users u ON u.id = l.user_id limit 5;
-        -- Sort by user rank in ascending order`; 
+        let leaderSQL = `SELECT u.username, u.profile_color, u.max_happiness_score
+                 FROM leaderboard l 
+                 JOIN users u ON u.id = l.user_id
+                 ORDER BY l.high_score DESC
+                 LIMIT 5;`;
+
 
         db.query(taskSQL + "; " + userSQL + "; " + infoSQL + "; " + opinionSQL + ";" + leaderSQL + ";", (err, result) => {
             if(err) throw err;
@@ -145,9 +189,12 @@ function resetGame(req,res){
         `user_character_score uc where c.id = uc.character_id and uc.user_id = u.id and u.id = ` + db.escape(req.session.user.id);
 
         let opinionSQL = `select cld.character_id, cld.category_id, cld.opinions from character_likes_dislikes cld`;
-        let leaderSQL = ` SELECT u.username, u.profile_color, u.max_happiness_score, rank() Over (order by l.high_score desc) as 'rank' ` + 
-        ` FROM leaderboard l JOIN users u ON u.id = l.user_id limit 5;
-        -- Sort by user rank in ascending order`;
+        let leaderSQL = `SELECT u.username, u.profile_color, u.max_happiness_score
+                 FROM leaderboard l 
+                 JOIN users u ON u.id = l.user_id
+                 ORDER BY l.high_score DESC
+                 LIMIT 5;`;
+
         
         db.query(taskSQL + "; " + userSQL + "; " + infoSQL + "; " + opinionSQL + ";" + leaderSQL + ";", (err, result) => {
             if(err) throw err;
@@ -169,6 +216,7 @@ router.get("/", (req,res) => {
     if(isUser){
         if(!refreshGame){
             refreshGame = true; 
+            updateCharacterDurability(req, res);
             createGame(req, res);
         }else{
             resetGame(req, res);
