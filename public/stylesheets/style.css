@@ -1,38 +1,38 @@
 /*Styles the heading and body background for each page */
-.heading { 
-    font: 10px Arial, sans-serif; 
-    display: flex; 
-    flex-direction: column; 
+.heading {
+    font: 10px Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
     text-align: center;
     font-weight: bold;
     background-color: black;
-    color:white;
+    color: white;
     padding: 16px;
 }
 
-body.home { 
+body.home {
     height: 100%;
     border-width: 0px;
     background-color: #242124;
-    background-image: linear-gradient(to right, #242124, #003366);
+    background-image: linear-gradient(to right, #242124, #110066);
 }
 
-.account-button{
+.account-button {
     height: 5em;
     width: 5em;
     border-radius: 50%;
 
     position: absolute;
-    top:1em;
-    right:1em;
+    top: 1em;
+    right: 1em;
 }
 
 /*Style for the "Come Join the Fun!" intro on the home page
 when the user is not logged in*/
-.intro { 
-    font: 15px; 
-    display: flex; 
-    flex-direction: column; 
+.intro {
+    font: 15px;
+    display: flex;
+    flex-direction: column;
     text-align: center;
     font-weight: bold;
 
@@ -41,12 +41,12 @@ when the user is not logged in*/
 
 /*NOTE: REMOVE WHEN WE GET RID OF DUMMY LOGIN PAGE
 Styles the login buttons on the dummy login page*/
-.login-button{ 
-    text-align: center; 
+.login-button {
+    text-align: center;
 }
 
-.login-button input{ 
-    font-size: 25px; 
+.login-button input {
+    font-size: 25px;
     padding: 10px;
     border-radius: 8px;
 
@@ -54,19 +54,19 @@ Styles the login buttons on the dummy login page*/
 }
 
 
-/*Styles the three options on the home page when logged in*/ 
-.game-options { 
+/*Styles the three options on the home page when logged in*/
+.game-options {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 7em;
-    
+
 }
 
 /*Set size and position of the three options*/
-.game-options button{ 
+.game-options button {
     text-align: top;
-    
+
     max-height: 20em;
     max-width: 15em;
 
@@ -75,16 +75,17 @@ Styles the login buttons on the dummy login page*/
 }
 
 /*Pushes all text to the top*/
-button div{ 
+button div {
     position: relative;
 }
+
 /*Pushes the description closer to the center*/
-.game-options div{
+.game-options div {
     margin-bottom: 3em;
 }
 
 /*Styles the title of each option*/
-.game-options .option-title{ 
+.game-options .option-title {
     color: white;
     font-weight: bold;
     font-size: 1.5em;
@@ -95,34 +96,34 @@ button div{
 }
 
 /* .game-options #... to set the colors for each option */
-.game-options #leaderboard{ 
-    background-color: #8B0000;
+.game-options #leaderboard {
+    background-color: #d50ddf;
     font-size: 1.5em;
     border-radius: 1.5em;
 }
 
-.game-options #game{ 
-    background-color: #1B3A1A;
+.game-options #game {
+    background-color: #861b8d;
     font-size: 1.5em;
     border-radius: 1.5em;
 }
 
-.game-options #character{
-    background-color: #FBC02D;
+.game-options #character {
+    background-color: #2df4fb;
     font-size: 1.5em;
     border-radius: 1.5em;
 }
 
-form{
+form {
     height: 70%;
 }
 
-.tasks-game{
+.tasks-game {
     text-align: center;
     border-radius: .5em;
 }
 
-#task-options{
+#task-options {
     width: 80%;
     font-size: 2em;
 
@@ -130,65 +131,65 @@ form{
 
     margin-top: 0.5em;
     background-color: grey;
-    color: black 
+    color: black
 }
 
-.info-section{
+.info-section {
     height: 100%;
     width: 100%;
     display: flex;
 }
 
-div.character-groups{
+div.character-groups {
     width: 80%;
     height: 100%;
     max-height: 100%;
 
     text-align: right;
-    
+
     margin: 1.5em;
     margin-left: 8em;
 }
 
-.scores{ 
+.scores {
     width: 100px;
 }
 
-.character h3{
+.character h3 {
     color: black;
 }
 
-.info h3{
+.info h3 {
     color: black;
 }
 
 
-h3.score{
-    left:2em;
+h3.score {
+    left: 2em;
     padding-right: 1em;
     margin-bottom: 0px;
     margin-top: 0px;
 }
 
-h3.score:first-of-type{
-    margin-top:0.5em;
+h3.score:first-of-type {
+    margin-top: 0.5em;
 }
 
-div.character{
+div.character {
     display: flex;
     padding: 0.5em;
 }
 
-div.character{
+div.character {
     width: 50%;
 }
 
-div.leader-section{
-    width:30%;
+div.leader-section {
+    width: 30%;
 
 }
 
-.group{ 
+.group {
     width: 35%;
     height: 100%;
     text-align: left;
@@ -197,32 +198,32 @@ div.leader-section{
     border-color: black;
     border-width: .3em;
     border-radius: .5em;
-    display:block;
+    display: block;
     position: relative;
 
     margin: 1.5em;
     padding: 1em;
 }
 
-.group:hover{
+.group:hover {
     background-color: greenyellow;
 }
 
-.group h2{
-   display: block;
-   position:absolute;
-   top:0em;
-
-}
-
-.group h3{
+.group h2 {
     display: block;
-    position:relative;
-    top:1em;
+    position: absolute;
+    top: 0em;
+
+}
+
+.group h3 {
+    display: block;
+    position: relative;
+    top: 1em;
 }
 
 
-.leaderboard-player{
+.leaderboard-player {
     width: 40%;
     height: 100%;
 
@@ -232,7 +233,7 @@ div.leader-section{
     border-radius: .5em;
 }
 
-.player-happiness{
+.player-happiness {
     background-color: #FBC02D;
     text-align: center;
 
@@ -246,11 +247,11 @@ div.leader-section{
     border-radius: .5em;
 }
 
-.player-happiness h2{
+.player-happiness h2 {
     color: black;
 }
 
-.leaderboard-section{
+.leaderboard-section {
     background-color: #8B0000;
 
     width: 75%;
@@ -263,12 +264,12 @@ div.leader-section{
     border-radius: .5em;
 }
 
-.game-to-leaderboard{
+.game-to-leaderboard {
     margin-top: 2em;
     text-align: center;
 }
 
-#leaderboard{
+#leaderboard {
     background-color: grey;
     font-size: 1em;
 
@@ -277,19 +278,19 @@ div.leader-section{
     border-radius: .5em;
 }
 
-.info h2{
+.info h2 {
     display: block;
     position: relative;
     text-align: center;
     color: black;
 }
 
-.assign-task{
+.assign-task {
     position: relative;
     text-align: center;
 }
 
-#assign-task-button{
+#assign-task-button {
     background-color: grey;
     font-size: 1.5em;
 
@@ -299,7 +300,7 @@ div.leader-section{
 }
 
 /*Navigation bar styling*/
-.header-content{
+.header-content {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -307,14 +308,14 @@ div.leader-section{
     justify-content: center;
 }
 
-.main-nav{
+.main-nav {
     width: 80%;
     margin: 0 auto;
     display: flex;
     justify-content: center;
 }
 
-.main-nav ul{
+.main-nav ul {
     display: flex;
     justify-content: space-around;
     list-style: none;
@@ -323,12 +324,12 @@ div.leader-section{
     width: 100%;
 }
 
-.main-nav li{
+.main-nav li {
     padding: 0 24px;
     text-align: center;
 }
 
-.main-nav a{
+.main-nav a {
     text-decoration: none;
     color: #ffffff;
     font-weight: 500;
@@ -336,37 +337,37 @@ div.leader-section{
     transition: color 0.3s ease;
 }
 
-.main-nav a:hover{
+.main-nav a:hover {
     color: #cb6ce6;
 }
 
 /*Logging in page (authorize.ejs)*/
 
-.auth-container{
+.auth-container {
     max-width: 400px;
     margin: 100px auto;
-    background-color: rgba(255,255,255,0.9);
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 10px;
     padding: 30px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     text-align: center;
 }
 
-.auth-container h2{
+.auth-container h2 {
     margin-bottom: 24px;
     font-size: 28px;
     color: #333;
     font-weight: bold;
 }
 
-.auth-container form{
+.auth-container form {
     display: flex;
     flex-direction: column;
     gap: 16px;
     margin-bottom: 20px;
 }
 
-.auth-container input{
+.auth-container input {
     padding: 14px;
     border: 1px solid #ddd;
     border-radius: 6x;
@@ -375,13 +376,13 @@ div.leader-section{
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.auth-container input:focus{
+.auth-container input:focus {
     border-color: #cb6ce6;
     box-shadow: 0 0 8px rgba(203, 108, 230, 0.4);
     outline: none;
 }
 
-.auth-container button{
+.auth-container button {
     padding: 14px;
     border: none;
     border-radius: 6px;
@@ -393,32 +394,32 @@ div.leader-section{
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.auth-container button:hover{
+.auth-container button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-.auth-container p{
+.auth-container p {
     font-size: 16px;
     color: #555;
     margin-top: 16px;
 }
 
-.auth-container a{
+.auth-container a {
     color: #004aad;
     font-weight: bold;
     text-decoration: none;
     transition: color 0.3s;
 }
 
-.auth-container a:hover{
-    color:#cb6ce6;
+.auth-container a:hover {
+    color: #cb6ce6;
     text-align: underline;
 }
 
 /*Error message handling*/
 
-.error-message{
+.error-message {
     background-color: #ffebee;
     color: #c62828;
     padding: 10px;
@@ -431,23 +432,23 @@ div.leader-section{
 
 /*Dashbaord/Profile page styling*/
 
-.dashboard-container{
+.dashboard-container {
     max-width: 800px;
     margin: 40px auto;
-    background-color: rgba(255,255,255,0.9);
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 10px;
     padding: 30px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
-.dashboard-container h1{
+.dashboard-container h1 {
     text-align: center;
     color: #333;
     font-size: 32px;
     margin-bottom: 30px;
 }
 
-.dashboard-container h2{
+.dashboard-container h2 {
     color: #004aad;
     font-size: 24px;
     margin-top: 30px;
@@ -456,28 +457,28 @@ div.leader-section{
     padding-bottom: 10px;
 }
 
-.dashboard-container h3{
+.dashboard-container h3 {
     color: #333;
     font-size: 20px;
     margin-top: 25px;
     margin-bottom: 15px;
 }
 
-.profile-section{
+.profile-section {
     margin-bottom: 40px;
     color: #333;
 }
 
-.profile-view{
+.profile-view {
     margin-bottom: 8px;
     color: #333;
 }
 
-.form-actions{
+.form-actions {
     margin-top: 16px;
 }
 
-.form-group{
+.form-group {
     margin-bottom: 16px;
 }
 
@@ -488,7 +489,9 @@ div.leader-section{
     color: #555;
 }
 
-.form-group input, .form-group textarea, .form-group select {
+.form-group input,
+.form-group textarea,
+.form-group select {
     width: 100%;
     padding: 12px;
     border: 1px solid #ddd;
@@ -499,42 +502,47 @@ div.leader-section{
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
     border-color: #cb6ce6;
     box-shadow: 0 0 8px rgba(203, 108, 230, 0.4);
     outline: none;
 }
 
-.form-group textarea{
+.form-group textarea {
     min-height: 100px;
     resize: vertical;
 }
 
 select[multiple] {
-  width: 100%;
-  height: 150px;
-  padding: 8px;
-  border-radius: 8px;
-  background-color: #f8f8f8;
-  color: #333;
+    width: 100%;
+    height: 150px;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: #f8f8f8;
+    color: #333;
 }
+
 .choices__inner {
-  min-height: 50px;
-  padding: 8px;
-  border-radius: 8px;
-  background-color: #f8f8f8;
-  color: #333;
-  border: 1px solid #ccc;
+    min-height: 50px;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: #f8f8f8;
+    color: #333;
+    border: 1px solid #ccc;
 }
 
 /* Also fix dropdown list text */
 .choices__list--dropdown .choices__item {
-  color: #333;
+    color: #333;
 }
 
 /* Optional: fix placeholder text color */
 .choices__placeholder {
-  color: #999; /* lighter gray for placeholder */
+    color: #999;
+    ;
+    /* lighter gray for placeholder */
 }
 
 
@@ -563,14 +571,14 @@ select[multiple] {
     color: white;
 }
 
-.btn-secondary{
+.btn-secondary {
     background-color: #6c757d;
     color: white;
 }
 
-.btn:hover{
+.btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 /*form styling*/
@@ -584,7 +592,7 @@ select[multiple] {
 .item-list {
     margin-top: 20px;
 }
-  
+
 .item-card {
     background-color: #f8f8f8;
     border-radius: 8px;
@@ -592,12 +600,12 @@ select[multiple] {
     margin-bottom: 16px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
- 
+
 .item-card p {
     margin: 8px 0;
     color: #555;
 }
-  
+
 .item-card-actions {
     display: flex;
     justify-content: flex-end;
@@ -645,23 +653,31 @@ select[multiple] {
 
 
 /*admin section*/
-.admin-section{
+.admin-section {
     margin-top: 40px;
     padding-top: 40px;
     border-top: 1px dashed #ccc;
 }
+
 /* Character Page */
 body.character-page {
-    color: white; /* Default text color */
-    font-family: Arial, sans-serif; /* Font for the page */
-    line-height: 1.6; /* Improve readability */
-    margin: 0; /* Remove default margins */
-    padding: 20px; /* Add some padding */
-    background-color: black; /* Black background color for the page */
-    border: 5px solid; /* Border will be set dynamically */
+    color: white;
+    /* Default text color */
+    font-family: Arial, sans-serif;
+    /* Font for the page */
+    line-height: 1.6;
+    /* Improve readability */
+    margin: 0;
+    /* Remove default margins */
+    padding: 20px;
+    /* Add some padding */
+    background-color: black;
+    /* Black background color for the page */
+    border: 5px solid;
+    /* Border will be set dynamically */
 }
 
-.character-descriptions{
+.character-descriptions {
     width: 100%;
 }
 
@@ -676,7 +692,8 @@ body.character-page {
 }
 
 .admin-character-item {
-    color: #f0f0f0; /* better text color */
+    color: #f0f0f0;
+    /* better text color */
     padding: 8px;
     margin-bottom: 6px;
     background-color: #555;
@@ -703,7 +720,8 @@ body.character-page {
     border-collapse: collapse;
 }
 
-.admin-user-management th, .admin-user-management td {
+.admin-user-management th,
+.admin-user-management td {
     padding: 12px 16px;
     text-align: left;
     border-bottom: 1px solid #ddd;
@@ -785,14 +803,18 @@ body.character-page {
 .character-header {
     padding: 20px;
     text-align: center;
-    color: white; /*  text font */
+    color: white;
+    /*  text font */
 }
 
 /* Character Container */
 .character-container {
-    display: flex; /* Flex layout for alignment */
-    align-items: flex-start; /* Align items at the top */
+    display: flex;
+    /* Flex layout for alignment */
+    align-items: flex-start;
+    /* Align items at the top */
     margin: 20px;
+
 }
 
 /* Character Icon */
@@ -807,57 +829,86 @@ body.character-page {
     position: absolute;
     top: 2em;
     left: 2em;
-  }
+}
 
 /*Character Info*/
-.character-info{
+.character-info {
     text-align: left;
 }
 
 /* Scores Box */
 .scores-box {
-    width:70%;
-    color: black; /* Text color for scores */
+    width: 70%;
+    color: black;
+    /* Text color for scores */
     padding: 15px;
     border-radius: 10px;
-    margin-left: 1em; /* Align to the left */
-    position: relative; /* Allow absolute positioning */
+    margin-left: 1em;
+    /* Align to the left */
+    position: relative;
+    /* Allow absolute positioning */
 }
 
 /* Description Box */
 .description-box {
-    background-color: grey; /* Default description box color */
-    color: black; /* Text color for description */
-    margin: 20px auto; /* Center the box with auto margin */
+    background-color: grey;
+    /* Default description box color */
+    color: black;
+    /* Text color for description */
+    margin: 20px auto;
+    /* Center the box with auto margin */
     padding: 15px;
-    border: none; /* No edges */
-    width: 80%; /* Set width for centering */
+    border: none;
+    /* No edges */
+    width: 80%;
+    /* Set width for centering */
 }
 
 /* Tasks Container */
 .tasks-container {
-    margin-top: 20px; /* Space above tasks */
-    border: 2px solid grey; /* Border color for tasks box */
-    display: flex; /* Flex layout for alignment */
-    align-items: flex-start; /* Align items at the top */
-    padding: 10px;
-    background-color: transparent; /* Keep background transparent */
+    margin-top: 20px;
+    border: 2px solid #66fcd0;
+    /* your aqua color */
+    display: flex;
+    justify-content: space-evenly;
+    /* centers the group of columns */
+    align-items: flex-start;
+    padding: 20px;
+    background-color: transparent;
+    gap: 40px;
+
 }
 
 /* Tasks Columns */
 .tasks-columns {
-    display: flex; /* Flex layout for columns */
-    justify-content: space-between; /* Evenly space columns */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* horizontally center everything */
+    text-align: center;
+    /* center text inside each element */
+    width: 150px;
+
+}
+
+.tasks-column h3 {
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: center;
 }
 
 /* Task List Styles */
 .tasks-columns div {
-    flex: 1; /* Allow equal width for each column */
-    margin: 0 10px; /* Space between columns */
+    flex: 1;
+    /* Allow equal width for each column */
+    margin: 0 10px;
+    /* Space between columns */
+
 }
 
 .tasks-container ul {
-    list-style-type: none; /* Remove bullet points */
+    list-style-type: none;
+    /* Remove bullet points */
     padding: 0;
 }
 
@@ -865,59 +916,72 @@ body.character-page {
     margin: 5px 0;
     padding: 10px;
     border-radius: 5px;
+
 }
 
 /* Heading Styles */
-h3, h4 {
-    color: #FFD700; /* Gold color for headings */
-    margin-top: 20px; /* Space above headings */
+h3,
+h4 {
+    color: #FFD700;
+    /* Gold color for headings */
+    margin-top: 20px;
+    /* Space above headings */
 }
 
 /* Close Button */
 .close-button {
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: grey; /* Close button background */
-    color: white; /* Close button text color */
-    border: none; /* No border */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Change cursor on hover */
+    background-color: grey;
+    /* Close button background */
+    color: white;
+    /* Close button text color */
+    border: none;
+    /* No border */
+    border-radius: 5px;
+    /* Rounded corners */
+    cursor: pointer;
+    /* Change cursor on hover */
 }
 
 /* dropdown character information 
    /* Form */
-   #characterForm{
+#characterForm {
     text-align: center;
-   }
+}
 
-   .selectCharacter{
+.selectCharacter {
     text-align: center;
-   }
+}
 
-  /* Dropdown Container */
-  .dropdown-container {
+/* Dropdown Container */
+.dropdown-container {
     display: inline-block;
     position: relative;
     margin-bottom: 30px;
-  }
-  
-  select {
-    background-color: #5E17EB; /* Violet */
+}
+
+select {
+    background-color: #5E17EB;
+    /* Violet */
     color: white;
     font-weight: bold;
     padding: 12px 18px;
-    border: 3px solid #5271FF; /* Royal Blue border */
-    border-radius: 0; /* Square corners like mockup */
+    border: 3px solid #5271FF;
+    /* Royal Blue border */
+    border-radius: 0;
+    /* Square corners like mockup */
     font-size: 1rem;
     appearance: none;
     cursor: pointer;
     outline: none;
-  }
-  
-  .dropdown-container::after {
+}
+
+.dropdown-container::after {
     content: '▾';
     color: white;
-    background-color: #5271FF; /* Royal Blue */
+    background-color: #5271FF;
+    /* Royal Blue */
     font-size: 1rem;
     font-weight: bold;
     padding: 5px 10px;
@@ -927,11 +991,12 @@ h3, h4 {
     transform: translateY(-50%);
     pointer-events: none;
     border-left: 3px solid #5E17EB;
-  }
-  
-  /* View Button */
-  .view-btn {
-    background-color: #5E17EB; /* Violet */
+}
+
+/* View Button */
+.view-btn {
+    background-color: #5E17EB;
+    /* Violet */
     color: white;
     font-weight: bold;
     padding: 15px 25px;
@@ -939,40 +1004,44 @@ h3, h4 {
     border: none;
     border-radius: 10px;
     font-size: 1rem;
-    box-shadow: 4px 4px 0 #5271FF; /* Royal Blue drop shadow */
+    box-shadow: 4px 4px 0 #5271FF;
+    /* Royal Blue drop shadow */
     cursor: pointer;
     transition: transform 0.2s ease;
-  }
-  
-  .view-btn:focus,
-  select:focus {
+}
+
+.view-btn:focus,
+select:focus {
     outline: 3px solid #5E17EB;
     outline-offset: 2px;
-  }
-  
-  .view-btn:hover {
+}
+
+.view-btn:hover {
     transform: scale(1.05);
-  }
-  
-  select:hover {
+}
+
+select:hover {
     background-color: #6c2be6;
-  }
-  
-  /* Grid Box */
-  .character-grid {
+}
+
+/* Grid Box */
+.character-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 30px;
-    background-color: #5E17EB; /* Violet */
-    border: 4px solid #5271FF; /* Royal Blue border */
+    background-color: #5E17EB;
+    /* Violet */
+    border: 4px solid #5271FF;
+    /* Royal Blue border */
     padding: 30px;
     width: fit-content;
     margin: 0 auto;
-    border-radius: 0; /* Match mockup's sharp corners */
-  }
-  
-  /* Character Icons */
-  .character-icon img {
+    border-radius: 0;
+    /* Match mockup's sharp corners */
+}
+
+/* Character Icons */
+.character-icon img {
     max-width: 100%;
     border-radius: 10px;
     width: 80px;
@@ -981,27 +1050,29 @@ h3, h4 {
     background-color: transparent;
     padding: 0;
     box-shadow: none;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
     .character-grid {
-      grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
-  }
-  
-  @media (max-width: 480px) {
+}
+
+@media (max-width: 480px) {
     .character-grid {
-      grid-template-columns: 1fr;
+        grid-template-columns: 1fr;
     }
-  }
-  .close-button {
+}
+
+.close-button {
     display: block;
     margin: 2em auto 1em auto;
     padding: 14px 28px;
     border: none;
     border-radius: 6px;
-    background: linear-gradient(135deg, #004aad, #cb6ce6); /* Matches your color scheme */
+    background: linear-gradient(135deg, #004aad, #cb6ce6);
+    /* Matches your color scheme */
     color: white;
     font-size: 18px;
     font-weight: bold;
@@ -1011,17 +1082,20 @@ h3, h4 {
 
 .close-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
+
 body {
     background-color: black;
-    background-image: 
+    background-image:
         radial-gradient(white 1px, transparent 1px),
         radial-gradient(white 1px, transparent 1px);
     background-size: 100px 100px;
     background-position: 0 0, 50px 50px;
-    color: white; /* Optional: make text white if it’s black */
+    color: white;
+    /* Optional: make text white if it’s black */
 }
+
 body {
     margin: 0;
     overflow: auto;
@@ -1052,8 +1126,15 @@ body {
 }
 
 @keyframes twinkle {
-    0%, 100% { opacity: 0.8; }
-    50% { opacity: 0.2; }
+
+    0%,
+    100% {
+        opacity: 0.8;
+    }
+
+    50% {
+        opacity: 0.2;
+    }
 }
 
 /*profile color change*/
@@ -1074,10 +1155,8 @@ body {
     width: 300px;
     height: 15px;
     border-radius: 10px;
-    background: linear-gradient(
-        to right,
-        red, orange, yellow, green, cyan, blue, violet, red
-    );
+    background: linear-gradient(to right,
+            red, orange, yellow, green, cyan, blue, violet, red);
     outline: none;
     margin-top: 10px;
     margin-bottom: 10px;
