@@ -116,28 +116,30 @@
 
             <div class="info-section">
                 <div class="character-groups">
-                    <% for(var x=1; x < 4; x++) { %>
-                        <button type="button" id="<%=x%> name=" group-<%=x%>" value="getName(<%=x%>);" class="group"
-                                onmouseout="noHover(this.id);" onmouseover="hover(this.id);"
-                                onclick="selectedButton(this.id)">
-                                <div class="group-number">
-                                    <h2>Group #<%=x%>:</h2>
-                                </div>
-
-                                <% characterGroups[x-1].forEach((character)=> { %>
-                                    <% if (character !=undefined) {%>
-                                        <div class="character" name="<%=character.name%>" id="<%=character.id%>">
-                                            <div class="name">
-                                                <h3>
-                                                    <%=character.name%>
-                                                </h3>
-                                            </div>
-                                            <div class="scores">
-                                                <h3 class="score">Happiness: <%=character.happiness_score%>
-                                                </h3>
-                                                <h3 class="score">Inclusion: <%=character.durability_score%>
-                                                </h3>
-                                            </div>
+                    <% for(var x = 1; x < 4; x++) { %>
+                        <button type="button" id="<%=x%> name="group-<%=x%>" value="getName(<%=x%>);" class="group" onmouseout="noHover(this.id);" onmouseover="hover(this.id);" onclick="selectedButton(this.id)">
+                            <div class="group-number"> 
+                                <h2>Group #<%=x%>:</h2>
+                            </div>
+                            
+                            <% characterGroups[x-1].forEach((character) => { %> 
+                                <% if (character != undefined) {%> 
+                                    <div class="character" name="<%=character.name%>" id="<%=character.id%>">
+                                        <div class="name">
+                                            <h3><%=character.name%></h3>
+                                        </div>
+                                        <div class="scores">
+                                            <% if (oldValues[character.id]) { %>
+                                                <% let happinessDiff = character.happiness_score - oldValues[character.id].happiness; %>
+                                                <% let happinessDiffStr = happinessDiff >= 0 ? "+" + happinessDiff : happinessDiff.toString(); %>
+                                                <% let durabilityDiff = character.durability_score - oldValues[character.id].durability; %>
+                                                <% let durabilityDiffStr = durabilityDiff >= 0 ? "+" + durabilityDiff : durabilityDiff.toString(); %>
+                                                <h3 class="score">Happiness: <%=character.happiness_score%> (<%= happinessDiffStr %>)</h3>
+                                                <h3 class="score">Inclusion: <%=character.durability_score%> (<%= durabilityDiffStr %>)</h3>
+                                            <% } else { %>
+                                                <h3 class="score">Happiness: <%=character.happiness_score%></h3>
+                                                <h3 class="score">Inclusion: <%=character.durability_score%></h3>
+                                            <% } %>
                                         </div>
                                         <% } %>
                                             <% }) %>
@@ -182,7 +184,7 @@
 
 
             <div class="assign-task">
-                <button class="submit" type="submit" id="assign-task-button" value="Assign Tasks">Assign Task</button>
+                <button class="submit" type="submit" id="assign-task-button" value="Assign Tasks" style="margin-bottom:40px;">Assign Task</button>
             </div>
 
         </form>
