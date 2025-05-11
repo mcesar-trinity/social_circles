@@ -1,71 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/stylesheets/style.css" />
-  <title><%= character.name %> - Character Page</title>
+  <title>
+    <%= character.name %> - Character Page
+  </title>
 </head>
+
 <body class="character-page">
 
   <header class="character-header">
-    <h1><%= character.name %> Details</h1>
+    <h1>
+      <%= character.name %> Details
+    </h1>
   </header>
 
   <div class="character-container">
     <div class="view-character-icon">
       <img src="/images/<%= character.npc_picture %>" alt="<%= character.name %>" />
     </div>
-    <div class="character-descriptions"> 
+    <div class="character-descriptions">
 
-        <div class="scores-box">
-                <h2>Happiness: <%= character.happiness_score %></h2>
-                <h2>Durability: <%= character.activity_durability %></h2>
-            </div>
-        </div>
+      <div class="scores-box">
+        <h2>Happiness: <%= character.happiness_score %>
+        </h2>
+        <h2>Durability: <%= character.activity_durability %>
+        </h2>
+      </div>
+    </div>
 
-        <div class="description-box">
-            <p><%= character.description %></p>
-        </div>
+    <div class="description-box">
+      <p>
+        <%= character.description %>
+      </p>
+    </div>
   </div>
 
   <div class="tasks-container">
     <div class="tasks-column">
       <h3>Love</h3>
       <ul>
-        <% tasks.love.forEach(task => { %>
-          <li><%= task.name %></li>
-        <% }) %>
+        <% tasks.love.forEach(task=> { %>
+          <li>
+            <%= task.name %>
+          </li>
+          <% }) %>
       </ul>
     </div>
     <div class="tasks-column">
       <h3>Like</h3>
       <ul>
-        <% tasks.like.forEach(task => { %>
-          <li><%= task.name %></li>
-        <% }) %>
+        <% tasks.like.forEach(task=> { %>
+          <li>
+            <%= task.name %>
+          </li>
+          <% }) %>
       </ul>
     </div>
     <div class="tasks-column">
       <h3>Dislike</h3>
       <ul>
-        <% tasks.dislike.forEach(task => { %>
-          <li><%= task.name %></li>
-        <% }) %>
+        <% tasks.dislike.forEach(task=> { %>
+          <li>
+            <%= task.name %>
+          </li>
+          <% }) %>
       </ul>
     </div>
     <div class="tasks-column">
       <h3>Hate</h3>
       <ul>
-        <% tasks.hate.forEach(task => { %>
-          <li><%= task.name %></li>
-        <% }) %>
+        <% tasks.hate.forEach(task=> { %>
+          <li>
+            <%= task.name %>
+          </li>
+          <% }) %>
       </ul>
     </div>
   </div>
 
   <form action="/char_dropdown">
-    <button type="submit" class="close-button" >Close Page</button>
+    <button type="submit" class="close-button">Close Page</button>
   </form>
 
   <script>
@@ -76,4 +94,5 @@
     document.querySelector('.tasks-container').style.border = `10px solid ${color}`;
   </script>
 </body>
+
 </html>

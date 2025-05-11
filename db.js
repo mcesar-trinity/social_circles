@@ -5,13 +5,13 @@ const connection = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
-    database: process.env.DB_NAME,    
+    database: process.env.DB_NAME,
     multipleStatements: true
-     //// Use quotes or backticks if you include spaces
+    //// Use quotes or backticks if you include spaces
 });
 
 connection.connect((err) => {
-    if(err) {
+    if (err) {
         console.error('Database connection failed:', err.stack);
         return;
     }
