@@ -23,7 +23,7 @@
             for (let i = 0; i < buttonGroup.length; i++) {
                 if (buttonGroup[i].id == element) {
                     buttonGroup[i].style.backgroundColor = "gold";
-                    document.getElementsByName('selected-group').value = getCharacter(buttonGroup[i]);
+                    document.getElementsByName('selected-group')[0].value = getCharacter(buttonGroup[i]);
                 } else {
                     buttonGroup[i].style.backgroundColor = "#38b6ff";
                 }
@@ -37,7 +37,7 @@
             for (let i = 0; i < buttonGroup.length; i++) {
                 if (buttonGroup[i].style.backgroundColor === "gold") {
                     document.gameForm.selectedGroup.value = getCharacter(buttonGroup[i]);
-                    sumbit = true;
+                    submit = true;
                     break;
                 }
             }
@@ -158,7 +158,7 @@
 
                         <div class="info"> 
                             <h2>Top 5 Player</h2>
-                            <% leader.sort((a, b) => b.max_happiness_score - a.max_happiness_score); %>
+                           
                             <% let place = 1; %>
                             <% leader.forEach(entry => { %>
                                 <div class="entry" style="color:<%= entry.profile_color %>; font-weight: bold;">
