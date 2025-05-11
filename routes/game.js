@@ -130,7 +130,60 @@ function updateCharacterDurability(req, res) {
     });
 }
 
+function updateLeaderboard(userId, callback) {
+    const insertMissingUsers = `
+      INSERT INTO leaderboard (user_id, high_score, user_rank)
+      SELECT u.id, u.max_happiness_score, 0
+      FROM users u
+      LEFT JOIN leaderboard l ON u.id = l.user_id
+      WHERE l.user_id IS NULL
+        AND u.max_happiness_score IS NOT NULL;
+    `;
+  
+    db.query(insertMissingUsers, (insertErr) => {
+      if (insertErr) {
+        console.error('Error inserting missing users:', insertErr);
+        return callback(insertErr);
+      }
+  
+      const updateScores = `
+        UPDATE leaderboard l
+        JOIN users u ON l.user_id = u.id
+        SET l.high_score = u.max_happiness_score
+        WHERE u.max_happiness_score IS NOT NULL
+          AND u.max_happiness_score > l.high_score;
+      `;
+  
+      db.query(updateScores, (updateErr) => {
+        if (updateErr) {
+          console.error('Error updating leaderboard scores:', updateErr);
+          return callback(updateErr);
+        }
+  
+        callback(null); // success
+      });
+    });
+  }
+  
+  
 
+
+
+//cheac and update the leaderboard if user is not in it
+function cheackPlayerInLeaderboard(req, res){
+    let checkSQL = `SELECT * FROM leaderboard WHERE user_id = ?` + db.escape(req.session.user.id);
+    db.query(checkSQL, [req.session.user.id],(err, result) => {
+        if(err) throw err;
+        if(result.length == 0){
+            let insertSQL = `INSERT INTO leaderboard (user_id, high_score) VALUES (?, ?)`;
+            db.query(insertSQL, [req.session.user.id, maxScore], (err, result) => {
+                if(err) throw err;
+                console.log("User added to leaderboard");
+            });
+        }
+    });
+}
+            
 
 //Used to create a new game
 //Intells randomizing the set of tasks and character assignemnt 
@@ -151,11 +204,10 @@ function createGame(req, res){
 
         let opinionSQL = `select cld.character_id, cld.category_id, cld.opinions from character_likes_dislikes cld`;
 
-        let leaderSQL = `SELECT u.username, u.profile_color, u.max_happiness_score
-                 FROM leaderboard l 
-                 JOIN users u ON u.id = l.user_id
-                 ORDER BY l.high_score DESC
-                 LIMIT 5;`;
+        let leaderSQL = `SELECT username, profile_color, max_happiness_score
+                        FROM users
+                        ORDER BY max_happiness_score DESC
+                        LIMIT 5;`
 
 
         db.query(taskSQL + "; " + userSQL + "; " + infoSQL + "; " + opinionSQL + ";" + leaderSQL + ";", (err, result) => {
@@ -299,6 +351,14 @@ router.post("/", (req, res) => {
 
         db.query(updateCharSQL, (err,result) => {
             if(err) throw err;
+
+            updateLeaderboard(req.session.user.id, (err) => {
+                if (err) {
+                  // optionally log but don’t send a response here if you're in an internal call
+                  console.error("Leaderboard update failed", err);
+                }
+            });
+              
             createGame(req,res);
         });
     })
